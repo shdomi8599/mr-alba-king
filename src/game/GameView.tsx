@@ -288,7 +288,7 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
                 <div className="target" style={{ left: t.rect.x - 10, top: t.rect.y - 10, width: t.rect.w + 20, height: t.rect.h + 20 }} />
                 <Ph id={t.sprite} x={t.rect.x} y={t.rect.y} w={t.rect.w} h={t.rect.h} />
                 {t.wants && t.filled < t.capacity && (
-                  <div className="wantchip" style={{ left: t.rect.x + t.rect.w / 2 - 22, top: t.rect.y - 74 }}>
+                  <div className="wantchip" style={{ left: t.rect.x + t.rect.w / 2 - 31, top: t.rect.y - 98 }}>
                     <Chip id={t.wants} />
                     {itemName(t.wants) && <div className="wantlabel">{itemName(t.wants)}</div>}
                   </div>
