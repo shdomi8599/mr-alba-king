@@ -1,0 +1,46 @@
+{
+  "_note": "게임 내 모든 텍스트의 단일 소스. 게임은 이 파일에서 카피를 가져온다(이미지에 굽지 않음). shot = pipeline/staging/shots/ 의 상황 캡처 파일명. 검수 결정은 이벤트(order:'texts')로 기록.",
+  "categories": [
+    {
+      "name": "지시어 (미니게임 10종)",
+      "entries": [
+        { "id": "instr-sushi", "ko": "올려!", "context": "초밥집 시작 순간, 화면 중앙 대형 표시 0.5초" },
+        { "id": "instr-gimbap", "ko": "넣어!", "context": "김밥천국 시작 순간" },
+        { "id": "instr-cvs", "ko": "찍어!", "context": "편의점 시작 순간" },
+        { "id": "instr-bakery", "ko": "담아!", "context": "빵집 시작 순간" },
+        { "id": "instr-cafe", "ko": "부어!", "context": "카페 시작 순간" },
+        { "id": "instr-chicken", "ko": "건져!", "context": "치킨집 시작 순간" },
+        { "id": "instr-fish", "ko": "뒤집어!", "context": "붕어빵 시작 순간" },
+        { "id": "instr-box", "ko": "날라!", "context": "택배 상하차 시작 순간" },
+        { "id": "instr-wash", "ko": "문질러!", "context": "세차장 시작 순간" },
+        { "id": "instr-song", "ko": "흔들어!", "context": "노래방 시작 순간" }
+      ]
+    },
+    {
+      "name": "시스템·연출",
+      "entries": [
+        { "id": "sys-levelup", "ko": "난이도 상승 — 새 변형 투입", "context": "난이도 단계 상승 시 배너 (정직 표기 원칙: 'AI 생성' 표기 금지, ADR-003)" },
+        { "id": "sys-perfect", "ko": "퍼펙트!", "context": "판정 최상 성공 시" },
+        { "id": "sys-fail", "ko": "실패...", "context": "제한시간 초과/오조작 시" },
+        { "id": "sys-combo", "ko": "콤보 x{n}", "context": "연속 성공 카운터, {n}=숫자 치환" }
+      ]
+    },
+    {
+      "name": "타이틀·메뉴",
+      "entries": [
+        { "id": "title-name", "ko": "알바킹", "context": "타이틀 화면 로고 텍스트(코드 렌더)" },
+        { "id": "title-start", "ko": "출근하기", "context": "타이틀 시작 버튼 — '게임 시작' 대신 알바 은유" },
+        { "id": "title-tagline", "ko": "오늘도 알바는 계속된다", "context": "타이틀 서브 카피" }
+      ]
+    },
+    {
+      "name": "게임오버·평가서",
+      "entries": [
+        { "id": "over-title", "ko": "근무 종료!", "context": "게임오버 화면 헤더" },
+        { "id": "over-score", "ko": "오늘의 알바 점수", "context": "점수 라벨" },
+        { "id": "over-writing", "ko": "사장님이 평가서를 쓰는 중...", "context": "LLM 평가서 로딩 연출 2~3초 (ADR-002)" },
+        { "id": "over-retry", "ko": "재출근", "context": "다시하기 버튼" }
+      ]
+    }
+  ]
+}

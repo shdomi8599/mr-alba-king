@@ -117,6 +117,7 @@
   <div class="sect">검수</div>
   <button data-v="images">🖼 이미지</button>
   <button data-v="audio">🔊 오디오</button>
+  <button data-v="texts">✏️ 텍스트</button>
   <div class="sect">기록</div>
   <button data-v="history">🕘 히스토리</button>
   <button data-v="docs">📄 문서</button>
@@ -141,6 +142,8 @@ async function post(url, data) { await fetch(url, { method:'POST', headers:{'Con
 
 window.approve = (o,i) => post('/api/decision', { order:o, item:i, decision:'approved' })
 window.reject = (o,i) => { const r = prompt('반려 사유 (검수 기준의 언어로):'); if (r !== null) post('/api/decision', { order:o, item:i, decision:'rejected', reason:r }) }
+window.approveText = i => post('/api/decision', { order:'texts', item:i, decision:'approved' })
+window.rejectText = i => { const r = prompt('반려 사유 (수정 방향 포함):'); if (r !== null) post('/api/decision', { order:'texts', item:i, decision:'rejected', reason:r }) }
 window.golden = (o,i) => { if (confirm('이 이미지를 골든 레퍼런스로 지정합니다.\n이후 모든 이미지 발주가 이 톤에 앵커됩니다. (나중에 변경 가능)')) post('/api/golden-ref', { order:o, item:i }) }
 window.setBg = b => { bg = b; render() }
 window.setView = v => { view = v; document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x.dataset.v === v)); render() }
@@ -233,12 +236,59 @@ function renderManifest() {
     </table>`
 }
 
-// ── 게임 ──
+// ── 게임 (뷰포트 프리셋 검수) ──
+let gameVp = 'mobile-390'
+const VIEWPORTS = {
+  'mobile-390': { label: '📱 iPhone 390×844', w: 390, h: 844 },
+  'mobile-412': { label: '📱 Galaxy 412×915', w: 412, h: 915 },
+  'tablet-768': { label: '⬛ 태블릿 768×1024', w: 768, h: 1024 },
+  'desktop': { label: '🖥 데스크톱 전체', w: 0, h: 0 },
+}
+window.setVp = v => { gameVp = v; renderGame() }
 function renderGame() {
+  const url = S.status.playUrl || 'http://localhost:5173/'
+  const vp = VIEWPORTS[gameVp]
+  const lan = S.lanIp
+  const frame = vp.w
+    ? (() => {
+        const scale = Math.min(1, (window.innerHeight - 210) / vp.h)
+        return `<div style="display:flex; justify-content:center;">
+          <div style="width:${vp.w * scale}px; height:${vp.h * scale}px; overflow:hidden; border-radius:22px; border:3px solid #38332b; background:#000;">
+            <iframe src="${url}" style="width:${vp.w}px; height:${vp.h}px; border:none; transform:scale(${scale}); transform-origin:0 0;"></iframe>
+          </div></div>
+          <div style="text-align:center; font-size:11px; opacity:.45; margin-top:8px;">${vp.w}×${vp.h} · ${Math.round(scale*100)}% 축소 표시</div>`
+      })()
+    : `<iframe class="game" src="${url}"></iframe>`
   $('#main').innerHTML = `
     <h1>게임</h1>
-    <div class="sub">개발 서버(${esc(S.status.playUrl || 'http://localhost:5173/')})를 임베드합니다. 안 보이면 터미널에서 <code>pnpm dev</code> 실행.</div>
-    <iframe class="game" src="${S.status.playUrl || 'http://localhost:5173/'}"></iframe>`
+    <div class="sub">개발 서버(<code>pnpm dev</code>) 임베드 — 뷰포트를 바꿔 모바일/데스크톱 레이아웃을 검수합니다.
+      ${lan ? `<br>📲 <b>실기기 테스트</b>: 폰에서 <code>http://${lan}:5173/</code> (게임) · <code>http://${lan}:${S.port}/</code> (스튜디오)` : ''}</div>
+    <div class="bgpick">${Object.entries(VIEWPORTS).map(([k,v]) => `<button class="${gameVp===k?'on':''}" onclick="setVp('${k}')">${v.label}</button>`).join('')}</div>
+    ${frame}`
+}
+
+// ── 텍스트 검수 ──
+function renderTexts() {
+  const cats = S.texts.categories || []
+  $('#main').innerHTML = `
+    <h1>텍스트 검수</h1>
+    <div class="sub">게임 내 모든 카피의 단일 소스(pipeline/texts.json). 상황 캡처(pipeline/staging/shots/&lt;id&gt;.png)가 있으면 함께 표시됩니다 — 캡처는 P1 이후 자동화.</div>
+    ${criteriaPanel(['text'])}
+    ${cats.map(c => `
+      <div class="order-block">
+        <div class="order-head">${esc(c.name)}</div>
+        <table class="man">
+          <tr><th>문구</th><th>상황(컨텍스트)</th><th>캡처</th><th>상태</th><th></th></tr>
+          ${c.entries.map(t => `
+            <tr>
+              <td style="font-weight:700; font-size:14px; white-space:nowrap">${esc(t.ko)}<div style="font-family:monospace; font-size:10px; opacity:.4; font-weight:400">${t.id}</div></td>
+              <td style="opacity:.7; font-size:12px">${esc(t.context)}${t.reason ? `<div style="color:#e08f8f; margin-top:4px">반려: ${esc(t.reason)}</div>` : ''}</td>
+              <td>${t.shotUrl ? `<img class="th" src="${t.shotUrl}" onclick="zoom('${t.shotUrl}','${t.id}')">` : '<span style="opacity:.3; font-size:11px">캡처 없음</span>'}</td>
+              <td><span class="chip ${t.status}">${CHIP[t.status] || t.status}</span></td>
+              <td style="white-space:nowrap"><button class="btn ok" onclick="approveText('${t.id}')">승인</button> <button class="btn no" onclick="rejectText('${t.id}')">반려</button></td>
+            </tr>`).join('')}
+        </table>
+      </div>`).join('')}`
 }
 
 // ── 이미지 검수 ──
@@ -350,13 +400,13 @@ async function renderDocs() {
 }
 
 function render() {
-  ({ dash: renderDash, manifest: renderManifest, game: renderGame, images: renderImages, audio: renderAudio, history: renderHistory, docs: renderDocs })[view]()
+  ({ dash: renderDash, manifest: renderManifest, game: renderGame, images: renderImages, audio: renderAudio, texts: renderTexts, history: renderHistory, docs: renderDocs })[view]()
 }
 
 load()
 setInterval(async () => {
   if (view === 'docs' || view === 'game') return
-  const sig = s => JSON.stringify([s?.counts, s?.orders?.map(o => o.items.map(i => i.exists + i.status)), s?.gitLog?.[0]])
+  const sig = s => JSON.stringify([s?.counts, s?.orders?.map(o => o.items.map(i => i.exists + i.status)), s?.gitLog?.[0], s?.texts?.categories?.map(c => c.entries.map(t => t.status + !!t.shotUrl))])
   const prev = sig(S)
   S = await (await fetch('/api/state')).json()
   if (prev !== sig(S)) render()

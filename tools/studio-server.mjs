@@ -4,6 +4,7 @@
 import { createServer } from 'node:http'
 import { readFileSync, existsSync, statSync, readdirSync, appendFileSync, copyFileSync, mkdirSync } from 'node:fs'
 import { execSync } from 'node:child_process'
+import { networkInterfaces } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -101,10 +102,27 @@ function state() {
     ;(threads[k] = threads[k] || []).push(e)
   }
 
+  // 텍스트: texts.json + 결정 상태 파생 (order:'texts') + 상황 캡처 존재 확인
+  const texts = readJson('texts.json', { categories: [] })
+  for (const cat of texts.categories || []) {
+    for (const t of cat.entries || []) {
+      const d = latest[`texts/${t.id}`]
+      t.status = d ? d.event : 'pending'
+      t.reason = d?.reason || null
+      const shotFile = t.shot || `${t.id}.png`
+      const shotPath = path.join(ROOT, 'pipeline', 'staging', 'shots', shotFile)
+      t.shotUrl = existsSync(shotPath) ? `/pipeline/staging/shots/${shotFile}` : null
+    }
+  }
+
+  // 폰 접속용 실제 LAN 주소 — 가상 어댑터(WSL/Hyper-V 172.x 등)보다 공유기 대역(192.168.x) 우선
+  const ips = Object.values(networkInterfaces()).flat().filter(i => i && i.family === 'IPv4' && !i.internal).map(i => i.address)
+  const lanIp = ips.find(a => a.startsWith('192.168.')) || ips.find(a => a.startsWith('10.')) || ips[0] || null
+
   return {
     goldenRef: golden ? { ...golden, exists: existsSync(REF) } : null,
     orders, audio: scanAudio(''), docs, counts, events: events.slice(-60).reverse(),
-    criteria, status, manifest, gitLog, threads,
+    criteria, status, manifest, gitLog, threads, texts, lanIp, port: PORT,
   }
 }
 
@@ -120,6 +138,7 @@ createServer(async (req, res) => {
     if (p === '/api/decision' && req.method === 'POST') {
       const { order, item, decision, reason } = await body(req)
       if (!['approved', 'rejected'].includes(decision)) return json(res, 400, { error: 'decision must be approved|rejected' })
+      // order는 숫자(에셋 발주) 또는 'texts'(텍스트 검수) — 이벤트 키는 `${order}/${item}`로 동일하게 동작
       emit({ order, item, event: decision, ...(reason ? { reason } : {}), by: 'director' })
       return json(res, 200, { ok: true })
     }
