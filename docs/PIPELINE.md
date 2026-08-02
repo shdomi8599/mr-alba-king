@@ -24,7 +24,19 @@ tools/
 ```
 pnpm order pipeline/orders/000-tone-audition.json   # 발주 실행 (있는 산출물은 스킵)
 pnpm order <order.json> --force                     # 재생성
+pnpm studio                                         # 디렉터 스튜디오 → http://localhost:4900/
 ```
+
+## 디렉터 스튜디오 (tools/studio-server.mjs + tools/studio/)
+
+검수 전용 상설 툴 — 검수마다 임시 페이지를 만들지 않는다. 메뉴:
+
+- **🖼 이미지**: 발주별 그리드 · 배경 4종 전환 · 72px 게임 스케일 미니뷰(0.5초 판독성) · **승인/반려(사유)/★골든 지정** 버튼. 골든 지정 = `pipeline/refs/style-ref.png` 승격.
+- **🔊 오디오**: `pipeline/staging/audio/` 후보 재생·비교 (BGM 다중 모델 경쟁 배치, ADR-005).
+- **📦 발주·이벤트**: 이벤트 스토어 실측 카운트(발주/생성/승인/반려) + 최근 이벤트 피드 — 문서·스태프롤 숫자의 라이브 뷰.
+- **📄 문서**: docs/*.md 렌더링 열람.
+
+모든 결정은 이벤트로 append되며 **최신 결정이 이긴다 = 언제든 번복 가능**(골든 ref 교체 포함). 반려 사유는 재발주의 입력이 된다.
 
 ## 골든 레퍼런스 규약 (승인 후)
 

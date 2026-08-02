@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>알바킹 디렉터 스튜디오</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#1a1815; color:#f5efe4; font-family:'Pretendard Variable',Pretendard,system-ui,sans-serif; display:flex; height:100vh; overflow:hidden; }
+  nav { width:200px; background:#211d18; border-right:1px solid #38332b; padding:16px 10px; display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
+  nav .logo { font-weight:800; font-size:16px; padding:6px 10px 14px; letter-spacing:1px; }
+  nav button { text-align:left; padding:9px 12px; border-radius:8px; border:none; background:none; color:#f5efe4; cursor:pointer; font-size:13.5px; }
+  nav button:hover { background:#2b261f; }
+  nav button.on { background:#f5b942; color:#1a1815; font-weight:700; }
+  nav .foot { margin-top:auto; font-size:10.5px; opacity:.4; padding:10px; line-height:1.6; }
+  main { flex:1; overflow-y:auto; padding:22px 26px; }
+  h1 { font-size:18px; margin-bottom:4px; }
+  .sub { opacity:.55; font-size:12.5px; margin-bottom:18px; line-height:1.6; }
+  .bgpick { display:flex; gap:6px; margin-bottom:16px; }
+  .bgpick button, .btn { padding:6px 12px; border-radius:8px; border:1px solid #4a443a; background:#26221d; color:#f5efe4; cursor:pointer; font-size:12.5px; }
+  .bgpick button.on { background:#f5b942; color:#1a1815; border-color:#f5b942; font-weight:700; }
+  .order-block { margin-bottom:28px; }
+  .order-head { font-size:14px; font-weight:700; margin-bottom:2px; }
+  .order-goal { font-size:11.5px; opacity:.5; margin-bottom:12px; max-width:720px; line-height:1.5; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; }
+  .card { background:#26221d; border:1px solid #38332b; border-radius:14px; overflow:hidden; position:relative; }
+  .card.golden { border-color:#f5b942; box-shadow:0 0 0 1px #f5b942; }
+  .card h2 { font-size:13px; padding:10px 12px 2px; }
+  .card .id { font-size:10px; opacity:.4; padding:0 12px 8px; font-family:monospace; }
+  .chip { position:absolute; top:10px; right:10px; font-size:10px; padding:3px 8px; border-radius:20px; font-weight:700; }
+  .chip.generated { background:#3a4a5c; } .chip.approved { background:#3f6b46; } .chip.rejected { background:#6b3f3f; } .chip.pending { background:#4a443a; }
+  .chip.golden { background:#f5b942; color:#1a1815; }
+  .stage { aspect-ratio:1; display:flex; align-items:center; justify-content:center; margin:0 12px; border-radius:10px; overflow:hidden; }
+  .stage img { max-width:86%; max-height:86%; }
+  .bg-checker { background:repeating-conic-gradient(#3a352d 0% 25%, #2c2822 0% 50%) 0 0/22px 22px; }
+  .bg-white { background:#f7f3ea; } .bg-dark { background:#14120f; } .bg-game { background:linear-gradient(180deg,#3d6b4f,#2b4d38); }
+  .mini { display:flex; align-items:center; gap:10px; padding:10px 12px 4px; }
+  .mini .dot { width:72px; height:72px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .mini .dot img { max-width:88%; max-height:88%; }
+  .mini .label { font-size:10.5px; opacity:.5; line-height:1.5; }
+  .reason { font-size:11px; color:#e08f8f; padding:4px 12px 0; }
+  .actions { display:flex; gap:6px; padding:10px 12px 12px; flex-wrap:wrap; }
+  .btn.ok { border-color:#3f6b46; } .btn.no { border-color:#6b3f3f; } .btn.gold { border-color:#f5b942; color:#f5b942; }
+  .missing { padding:40px 12px; text-align:center; opacity:.4; font-size:12.5px; }
+  .empty { opacity:.45; font-size:13px; padding:30px 0; line-height:1.7; }
+  table.ev { width:100%; border-collapse:collapse; font-size:12px; }
+  table.ev td { padding:6px 8px; border-bottom:1px solid #2b261f; vertical-align:top; }
+  table.ev td.t { opacity:.4; white-space:nowrap; font-family:monospace; font-size:11px; }
+  .counts { display:flex; gap:14px; margin-bottom:18px; }
+  .counts .c { background:#26221d; border:1px solid #38332b; border-radius:10px; padding:10px 16px; font-size:12px; }
+  .counts .c b { display:block; font-size:20px; }
+  .doclist { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
+  .md { max-width:860px; line-height:1.75; font-size:14px; }
+  .md h1 { font-size:22px; margin:22px 0 10px; } .md h2 { font-size:18px; margin:20px 0 8px; border-bottom:1px solid #38332b; padding-bottom:6px; }
+  .md h3 { font-size:15.5px; margin:16px 0 6px; } .md h4 { font-size:14px; margin:12px 0 4px; }
+  .md p { margin:8px 0; } .md li { margin:4px 0 4px 22px; }
+  .md code { background:#2b261f; padding:1.5px 6px; border-radius:5px; font-size:12.5px; }
+  .md pre { background:#211d18; border:1px solid #38332b; padding:12px; border-radius:10px; overflow-x:auto; margin:10px 0; }
+  .md pre code { background:none; padding:0; }
+  .md table { border-collapse:collapse; margin:10px 0; font-size:12.5px; }
+  .md th, .md td { border:1px solid #38332b; padding:7px 10px; text-align:left; vertical-align:top; }
+  .md th { background:#26221d; }
+  .md blockquote { border-left:3px solid #f5b942; padding:2px 14px; opacity:.75; margin:10px 0; }
+  .md hr { border:none; border-top:1px solid #38332b; margin:18px 0; }
+  .md a { color:#f5b942; }
+  audio { width:100%; }
+  .audio-row { background:#26221d; border:1px solid #38332b; border-radius:12px; padding:12px 14px; margin-bottom:10px; max-width:640px; }
+  .audio-row .name { font-size:12.5px; margin-bottom:8px; font-family:monospace; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">👑 알바킹 스튜디오</div>
+  <button data-v="images" class="on">🖼 이미지</button>
+  <button data-v="audio">🔊 오디오</button>
+  <button data-v="orders">📦 발주·이벤트</button>
+  <button data-v="docs">📄 문서</button>
+  <div class="foot">결정은 이벤트로 기록되며<br>언제든 번복 가능합니다.<br>최신 결정이 이깁니다.</div>
+</nav>
+<main id="main"></main>
+<script>
+let S = null, view = 'images', bg = 'bg-checker', curDoc = 'STRATEGY.md'
+const $ = s => document.querySelector(s)
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+
+async function load() { S = await (await fetch('/api/state')).json(); render() }
+async function post(url, data) { await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) }); await load() }
+
+window.approve = (o,i) => post('/api/decision', { order:o, item:i, decision:'approved' })
+window.reject = (o,i) => { const r = prompt('반려 사유 (게임플레이 요구사항 언어로):'); if (r !== null) post('/api/decision', { order:o, item:i, decision:'rejected', reason:r }) }
+window.golden = (o,i) => { if (confirm('이 이미지를 골든 레퍼런스로 지정합니다.\n이후 모든 이미지 발주가 이 톤에 앵커됩니다. (나중에 변경 가능)')) post('/api/golden-ref', { order:o, item:i }) }
+window.setBg = b => { bg = b; render() }
+window.setView = v => { view = v; document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x.dataset.v === v)); render() }
+window.setDoc = d => { curDoc = d; renderDocs() }
+document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => setView(b.dataset.v)))
+
+const CHIP = { pending:'대기', generated:'검수 대기', approved:'승인', rejected:'반려' }
+
+function renderImages() {
+  const imgOrders = S.orders.filter(o => o.kind === 'image')
+  $('#main').innerHTML = `
+    <h1>이미지 검수</h1>
+    <div class="sub">골든 레퍼런스: ${S.goldenRef ? `<b style="color:#f5b942">${S.goldenRef.item}</b> (pipeline/refs/style-ref.png — 모든 발주가 여기 앵커됨)` : '<b style="color:#e08f8f">미지정</b> — 아래에서 1장을 골든으로 지정하세요'}</div>
+    <div class="bgpick">${['bg-checker:투명','bg-white:밝음','bg-dark:어둠','bg-game:게임 목업'].map(x => { const [c,l] = x.split(':'); return `<button class="${bg===c?'on':''}" onclick="setBg('${c}')">${l}</button>` }).join('')}</div>
+    ${imgOrders.length ? imgOrders.map(o => `
+      <div class="order-block">
+        <div class="order-head">order#${o.order} · ${o.name}</div>
+        <div class="order-goal">${esc(o.goal)}</div>
+        <div class="grid">${o.items.map(it => `
+          <div class="card ${it.isGolden?'golden':''}">
+            <span class="chip ${it.isGolden?'golden':it.status}">${it.isGolden?'★ 골든 REF':CHIP[it.status]||it.status}</span>
+            <h2>${esc(it.label)}</h2>
+            <div class="id">${it.id}</div>
+            ${it.exists
+              ? `<div class="stage ${bg}"><img src="${it.url}?t=${Date.now()}"></div>
+                 <div class="mini"><div class="dot ${bg}"><img src="${it.url}?t=${Date.now()}"></div><div class="label">게임 스케일 72px<br>0.5초 판독성 체크</div></div>`
+              : `<div class="missing">생성 중 / 미생성<br>(자동 새로고침)</div>`}
+            ${it.reason ? `<div class="reason">반려: ${esc(it.reason)}</div>` : ''}
+            <div class="actions">
+              ${it.exists ? `
+                <button class="btn ok" onclick="approve(${o.order},'${it.id}')">승인</button>
+                <button class="btn no" onclick="reject(${o.order},'${it.id}')">반려</button>
+                <button class="btn gold" onclick="golden(${o.order},'${it.id}')">★ 골든 지정</button>` : ''}
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>`).join('') : '<div class="empty">이미지 발주가 없습니다.</div>'}`
+}
+
+function renderAudio() {
+  $('#main').innerHTML = `
+    <h1>오디오 검수</h1>
+    <div class="sub">pipeline/staging/audio/ 의 후보를 재생·비교합니다. BGM은 다중 모델 경쟁 배치(ADR-005)로 후보가 들어옵니다.</div>
+    ${S.audio.length
+      ? S.audio.map(a => `<div class="audio-row"><div class="name">${esc(a.name)}</div><audio controls preload="none" src="${a.url}"></audio></div>`).join('')
+      : '<div class="empty">아직 오디오 발주가 없습니다.<br>P4(아트·오디오 배치)에서 SFX 슬롯 + BGM 다중 모델 후보가 이곳에 들어옵니다.</div>'}`
+}
+
+function renderOrders() {
+  $('#main').innerHTML = `
+    <h1>발주·이벤트</h1>
+    <div class="sub">이벤트 스토어(pipeline/events/events.jsonl) 실측값 — 문서·스태프롤의 모든 숫자가 여기서 나옵니다.</div>
+    <div class="counts">
+      <div class="c"><b>${S.counts.ordered}</b>발주</div>
+      <div class="c"><b>${S.counts.generated}</b>생성</div>
+      <div class="c"><b>${S.counts.approved}</b>승인</div>
+      <div class="c"><b>${S.counts.rejected}</b>반려</div>
+    </div>
+    ${S.orders.map(o => `<div style="font-size:13px; margin-bottom:6px;">📦 <b>order#${o.order} ${o.name}</b> (${o.kind}) — ${o.items.length}건 <span style="opacity:.5">· ${o.file}</span></div>`).join('')}
+    <h1 style="margin-top:22px; font-size:15px;">최근 이벤트</h1>
+    <table class="ev">${S.events.map(e => `<tr><td class="t">${e.ts?.slice(5,19).replace('T',' ')}</td><td><b>${e.event}</b> · order#${e.order} · ${e.item}${e.reason?` — <span style="color:#e08f8f">${esc(e.reason)}</span>`:''}${e.by?` <span style="opacity:.4">(${e.by})</span>`:''}</td></tr>`).join('')}</table>`
+}
+
+// ── 미니 마크다운 렌더러 (문서 탭용) ──
+function md(src) {
+  const lines = src.split('\n'); const out = []; let i = 0, inCode = false, codeBuf = []
+  const inline = s => esc(s)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+  while (i < lines.length) {
+    const l = lines[i]
+    if (l.startsWith('```')) { if (inCode) { out.push(`<pre><code>${esc(codeBuf.join('\n'))}</code></pre>`); codeBuf = [] } ; inCode = !inCode; i++; continue }
+    if (inCode) { codeBuf.push(l); i++; continue }
+    if (/^\s*$/.test(l)) { i++; continue }
+    if (/^#{1,4} /.test(l)) { const n = l.match(/^#+/)[0].length; out.push(`<h${n}>${inline(l.replace(/^#+ /,''))}</h${n}>`); i++; continue }
+    if (/^---+$/.test(l.trim())) { out.push('<hr>'); i++; continue }
+    if (/^> /.test(l)) { const b = []; while (i < lines.length && /^> ?/.test(lines[i])) b.push(lines[i++].replace(/^> ?/,'')); out.push(`<blockquote>${b.map(inline).join('<br>')}</blockquote>`); continue }
+    if (/^\|/.test(l)) {
+      const rows = []; while (i < lines.length && /^\|/.test(lines[i])) rows.push(lines[i++])
+      const parse = r => r.split('|').slice(1,-1).map(c => c.trim())
+      const head = parse(rows[0]); const body = rows.slice(2).map(parse)
+      out.push(`<table><tr>${head.map(h => `<th>${inline(h)}</th>`).join('')}</tr>${body.map(r => `<tr>${r.map(c => `<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</table>`)
+      continue
+    }
+    if (/^[-*] /.test(l) || /^\d+\. /.test(l)) {
+      const items = []; while (i < lines.length && (/^[-*] /.test(lines[i]) || /^\d+\. /.test(lines[i]))) items.push(lines[i++].replace(/^([-*]|\d+\.) /,''))
+      out.push(`<ul>${items.map(x => `<li>${inline(x)}</li>`).join('')}</ul>`)
+      continue
+    }
+    out.push(`<p>${inline(l)}</p>`); i++
+  }
+  return out.join('\n')
+}
+
+async function renderDocs() {
+  const list = S.docs.map(d => `<button class="btn ${d===curDoc?'ok':''}" style="${d===curDoc?'background:#f5b942;color:#1a1815;border-color:#f5b942;font-weight:700':''}" onclick="setDoc('${d}')">${d.replace('.md','')}</button>`).join('')
+  $('#main').innerHTML = `<h1>문서</h1><div class="sub">docs/ 의 설계·전략 문서를 열람합니다. 편집은 에디터에서.</div><div class="doclist">${list}</div><div class="md" id="mdbox">불러오는 중...</div>`
+  const src = await (await fetch('/docs/' + curDoc)).text()
+  const box = document.getElementById('mdbox'); if (box) box.innerHTML = md(src)
+}
+
+function render() {
+  if (view === 'images') renderImages()
+  else if (view === 'audio') renderAudio()
+  else if (view === 'orders') renderOrders()
+  else if (view === 'docs') renderDocs()
+}
+
+load()
+setInterval(async () => {
+  if (view === 'docs') return
+  const prev = JSON.stringify(S?.counts) + JSON.stringify(S?.orders?.map(o => o.items.map(i => i.exists + i.status)))
+  S = await (await fetch('/api/state')).json()
+  const now = JSON.stringify(S?.counts) + JSON.stringify(S?.orders?.map(o => o.items.map(i => i.exists + i.status)))
+  if (prev !== now) render()
+}, 5000)
+</script>
+</body>
+</html>
