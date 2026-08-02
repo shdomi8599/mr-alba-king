@@ -5,6 +5,7 @@
 import type { GuideStep, Level, PointerInput } from './types'
 import { tickDrag, applyPointer } from './templates/drag'
 import { tickTiming, applyTimingPointer } from './templates/timing'
+import { tickMash, applyMashPointer } from './templates/mash'
 import { makeLevel, THEME_ORDER } from './levels'
 import { mulberry32, type Rng } from './rng'
 
@@ -29,8 +30,7 @@ export type Session = {
   lastResult: 'clear' | 'fail' | null
   lastPerfect: boolean
   levelUpFlash: boolean
-  guide: GuideStep[] // 현재 레벨의 남은 가이드 스텝 — 비어있지 않으면 타임스탑
-  seenGuides: Partial<Record<GuideStep, boolean>>
+  guide: GuideStep[] // 1라운드 전용 — 비어있지 않으면 타임스탑
   level: Level
 }
 
@@ -52,24 +52,17 @@ export function createSession(seed: number, opts?: { guide?: boolean }): Session
     lastPerfect: false,
     levelUpFlash: false,
     guide: [],
-    seenGuides: {},
     level: makeLevel(THEME_ORDER[0], 0, rng),
   }
 }
 
-// 플레이 진입 시 이번 레벨에 필요한 가이드 스텝을 큐잉 (1회성)
+// 가이드는 1라운드에서만: 조작(잡기→놓기) + 그 라운드의 기믹(주문 순서)까지 한 번에 확인
 function buildGuide(s: Session): void {
-  if (!s.guideEnabled) return
-  const steps: GuideStep[] = []
+  if (!s.guideEnabled || s.levelIndex !== 0) return
   const lv = s.level
-  if (lv.template === 'drag') {
-    if (s.levelIndex === 0 && !s.seenGuides.drag) steps.push('drag', 'drop')
-    if (lv.orderIds.length > 0 && !s.seenGuides.order) steps.push('order')
-  } else {
-    if (lv.pattern === 'hold' && !s.seenGuides.hold) steps.push('hold')
-    if (lv.pattern !== 'hold' && !s.seenGuides.tapzone) steps.push('tapzone')
-  }
-  for (const st of steps) s.seenGuides[st] = true
+  if (lv.template !== 'drag') return
+  const steps: GuideStep[] = ['drag', 'drop']
+  if (lv.orderIds.length > 0) steps.push('order')
   s.guide = steps
 }
 
@@ -83,7 +76,12 @@ export function tickSession(s: Session, dt: number): void {
     }
   } else if (s.phase === 'play') {
     if (s.guide.length > 0) return // 가이드 중 타임스탑
-    const r = s.level.template === 'drag' ? tickDrag(s.level, dt) : tickTiming(s.level, dt)
+    const r =
+      s.level.template === 'drag'
+        ? tickDrag(s.level, dt)
+        : s.level.template === 'timing'
+          ? tickTiming(s.level, dt)
+          : tickMash(s.level, dt)
     if (r === 'clear') {
       const frac = Math.max(0, s.level.timeRemain / s.level.timeLimit)
       s.lastPerfect = frac >= 0.4
@@ -132,5 +130,6 @@ export function pointerSession(s: Session, input: PointerInput): void {
     return
   }
   if (s.level.template === 'drag') applyPointer(s.level, input)
-  else applyTimingPointer(s.level, input)
+  else if (s.level.template === 'timing') applyTimingPointer(s.level, input)
+  else applyMashPointer(s.level, input)
 }

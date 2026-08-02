@@ -50,15 +50,17 @@ export function applyPointer(level: DragLevel, input: PointerInput): void {
     held.pos = { ...held.home }
     return
   }
-  if (held.wanted) {
+  const wrongOrder = level.sequence && held.wanted && held.id !== level.orderIds[level.seqIdx]
+  if (held.wanted && !wrongOrder) {
     held.done = true
     slot.filled += 1
+    if (level.sequence) level.seqIdx += 1
     held.pos = {
       x: slot.rect.x + slot.rect.w / 2,
       y: slot.rect.y + slot.rect.h / 2 - (slot.filled - 1) * 24,
     }
   } else {
-    // 페이크 재료 — 오답 페널티
+    // 페이크 재료 또는 순서 위반 — 오답 페널티
     held.pos = { ...held.home }
     level.timeRemain -= WRONG_PENALTY_MS
     level.penaltyT = PENALTY_FLASH_MS

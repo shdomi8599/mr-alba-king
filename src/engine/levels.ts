@@ -1,10 +1,14 @@
-// 레벨 생성 — 테마 설정 × 난이도 파라미터. P5에서 사전 검증 사다리 풀로 대체된다(ADR-001).
-// 기믹은 1라운드부터: 페이크 재료(주문표), 초밥 세트, 타이밍 구간. 난이도: 수량 ↑, 시간 ↓, 구간 ↓, 속도 ↑.
-import type { DragItem, DragLevel, Level, Rect, TargetSlot, ThemeId, TimingLevel, TimingPattern, Vec } from './types'
+// 레벨 생성 — 테마 10종 × 난이도 파라미터. P5에서 사전 검증 사다리 풀로 대체된다(ADR-001).
+// 기믹은 전부 1라운드부터: 세트 완성 / 주문 순서 / 페이크 / 타이밍 구간 / 이동 타깃 / 문지르기 / 좌우 교대.
+// 난이도: 수량 ↑, 시간 ↓, 구간 ↓, 속도 ↑.
+import type {
+  DragItem, DragLevel, Level, MashLevel, Rect, TargetSlot, ThemeId, TimingLevel, TimingPattern, Vec,
+} from './types'
 import type { Rng } from './rng'
 
-// 템플릿 교차 배치: A(드래그) ↔ B(타이밍) — 같은 템플릿 연속 금지
-export const THEME_ORDER: ThemeId[] = ['sushi', 'cafe', 'gimbap', 'chicken', 'cvs', 'fish']
+// 템플릿 A/B/C 교차 배치 — 같은 템플릿 연속 금지 (티어 경계 순환 포함)
+// 1라운드 = 김밥(주문 순서 기믹) — 가이드가 조작+기믹을 한 번에 안내
+export const THEME_ORDER: ThemeId[] = ['gimbap', 'cafe', 'sushi', 'box', 'cvs', 'chicken', 'bakery', 'wash', 'fish', 'song']
 
 const slot = (rect: Rect, sprite: string, capacity: number): TargetSlot => ({ rect, sprite, capacity, filled: 0 })
 
@@ -13,19 +17,19 @@ type DragCfg = {
   bg: string
   pool: string[]
   repeatItem?: boolean
+  sequence?: boolean // 주문 순서 기믹
   itemSize: Vec
   makeTargets: (wanted: number) => TargetSlot[]
 }
-type TimingCfg = {
-  template: 'timing'
-  bg: string
-  pattern: TimingPattern
-  deco: { id: string; rect: Rect }[]
-}
-type ThemeCfg = DragCfg | TimingCfg
+type TimingCfg = { template: 'timing'; bg: string; pattern: TimingPattern; deco: { id: string; rect: Rect }[] }
+type MashCfg =
+  | { template: 'mash'; kind: 'tap'; bg: string; sprite: string; size: Vec; area: Rect; deco: { id: string; rect: Rect }[] }
+  | { template: 'mash'; kind: 'scrub'; bg: string; area: Rect; deco: { id: string; rect: Rect }[] }
+  | { template: 'mash'; kind: 'shake'; bg: string; deco: { id: string; rect: Rect }[] }
+type ThemeCfg = DragCfg | TimingCfg | MashCfg
 
 const THEMES: Record<ThemeId, ThemeCfg> = {
-  // 초밥집: 샤리 N개에 참치를 1:1로 올려 초밥 세트 완성
+  // ── A 드래그 ──
   sushi: {
     template: 'drag',
     bg: 'sushi-bg',
@@ -34,20 +38,17 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     itemSize: { x: 150, y: 92 },
     makeTargets: wanted => {
       const gap = 720 / (wanted + 1)
-      return Array.from({ length: wanted }, (_, i) =>
-        slot({ x: gap * (i + 1) - 82, y: 600, w: 164, h: 128 }, 'sushi-rice', 1),
-      )
+      return Array.from({ length: wanted }, (_, i) => slot({ x: gap * (i + 1) - 82, y: 600, w: 164, h: 128 }, 'sushi-rice', 1))
     },
   },
-  // 김밥천국: 주문 재료만 김밥 위에 — 페이크 재료 주의
   gimbap: {
     template: 'drag',
     bg: 'gimbap-bg',
     pool: ['gimbap-ham', 'gimbap-egg', 'gimbap-pickle', 'gimbap-crab'],
+    sequence: true, // 주문 순서대로만
     itemSize: { x: 132, y: 80 },
     makeTargets: wanted => [slot({ x: 160, y: 580, w: 400, h: 180 }, 'gimbap-base', wanted)],
   },
-  // 편의점: 주문 상품만 스캐너에 — 페이크 상품 주의
   cvs: {
     template: 'drag',
     bg: 'cvs-bg',
@@ -55,7 +56,14 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     itemSize: { x: 122, y: 122 },
     makeTargets: wanted => [slot({ x: 430, y: 540, w: 230, h: 220 }, 'cvs-scanner', wanted)],
   },
-  // 카페: 꾹 눌러 물을 채우고 적정선에서 놓기
+  bakery: {
+    template: 'drag',
+    bg: 'bakery-bg',
+    pool: ['bakery-bread-cream', 'bakery-bread-red', 'bakery-bread-salt', 'bakery-bread-choco'],
+    itemSize: { x: 134, y: 96 },
+    makeTargets: wanted => [slot({ x: 180, y: 560, w: 360, h: 200 }, 'bakery-tray', wanted)],
+  },
+  // ── B 타이밍 ──
   cafe: {
     template: 'timing',
     bg: 'cafe-bg',
@@ -65,7 +73,6 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
       { id: 'cafe-cup', rect: { x: 250, y: 560, w: 220, h: 190 } },
     ],
   },
-  // 치킨집: 왕복 게이지 — 노릇한 순간에 탭
   chicken: {
     template: 'timing',
     bg: 'chicken-bg',
@@ -75,7 +82,6 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
       { id: 'chicken-net', rect: { x: 280, y: 330, w: 160, h: 120 } },
     ],
   },
-  // 붕어빵: 반복 상승 게이지 — 타이밍에 탭해서 뒤집기
   fish: {
     template: 'timing',
     bg: 'fish-bg',
@@ -83,6 +89,32 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     deco: [
       { id: 'fish-mold', rect: { x: 170, y: 430, w: 380, h: 250 } },
       { id: 'fish-bread', rect: { x: 280, y: 480, w: 160, h: 140 } },
+    ],
+  },
+  // ── C 연타/스와이프 ──
+  box: {
+    template: 'mash',
+    kind: 'tap',
+    bg: 'box-bg',
+    sprite: 'box-parcel',
+    size: { x: 180, y: 150 },
+    area: { x: 60, y: 420, w: 480, h: 520 },
+    deco: [{ id: 'box-truck', rect: { x: 480, y: 300, w: 220, h: 300 } }],
+  },
+  wash: {
+    template: 'mash',
+    kind: 'scrub',
+    bg: 'wash-bg',
+    area: { x: 110, y: 470, w: 500, h: 300 },
+    deco: [{ id: 'wash-car', rect: { x: 90, y: 450, w: 540, h: 330 } }],
+  },
+  song: {
+    template: 'mash',
+    kind: 'shake',
+    bg: 'song-bg',
+    deco: [
+      { id: 'song-tambourine', rect: { x: 250, y: 460, w: 220, h: 220 } },
+      { id: 'song-mic', rect: { x: 500, y: 420, w: 110, h: 210 } },
     ],
   },
 }
@@ -102,9 +134,12 @@ function makeDragLevel(theme: ThemeId, cfg: DragCfg, difficulty: number, rng: Rn
     ? Array.from({ length: wanted }, () => cfg.pool[0])
     : shuffle(cfg.pool, rng).slice(0, wanted)
   const fakePool = cfg.repeatItem ? [] : cfg.pool.filter(id => !wantedIds.includes(id))
-  const fakeIds = shuffle(fakePool, rng).slice(0, fakePool.length > 0 ? 1 : 0) // 기믹은 1라운드부터
+  const fakeIds = shuffle(fakePool, rng).slice(0, fakePool.length > 0 ? 1 : 0)
+  const sequence = cfg.sequence === true
 
-  const timeLimit = Math.round((1500 + wanted * 1300 + fakeIds.length * 400) * Math.pow(0.9, difficulty))
+  const timeLimit = Math.round(
+    (1500 + wanted * 1300 + fakeIds.length * 400 + (sequence ? 500 : 0)) * Math.pow(0.9, difficulty),
+  )
 
   const allIds = shuffle(
     [...wantedIds.map(id => ({ id, wanted: true })), ...fakeIds.map(id => ({ id, wanted: false }))],
@@ -125,18 +160,20 @@ function makeDragLevel(theme: ThemeId, cfg: DragCfg, difficulty: number, rng: Rn
     targets: cfg.makeTargets(wanted),
     bgSprite: cfg.bg,
     items,
-    orderIds: fakeIds.length > 0 ? [...new Set(wantedIds)] : [],
+    orderIds: sequence || fakeIds.length > 0 ? wantedIds : [],
+    sequence,
+    seqIdx: 0,
     penaltyT: 0,
   }
 }
 
 function makeTimingLevel(theme: ThemeId, cfg: TimingCfg, difficulty: number, rng: Rng): TimingLevel {
-  const reps = 1 + difficulty
-  const zoneWidth = (cfg.pattern === 'hold' ? 0.2 : 0.22) - 0.045 * difficulty
-  const zoneStart = 0.5 + rng.next() * (0.92 - zoneWidth - 0.5) // 후반부 어딘가 — 매 레벨 위치 변주
+  const reps = Math.min(2 + difficulty, 4)
+  const zoneWidth = (cfg.pattern === 'hold' ? 0.21 : 0.22) - 0.04 * difficulty
+  const zoneStart = 0.5 + rng.next() * (0.92 - zoneWidth - 0.5)
   const speed =
     cfg.pattern === 'hold' ? 0.55 + 0.12 * difficulty : cfg.pattern === 'sine' ? 1.7 + 0.4 * difficulty : 0.5 + 0.13 * difficulty
-  const timeLimit = Math.round((2600 + reps * 2200) * Math.pow(0.92, difficulty))
+  const timeLimit = Math.round((2000 + reps * 2000) * Math.pow(0.92, difficulty))
   return {
     template: 'timing',
     theme,
@@ -157,9 +194,54 @@ function makeTimingLevel(theme: ThemeId, cfg: TimingCfg, difficulty: number, rng
   }
 }
 
+function makeMashLevel(theme: ThemeId, cfg: MashCfg, difficulty: number, rng: Rng): MashLevel {
+  if (cfg.kind === 'tap') {
+    const goal = 12 + 5 * difficulty
+    const positions: Rect[] = Array.from({ length: 8 }, () => ({
+      x: cfg.area.x + rng.next() * (cfg.area.w - cfg.size.x),
+      y: cfg.area.y + rng.next() * (cfg.area.h - cfg.size.y),
+      w: cfg.size.x,
+      h: cfg.size.y,
+    }))
+    return {
+      template: 'mash', kind: 'tap', theme, difficulty,
+      timeLimit: Math.round((1600 + goal * 240) * Math.pow(0.92, difficulty)),
+      timeRemain: Math.round((1600 + goal * 240) * Math.pow(0.92, difficulty)),
+      bgSprite: cfg.bg, deco: cfg.deco, penaltyT: 0,
+      sprite: cfg.sprite, positions, posIdx: 0, goal, count: 0, movesEvery: 3,
+    }
+  }
+  if (cfg.kind === 'scrub') {
+    const n = 4 + difficulty
+    const blobs = Array.from({ length: n }, () => {
+      const r = 58 + rng.next() * 30
+      const hp = 260 + 50 * difficulty
+      return {
+        x: cfg.area.x + r + rng.next() * (cfg.area.w - r * 2),
+        y: cfg.area.y + r + rng.next() * (cfg.area.h - r * 2),
+        r, hp, maxHp: hp,
+      }
+    })
+    const timeLimit = Math.round((2400 + n * 850) * Math.pow(0.92, difficulty))
+    return {
+      template: 'mash', kind: 'scrub', theme, difficulty,
+      timeLimit, timeRemain: timeLimit,
+      bgSprite: cfg.bg, deco: cfg.deco, penaltyT: 0,
+      blobs, lastP: null,
+    }
+  }
+  const timeLimit = Math.round(6200 * Math.pow(0.92, difficulty))
+  return {
+    template: 'mash', kind: 'shake', theme, difficulty,
+    timeLimit, timeRemain: timeLimit,
+    bgSprite: cfg.bg, deco: cfg.deco, penaltyT: 0,
+    gauge: 0, gain: 0.085 - 0.006 * difficulty, decay: 0.16 + 0.05 * difficulty, lastSide: null,
+  }
+}
+
 export function makeLevel(theme: ThemeId, difficulty: number, rng: Rng): Level {
   const cfg = THEMES[theme]
-  return cfg.template === 'drag'
-    ? makeDragLevel(theme, cfg, difficulty, rng)
-    : makeTimingLevel(theme, cfg, difficulty, rng)
+  if (cfg.template === 'drag') return makeDragLevel(theme, cfg, difficulty, rng)
+  if (cfg.template === 'timing') return makeTimingLevel(theme, cfg, difficulty, rng)
+  return makeMashLevel(theme, cfg, difficulty, rng)
 }

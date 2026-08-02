@@ -8,6 +8,10 @@ export const BG: Record<string, string> = {
   'cafe-bg': '#6b4a31', // 카페 — 웜 브라운
   'chicken-bg': '#6b332e', // 치킨집 — 붉은 갈색
   'fish-bg': '#3a5570', // 붕어빵 노점 — 겨울 블루
+  'bakery-bg': '#8a6a3f', // 빵집 — 버터 브라운
+  'box-bg': '#55524c', // 물류창고 — 회갈색
+  'wash-bg': '#41707f', // 세차장 — 물색
+  'song-bg': '#4a3a6b', // 노래방 — 퍼플
 }
 
 export type Placeholder = { fill: string; stroke: string; shape: 'rect' | 'ellipse' }
@@ -33,4 +37,14 @@ export const PLACEHOLDER: Record<string, Placeholder> = {
   'chicken-piece': { fill: '#d98f4a', stroke: '#a5662c', shape: 'ellipse' },
   'fish-mold': { fill: '#4a4a52', stroke: '#2d2d34', shape: 'rect' },
   'fish-bread': { fill: '#e0a55e', stroke: '#ab763a', shape: 'ellipse' },
+  'bakery-tray': { fill: '#8a5f36', stroke: '#5f3f20', shape: 'rect' },
+  'bakery-bread-cream': { fill: '#f5e0a5', stroke: '#c4ae70', shape: 'ellipse' },
+  'bakery-bread-red': { fill: '#9a6a48', stroke: '#6e4830', shape: 'ellipse' },
+  'bakery-bread-salt': { fill: '#e8dcc0', stroke: '#b5a883', shape: 'rect' },
+  'bakery-bread-choco': { fill: '#6b4a3a', stroke: '#472e22', shape: 'ellipse' },
+  'box-parcel': { fill: '#c9975a', stroke: '#96693a', shape: 'rect' },
+  'box-truck': { fill: '#7a8593', stroke: '#525a66', shape: 'rect' },
+  'wash-car': { fill: '#5a86e6', stroke: '#3a5eb0', shape: 'rect' },
+  'song-tambourine': { fill: '#f0b429', stroke: '#bd8a1b', shape: 'ellipse' },
+  'song-mic': { fill: '#4a4a55', stroke: '#2b2b33', shape: 'rect' },
 }

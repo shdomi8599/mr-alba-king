@@ -13,9 +13,22 @@ const INSTR: Record<ThemeId, string> = {
   sushi: 'instr-sushi',
   gimbap: 'instr-gimbap',
   cvs: 'instr-cvs',
+  bakery: 'instr-bakery',
   cafe: 'instr-cafe',
   chicken: 'instr-chicken',
   fish: 'instr-fish',
+  box: 'instr-box',
+  wash: 'instr-wash',
+  song: 'instr-song',
+}
+// 지시어 아래 한 줄 힌트 (가이드는 1라운드뿐이므로 조작이 새로운 테마엔 힌트로 안내)
+const HINT: Partial<Record<ThemeId, string>> = {
+  cafe: 'hint-cafe',
+  chicken: 'hint-chicken',
+  fish: 'hint-fish',
+  box: 'hint-box',
+  wash: 'hint-wash',
+  song: 'hint-song',
 }
 
 function Ph({ id, x, y, w, h, cls = '' }: { id: string; x: number; y: number; w: number; h: number; cls?: string }) {
@@ -28,21 +41,19 @@ function Ph({ id, x, y, w, h, cls = '' }: { id: string; x: number; y: number; w:
   )
 }
 
-// 가이드 스텝별 스포트라이트 영역 (논리 좌표)
-function guideFocus(lv: Level, step: GuideStep): Rect {
-  if (lv.template === 'drag' && (step === 'drag' || step === 'drop')) {
-    const rects: Rect[] =
-      step === 'drag'
-        ? lv.items.map(i => ({ x: i.home.x - i.size.x / 2, y: i.home.y - i.size.y / 2, w: i.size.x, h: i.size.y }))
-        : lv.targets.map(t => t.rect)
-    const x1 = Math.min(...rects.map(r => r.x)) - 24
-    const y1 = Math.min(...rects.map(r => r.y)) - 24
-    const x2 = Math.max(...rects.map(r => r.x + r.w)) + 24
-    const y2 = Math.max(...rects.map(r => r.y + r.h)) + 24
-    return { x: x1, y: y1, w: x2 - x1, h: y2 - y1 }
-  }
-  if (step === 'order') return { x: 18, y: 106, w: 380, h: 80 }
-  return { x: GAUGE.x - 24, y: GAUGE.y - 70, w: GAUGE.w + 48, h: GAUGE.h + 118 } // hold / tapzone
+// 1라운드 가이드 스텝별 스포트라이트 영역
+function guideFocus(lv: Level, step: GuideStep): Rect | null {
+  if (lv.template !== 'drag') return null
+  if (step === 'order') return { x: 18, y: 106, w: 420, h: 84 }
+  const rects: Rect[] =
+    step === 'drag'
+      ? lv.items.map(i => ({ x: i.home.x - i.size.x / 2, y: i.home.y - i.size.y / 2, w: i.size.x, h: i.size.y }))
+      : lv.targets.map(t => t.rect)
+  const x1 = Math.min(...rects.map(r => r.x)) - 24
+  const y1 = Math.min(...rects.map(r => r.y)) - 24
+  const x2 = Math.max(...rects.map(r => r.x + r.w)) + 24
+  const y2 = Math.max(...rects.map(r => r.y + r.h)) + 24
+  return { x: x1, y: y1, w: x2 - x1, h: y2 - y1 }
 }
 
 export default function GameView({ onGameOver }: { onGameOver: (s: Session) => void }) {
@@ -138,8 +149,11 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
             {lv.orderIds.length > 0 && (
               <div className="order">
                 <span>{T('order-label')}</span>
-                {lv.orderIds.map(id => (
-                  <i key={id} style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
+                {lv.orderIds.map((id, i) => (
+                  <div key={`${id}-${i}`} className={`chipwrap ${lv.sequence && i < lv.seqIdx ? 'used' : ''}`}>
+                    <i style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
+                    {lv.sequence && <b>{i + 1}</b>}
+                  </div>
                 ))}
               </div>
             )}
@@ -172,13 +186,59 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
               {lv.done} / {lv.reps}
             </div>
             <div className="gauge" style={{ left: GAUGE.x, top: GAUGE.y, width: GAUGE.w, height: GAUGE.h }}>
-              <div
-                className="zone"
-                style={{ left: `${lv.zone.start * 100}%`, width: `${(lv.zone.end - lv.zone.start) * 100}%` }}
-              />
+              <div className="zone" style={{ left: `${lv.zone.start * 100}%`, width: `${(lv.zone.end - lv.zone.start) * 100}%` }} />
               {lv.pattern === 'hold' && <div className="fill" style={{ width: `${lv.value * 100}%` }} />}
               <div className="marker" style={{ left: `calc(${lv.value * 100}% - 4px)` }} />
             </div>
+          </>
+        )}
+
+        {lv.template === 'mash' && (
+          <>
+            {lv.deco.map(d => (
+              <Ph key={d.id} id={d.id} x={d.rect.x} y={d.rect.y} w={d.rect.w} h={d.rect.h} />
+            ))}
+            {lv.kind === 'tap' && (
+              <>
+                <div className="reps">
+                  {lv.count} / {lv.goal}
+                </div>
+                <Ph
+                  id={lv.sprite}
+                  x={lv.positions[lv.posIdx].x}
+                  y={lv.positions[lv.posIdx].y}
+                  w={lv.positions[lv.posIdx].w}
+                  h={lv.positions[lv.posIdx].h}
+                  cls="tapme"
+                />
+              </>
+            )}
+            {lv.kind === 'scrub' &&
+              lv.blobs.map(
+                (b, i) =>
+                  b.hp > 0 && (
+                    <div
+                      key={i}
+                      className="foam"
+                      style={{
+                        left: b.x - b.r,
+                        top: b.y - b.r,
+                        width: b.r * 2,
+                        height: b.r * 2,
+                        opacity: 0.35 + 0.65 * (b.hp / b.maxHp),
+                      }}
+                    />
+                  ),
+              )}
+            {lv.kind === 'shake' && (
+              <>
+                <div className="gauge" style={{ left: GAUGE.x, top: GAUGE.y, width: GAUGE.w, height: GAUGE.h }}>
+                  <div className="fill" style={{ width: `${lv.gauge * 100}%` }} />
+                </div>
+                <div className={`side sideL ${lv.lastSide !== 'L' ? 'on' : ''}`}>L</div>
+                <div className={`side sideR ${lv.lastSide !== 'R' ? 'on' : ''}`}>R</div>
+              </>
+            )}
           </>
         )}
 
@@ -200,6 +260,7 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
         {s.phase === 'instruct' && (
           <>
             <div className="instruct">{T(INSTR[lv.theme])}</div>
+            {HINT[lv.theme] && <div className="instr-hint">{T(HINT[lv.theme]!)}</div>}
             {s.levelUpFlash && <div className="levelup">{T('sys-levelup')}</div>}
           </>
         )}

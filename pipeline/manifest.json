@@ -46,7 +46,8 @@
         { "id": "bakery-tray", "kind": "image", "desc": "트레이 — 드롭 대상" },
         { "id": "bakery-bread-cream", "kind": "image", "desc": "빵: 크림빵" },
         { "id": "bakery-bread-red", "kind": "image", "desc": "빵: 단팥빵" },
-        { "id": "bakery-bread-salt", "kind": "image", "desc": "빵: 소금빵" }
+        { "id": "bakery-bread-salt", "kind": "image", "desc": "빵: 소금빵" },
+        { "id": "bakery-bread-choco", "kind": "image", "desc": "빵: 초코소라빵 (페이크 기믹용 4번째)" }
       ]
     },
     {
