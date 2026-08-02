@@ -14,29 +14,41 @@ mkdirSync(DEST, { recursive: true })
 
 const events = readFileSync(EVENTS, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l))
 const latest = {}
-for (const e of events) if (e.event === 'approved' || e.event === 'rejected') latest[`${e.order}/${e.item}`] = e.event
+const approvedAt = {} // 캐노니컬 충돌 해소용 — 최신 승인 시각
+for (const e of events)
+  if (e.event === 'approved' || e.event === 'rejected') {
+    latest[`${e.order}/${e.item}`] = e.event
+    if (e.event === 'approved') approvedAt[`${e.order}/${e.item}`] = e.ts
+  }
 
 const orders = readdirSync(path.join(ROOT, 'pipeline', 'orders'))
   .filter(f => f.endsWith('.json'))
   .map(f => JSON.parse(readFileSync(path.join(ROOT, 'pipeline', 'orders', f), 'utf8')))
 
 let n = 0
-// 오디오 승격: 승인된 후보 → src/assets/audio/<정식 id>.ogg (BGM 후보 접미사 -a/-b/... 제거)
+// 오디오 승격: 승인된 후보 → src/assets/audio/<정식 id>.ogg
+// 같은 정식 id에 승인 후보가 여럿이면(일괄 승인 등) **가장 최근 승인**이 이긴다 — 순서 의존 덮어쓰기 방지
 const AUDIO_DEST = path.join(ROOT, 'src', 'assets', 'audio')
+const byCanonical = {}
 for (const o of orders) {
   if (o.kind !== 'audio') continue
   for (const it of o.items || []) {
     if (latest[`${o.order}/${it.id}`] !== 'approved') continue
     const src = path.join(ROOT, o.out.replace('{id}', it.id))
     if (!existsSync(src)) continue
-    mkdirSync(AUDIO_DEST, { recursive: true })
     const canonical = it.canonical ?? (it.type === 'bgm' ? it.id.replace(/-[a-e]$/, '') : it.id)
-    const dest = path.join(AUDIO_DEST, `${canonical}.ogg`)
-    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', src, '-c', 'copy', dest])
-    appendFileSync(EVENTS, JSON.stringify({ ts: new Date().toISOString(), order: o.order, item: it.id, event: 'promoted', to: `src/assets/audio/${canonical}.ogg` }) + '\n')
-    n++
-    console.log(`✓ ${it.id} → ${canonical}.ogg`)
+    const ts = approvedAt[`${o.order}/${it.id}`] ?? ''
+    const cur = byCanonical[canonical]
+    if (!cur || ts > cur.ts) byCanonical[canonical] = { src, id: it.id, ts }
+    else console.log(`· ${it.id} — ${canonical} 자리는 더 최근 승인(${cur.id})이 차지, 스킵`)
   }
+}
+for (const [canonical, w] of Object.entries(byCanonical)) {
+  mkdirSync(AUDIO_DEST, { recursive: true })
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', w.src, '-c', 'copy', path.join(AUDIO_DEST, `${canonical}.ogg`)])
+  appendFileSync(EVENTS, JSON.stringify({ ts: new Date().toISOString(), order: 8, item: w.id, event: 'promoted', to: `src/assets/audio/${canonical}.ogg` }) + '\n')
+  n++
+  console.log(`✓ ${w.id} → ${canonical}.ogg`)
 }
 
 for (const o of orders) {
