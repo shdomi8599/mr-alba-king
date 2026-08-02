@@ -3,6 +3,7 @@
 // 모든 결정은 pipeline/events/events.jsonl에 append — 최신 이벤트가 이김 = 결정은 언제든 번복 가능.
 import { createServer } from 'node:http'
 import { readFileSync, existsSync, statSync, readdirSync, appendFileSync, copyFileSync, mkdirSync } from 'node:fs'
+import { execSync } from 'node:child_process'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -67,7 +68,44 @@ function state() {
   const counts = { ordered: 0, generated: 0, approved: 0, rejected: 0 }
   for (const e of events) if (counts[e.event] !== undefined) counts[e.event]++
   const docs = existsSync(path.join(ROOT, 'docs')) ? readdirSync(path.join(ROOT, 'docs')).filter(f => f.endsWith('.md')).sort() : []
-  return { goldenRef: golden ? { ...golden, exists: existsSync(REF) } : null, orders, audio: scanAudio(''), docs, counts, events: events.slice(-60).reverse() }
+
+  const readJson = (p, fb) => { try { return JSON.parse(readFileSync(path.join(ROOT, 'pipeline', p), 'utf8')) } catch { return fb } }
+  const criteria = readJson('criteria.json', {})
+  const status = readJson('status.json', {})
+
+  // 매니페스트 슬롯 상태 파생: source(order/item) → 이벤트 기반, 없으면 기획됨
+  const itemIndex = {}
+  for (const o of orders) for (const it of o.items) itemIndex[`${o.order}/${it.id}`] = it
+  const manifest = readJson('manifest.json', { categories: [] })
+  for (const cat of manifest.categories || []) {
+    for (const slot of cat.slots || []) {
+      if (slot.source) {
+        const it = itemIndex[`${slot.source.order}/${slot.source.item}`]
+        slot.status = it ? (it.isGolden ? 'golden' : it.status) : 'ordered'
+        slot.url = it?.exists ? it.url : null
+      } else slot.status = 'planned'
+    }
+  }
+
+  let gitLog = []
+  try {
+    gitLog = execSync('git log -n 40 "--pretty=format:%h|%ad|%s" "--date=format:%m-%d %H:%M"', { cwd: ROOT, encoding: 'utf8' })
+      .split('\n').filter(Boolean).map(l => { const [hash, date, ...m] = l.split('|'); return { hash, date, msg: m.join('|') } })
+  } catch {}
+
+  // 히스토리 스레드: 아이템별 이벤트 체인 (원인→결과)
+  const threads = {}
+  for (const e of events) {
+    if (e.order === undefined || !e.item) continue
+    const k = `${e.order}/${e.item}`
+    ;(threads[k] = threads[k] || []).push(e)
+  }
+
+  return {
+    goldenRef: golden ? { ...golden, exists: existsSync(REF) } : null,
+    orders, audio: scanAudio(''), docs, counts, events: events.slice(-60).reverse(),
+    criteria, status, manifest, gitLog, threads,
+  }
 }
 
 const json = (res, code, obj) => { res.writeHead(code, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(obj)) }

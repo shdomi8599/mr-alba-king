@@ -1,0 +1,58 @@
+{
+  "_note": "게임에 필요한 전 에셋 슬롯의 단일 목록(초안 — DESIGN 확정 시 갱신). source가 있으면 상태는 이벤트에서 파생, 없으면 '기획됨'.",
+  "categories": [
+    {
+      "name": "브랜드·톤",
+      "slots": [
+        { "id": "style-ref", "kind": "image", "desc": "골든 레퍼런스 — 전 에셋의 톤 앵커 (ADR-008)", "source": { "order": 0, "item": "tone-a-pop-comic" } },
+        { "id": "logo-symbol", "kind": "image", "desc": "타이틀 심볼(왕관 등) — 글자는 코드로" }
+      ]
+    },
+    {
+      "name": "미니게임 · 초밥집 (템플릿 A 드래그)",
+      "slots": [
+        { "id": "sushi-bg", "kind": "image", "desc": "초밥집 카운터 배경" },
+        { "id": "sushi-rice", "kind": "image", "desc": "샤리(밥) — 드롭 대상" },
+        { "id": "sushi-tuna", "kind": "image", "desc": "참치 회 — 드래그 재료" },
+        { "id": "sushi-plate", "kind": "image", "desc": "접시/도마" }
+      ]
+    },
+    {
+      "name": "미니게임 · 김밥천국 (템플릿 A 드래그)",
+      "slots": [
+        { "id": "gimbap-bg", "kind": "image", "desc": "분식집 배경" },
+        { "id": "gimbap-base", "kind": "image", "desc": "김+밥 펼침면" },
+        { "id": "gimbap-ham", "kind": "image", "desc": "재료: 햄" },
+        { "id": "gimbap-egg", "kind": "image", "desc": "재료: 계란" },
+        { "id": "gimbap-pickle", "kind": "image", "desc": "재료: 단무지" }
+      ]
+    },
+    {
+      "name": "미니게임 · 카페 (템플릿 B 타이밍)",
+      "slots": [
+        { "id": "cafe-bg", "kind": "image", "desc": "카페 바 배경" },
+        { "id": "cafe-cup", "kind": "image", "desc": "컵(아메리카노)" },
+        { "id": "cafe-kettle", "kind": "image", "desc": "주전자 — 붓기 연출" }
+      ]
+    },
+    {
+      "name": "UI 공통",
+      "slots": [
+        { "id": "ui-life", "kind": "image", "desc": "목숨 아이콘" },
+        { "id": "ui-timer-frame", "kind": "image", "desc": "타이머 게이지 프레임" },
+        { "id": "ui-button-frame", "kind": "image", "desc": "버튼 9-slice 프레임 (글자 없음)" }
+      ]
+    },
+    {
+      "name": "오디오",
+      "slots": [
+        { "id": "sfx-start", "kind": "sfx", "desc": "레벨 시작 신호" },
+        { "id": "sfx-success", "kind": "sfx", "desc": "성공" },
+        { "id": "sfx-fail", "kind": "sfx", "desc": "실패" },
+        { "id": "sfx-perfect", "kind": "sfx", "desc": "퍼펙트/콤보" },
+        { "id": "bgm-main", "kind": "bgm", "desc": "메인 BGM — 경쾌·코믹 (다중 모델 경쟁, ADR-005)" },
+        { "id": "bgm-fast", "kind": "bgm", "desc": "난이도 상승 템포업 버전" }
+      ]
+    }
+  ]
+}

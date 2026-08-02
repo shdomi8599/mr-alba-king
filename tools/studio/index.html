@@ -7,9 +7,10 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:#1a1815; color:#f5efe4; font-family:'Pretendard Variable',Pretendard,system-ui,sans-serif; display:flex; height:100vh; overflow:hidden; }
-  nav { width:200px; background:#211d18; border-right:1px solid #38332b; padding:16px 10px; display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
-  nav .logo { font-weight:800; font-size:16px; padding:6px 10px 14px; letter-spacing:1px; }
-  nav button { text-align:left; padding:9px 12px; border-radius:8px; border:none; background:none; color:#f5efe4; cursor:pointer; font-size:13.5px; }
+  nav { width:210px; background:#211d18; border-right:1px solid #38332b; padding:16px 10px; display:flex; flex-direction:column; gap:3px; flex-shrink:0; }
+  nav .logo { font-weight:800; font-size:16px; padding:6px 10px 12px; letter-spacing:1px; }
+  nav .sect { font-size:10px; opacity:.35; padding:12px 12px 4px; letter-spacing:2px; }
+  nav button { text-align:left; padding:8px 12px; border-radius:8px; border:none; background:none; color:#f5efe4; cursor:pointer; font-size:13.5px; }
   nav button:hover { background:#2b261f; }
   nav button.on { background:#f5b942; color:#1a1815; font-weight:700; }
   nav .foot { margin-top:auto; font-size:10.5px; opacity:.4; padding:10px; line-height:1.6; }
@@ -27,26 +28,31 @@
   .card.golden { border-color:#f5b942; box-shadow:0 0 0 1px #f5b942; }
   .card h2 { font-size:13px; padding:10px 12px 2px; }
   .card .id { font-size:10px; opacity:.4; padding:0 12px 8px; font-family:monospace; }
-  .chip { position:absolute; top:10px; right:10px; font-size:10px; padding:3px 8px; border-radius:20px; font-weight:700; }
-  .chip.generated { background:#3a4a5c; } .chip.approved { background:#3f6b46; } .chip.rejected { background:#6b3f3f; } .chip.pending { background:#4a443a; }
+  .chip { font-size:10px; padding:3px 8px; border-radius:20px; font-weight:700; display:inline-block; }
+  .chip.abs { position:absolute; top:10px; right:10px; }
+  .chip.generated { background:#3a4a5c; } .chip.approved { background:#3f6b46; } .chip.rejected { background:#6b3f3f; }
+  .chip.pending, .chip.planned { background:#4a443a; } .chip.ordered { background:#5c5334; }
   .chip.golden { background:#f5b942; color:#1a1815; }
   .stage { aspect-ratio:1; display:flex; align-items:center; justify-content:center; margin:0 12px; border-radius:10px; overflow:hidden; }
-  .stage img { max-width:86%; max-height:86%; }
+  .stage img { max-width:86%; max-height:86%; cursor:zoom-in; }
   .bg-checker { background:repeating-conic-gradient(#3a352d 0% 25%, #2c2822 0% 50%) 0 0/22px 22px; }
   .bg-white { background:#f7f3ea; } .bg-dark { background:#14120f; } .bg-game { background:linear-gradient(180deg,#3d6b4f,#2b4d38); }
   .mini { display:flex; align-items:center; gap:10px; padding:10px 12px 4px; }
   .mini .dot { width:72px; height:72px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .mini .dot img { max-width:88%; max-height:88%; }
+  .mini .dot img { max-width:88%; max-height:88%; cursor:zoom-in; }
   .mini .label { font-size:10.5px; opacity:.5; line-height:1.5; }
   .reason { font-size:11px; color:#e08f8f; padding:4px 12px 0; }
   .actions { display:flex; gap:6px; padding:10px 12px 12px; flex-wrap:wrap; }
   .btn.ok { border-color:#3f6b46; } .btn.no { border-color:#6b3f3f; } .btn.gold { border-color:#f5b942; color:#f5b942; }
   .missing { padding:40px 12px; text-align:center; opacity:.4; font-size:12.5px; }
   .empty { opacity:.45; font-size:13px; padding:30px 0; line-height:1.7; }
+  .panel { background:#26221d; border:1px solid #38332b; border-radius:12px; padding:14px 16px; margin-bottom:16px; }
+  .panel h3 { font-size:13px; margin-bottom:8px; }
+  .panel ul { margin-left:18px; font-size:12px; line-height:1.8; opacity:.8; }
   table.ev { width:100%; border-collapse:collapse; font-size:12px; }
   table.ev td { padding:6px 8px; border-bottom:1px solid #2b261f; vertical-align:top; }
   table.ev td.t { opacity:.4; white-space:nowrap; font-family:monospace; font-size:11px; }
-  .counts { display:flex; gap:14px; margin-bottom:18px; }
+  .counts { display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
   .counts .c { background:#26221d; border:1px solid #38332b; border-radius:10px; padding:10px 16px; font-size:12px; }
   .counts .c b { display:block; font-size:20px; }
   .doclist { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
@@ -66,8 +72,32 @@
   audio { width:100%; }
   .audio-row { background:#26221d; border:1px solid #38332b; border-radius:12px; padding:12px 14px; margin-bottom:10px; max-width:640px; }
   .audio-row .name { font-size:12.5px; margin-bottom:8px; font-family:monospace; }
-  .stage img, .mini .dot img { cursor: zoom-in; }
-  #lightbox { position:fixed; inset:0; background:rgba(10,9,7,.92); display:none; align-items:center; justify-content:center; flex-direction:column; gap:14px; z-index:100; cursor: zoom-out; }
+  /* 대시보드 */
+  .dash { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; max-width:1100px; }
+  .dday { font-size:34px; font-weight:800; color:#f5b942; }
+  .phases { display:flex; gap:4px; margin-top:10px; flex-wrap:wrap; }
+  .phases span { font-size:10.5px; padding:4px 8px; border-radius:6px; background:#2b261f; opacity:.5; }
+  .phases span.cur { background:#f5b942; color:#1a1815; font-weight:700; opacity:1; }
+  .phases span.done { background:#3f6b46; opacity:.9; }
+  .covbar { display:flex; height:10px; border-radius:6px; overflow:hidden; margin:10px 0 6px; background:#2b261f; }
+  .covbar i { display:block; height:100%; }
+  .legend { font-size:10.5px; opacity:.6; display:flex; gap:12px; flex-wrap:wrap; }
+  .golden-thumb { width:84px; height:84px; border-radius:10px; float:right; margin-left:10px; }
+  /* 매니페스트 */
+  table.man { width:100%; border-collapse:collapse; font-size:12.5px; max-width:900px; }
+  table.man th, table.man td { padding:8px 10px; border-bottom:1px solid #2b261f; text-align:left; }
+  table.man th { font-size:11px; opacity:.5; font-weight:600; }
+  table.man .cat td { padding-top:18px; font-weight:700; font-size:13.5px; border-bottom:1px solid #38332b; }
+  table.man img.th { width:36px; height:36px; border-radius:6px; background:repeating-conic-gradient(#3a352d 0% 25%, #2c2822 0% 50%) 0 0/12px 12px; cursor:zoom-in; vertical-align:middle; }
+  /* 히스토리 */
+  .thread { background:#26221d; border:1px solid #38332b; border-radius:12px; padding:12px 16px; margin-bottom:10px; max-width:900px; }
+  .thread .tid { font-family:monospace; font-size:12px; margin-bottom:8px; font-weight:700; }
+  .step { display:flex; gap:10px; font-size:12px; padding:3px 0; }
+  .step .ts { opacity:.4; font-family:monospace; font-size:11px; white-space:nowrap; }
+  .step .ev-ordered { color:#c9b78a; } .step .ev-generated { color:#8ab0c9; }
+  .step .ev-approved { color:#8ac98f; } .step .ev-rejected { color:#e08f8f; } .step .ev-promoted-golden-ref { color:#f5b942; font-weight:700; }
+  iframe.game { width:100%; height:calc(100vh - 130px); border:1px solid #38332b; border-radius:14px; background:#000; }
+  #lightbox { position:fixed; inset:0; background:rgba(10,9,7,.92); display:none; align-items:center; justify-content:center; flex-direction:column; gap:14px; z-index:100; cursor:zoom-out; }
   #lightbox.show { display:flex; }
   #lightbox .frame { width:min(82vmin,900px); height:min(82vmin,900px); display:flex; align-items:center; justify-content:center; border-radius:16px; }
   #lightbox .frame img { max-width:92%; max-height:92%; }
@@ -80,9 +110,15 @@
 <body>
 <nav>
   <div class="logo">👑 알바킹 스튜디오</div>
-  <button data-v="images" class="on">🖼 이미지</button>
+  <div class="sect">제작</div>
+  <button data-v="dash" class="on">📊 대시보드</button>
+  <button data-v="manifest">🧩 에셋 현황</button>
+  <button data-v="game">🎮 게임</button>
+  <div class="sect">검수</div>
+  <button data-v="images">🖼 이미지</button>
   <button data-v="audio">🔊 오디오</button>
-  <button data-v="orders">📦 발주·이벤트</button>
+  <div class="sect">기록</div>
+  <button data-v="history">🕘 히스토리</button>
   <button data-v="docs">📄 문서</button>
   <div class="foot">결정은 이벤트로 기록되며<br>언제든 번복 가능합니다.<br>최신 결정이 이깁니다.</div>
 </nav>
@@ -93,49 +129,133 @@
   <div class="bgs" id="lbBgs"></div>
 </div>
 <script>
-let S = null, view = 'images', bg = 'bg-checker', curDoc = 'STRATEGY.md'
+let S = null, view = 'dash', bg = 'bg-checker', curDoc = 'STRATEGY.md'
 const $ = s => document.querySelector(s)
-const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+const PHASES = ['P0 부트스트랩','P1 코어 슬라이스','P2 파이프라인','P3 콘텐츠 확장','P4 아트·오디오','P5 QA·밸런스','P6 차별화','P7 폴리싱','P8 제출']
+const CHIP = { pending:'대기', planned:'기획됨', ordered:'발주됨', generated:'검수 대기', approved:'승인', rejected:'반려', golden:'★ 골든' }
+const STATUS_COLOR = { planned:'#4a443a', ordered:'#5c5334', generated:'#3a4a5c', approved:'#3f6b46', rejected:'#6b3f3f', golden:'#f5b942' }
 
 async function load() { S = await (await fetch('/api/state')).json(); render() }
 async function post(url, data) { await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) }); await load() }
 
 window.approve = (o,i) => post('/api/decision', { order:o, item:i, decision:'approved' })
-window.reject = (o,i) => { const r = prompt('반려 사유 (게임플레이 요구사항 언어로):'); if (r !== null) post('/api/decision', { order:o, item:i, decision:'rejected', reason:r }) }
+window.reject = (o,i) => { const r = prompt('반려 사유 (검수 기준의 언어로):'); if (r !== null) post('/api/decision', { order:o, item:i, decision:'rejected', reason:r }) }
 window.golden = (o,i) => { if (confirm('이 이미지를 골든 레퍼런스로 지정합니다.\n이후 모든 이미지 발주가 이 톤에 앵커됩니다. (나중에 변경 가능)')) post('/api/golden-ref', { order:o, item:i }) }
 window.setBg = b => { bg = b; render() }
-window.zoom = (url, cap) => {
-  document.getElementById('lbImg').src = url
-  document.getElementById('lbCap').textContent = cap
-  document.getElementById('lbFrame').className = 'frame ' + bg
-  renderLbBgs()
-  document.getElementById('lightbox').classList.add('show')
-}
-function renderLbBgs() {
-  document.getElementById('lbBgs').innerHTML = ['bg-checker:투명','bg-white:밝음','bg-dark:어둠','bg-game:게임 목업']
-    .map(x => { const [c,l] = x.split(':'); return `<button class="${document.getElementById('lbFrame').className.includes(c)?'on':''}" onclick="event.stopPropagation(); document.getElementById('lbFrame').className='frame ${c}'; renderLbBgs()">${l}</button>` }).join('')
-}
-document.getElementById('lightbox').addEventListener('click', e => { if (!e.target.closest('.bgs')) document.getElementById('lightbox').classList.remove('show') })
-document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('show') })
 window.setView = v => { view = v; document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x.dataset.v === v)); render() }
 window.setDoc = d => { curDoc = d; renderDocs() }
+window.zoom = (url, cap) => {
+  $('#lbImg').src = url; $('#lbCap').textContent = cap
+  $('#lbFrame').className = 'frame ' + bg; renderLbBgs()
+  $('#lightbox').classList.add('show')
+}
+function renderLbBgs() {
+  $('#lbBgs').innerHTML = ['bg-checker:투명','bg-white:밝음','bg-dark:어둠','bg-game:게임 목업']
+    .map(x => { const [c,l] = x.split(':'); return `<button class="${$('#lbFrame').className.includes(c)?'on':''}" onclick="event.stopPropagation(); document.getElementById('lbFrame').className='frame ${c}'; renderLbBgs()">${l}</button>` }).join('')
+}
+$('#lightbox').addEventListener('click', e => { if (!e.target.closest('.bgs')) $('#lightbox').classList.remove('show') })
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#lightbox').classList.remove('show') })
 document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => setView(b.dataset.v)))
 
-const CHIP = { pending:'대기', generated:'검수 대기', approved:'승인', rejected:'반려' }
+const bgBtns = () => `<div class="bgpick">${['bg-checker:투명','bg-white:밝음','bg-dark:어둠','bg-game:게임 목업'].map(x => { const [c,l] = x.split(':'); return `<button class="${bg===c?'on':''}" onclick="setBg('${c}')">${l}</button>` }).join('')}</div>`
+const criteriaPanel = kinds => kinds.filter(k => S.criteria[k]?.length).map(k => `
+  <div class="panel"><h3>검수 기준 — ${k}</h3><ul>${S.criteria[k].map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>`).join('')
 
+// ── 대시보드 ──
+function renderDash() {
+  const dl = S.status.deadline ? new Date(S.status.deadline) : null
+  const dday = dl ? Math.ceil((dl - Date.now()) / 86400000) : null
+  const slots = (S.manifest.categories || []).flatMap(c => c.slots || [])
+  const byStatus = {}; slots.forEach(s => byStatus[s.status] = (byStatus[s.status] || 0) + 1)
+  const covOrder = ['golden','approved','generated','ordered','rejected','planned']
+  const curIdx = PHASES.findIndex(p => p.startsWith(S.status.phase || 'P0'))
+  const goldenItem = S.orders.flatMap(o => o.items).find(i => i.isGolden)
+  $('#main').innerHTML = `
+    <h1>대시보드</h1>
+    <div class="sub">${esc(S.status.phaseNote || '')}</div>
+    <div class="dash">
+      <div class="panel">
+        <h3>제출 마감</h3>
+        <div class="dday">D-${dday ?? '?'}</div>
+        <div style="font-size:11px;opacity:.5">2026-08-10 23:59 KST · 제출물 4종 (SUBMISSION.md)</div>
+        <div class="phases">${PHASES.map((p,i) => `<span class="${i < curIdx ? 'done' : i === curIdx ? 'cur' : ''}">${p}</span>`).join('')}</div>
+      </div>
+      <div class="panel">
+        <h3>아트 톤</h3>
+        ${goldenItem ? `<img class="golden-thumb bg-checker" src="${goldenItem.url}" onclick="zoom('${goldenItem.url}','골든 레퍼런스')">` : ''}
+        <div style="font-size:13px">${S.goldenRef ? `골든 레퍼런스 <b style="color:#f5b942">확정</b><br><span style="font-family:monospace;font-size:11px;opacity:.6">${S.goldenRef.item}</span><br><span style="font-size:11px;opacity:.5">모든 이미지 발주가 이 톤에 앵커됩니다 (ADR-008)</span>` : '<b style="color:#e08f8f">미지정</b> — 이미지 검수에서 지정하세요'}</div>
+      </div>
+      <div class="panel">
+        <h3>에셋 커버리지 — 필요 슬롯 ${slots.length}개</h3>
+        <div class="covbar">${covOrder.map(k => byStatus[k] ? `<i style="width:${byStatus[k]/slots.length*100}%;background:${STATUS_COLOR[k]}"></i>` : '').join('')}</div>
+        <div class="legend">${covOrder.filter(k => byStatus[k]).map(k => `<span><span class="chip ${k}" style="margin-right:4px">${CHIP[k]}</span>${byStatus[k]}</span>`).join('')}</div>
+      </div>
+      <div class="panel">
+        <h3>공정 실측 (이벤트 스토어)</h3>
+        <div class="counts" style="margin:0">
+          <div class="c"><b>${S.counts.ordered}</b>발주</div><div class="c"><b>${S.counts.generated}</b>생성</div>
+          <div class="c"><b>${S.counts.approved}</b>승인</div><div class="c"><b>${S.counts.rejected}</b>반려</div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>최근 이벤트</h3>
+        <table class="ev">${S.events.slice(0,6).map(e => `<tr><td class="t">${e.ts?.slice(5,16).replace('T',' ')}</td><td>${e.event} · ${e.item ?? ''}</td></tr>`).join('')}</table>
+      </div>
+      <div class="panel">
+        <h3>최근 커밋</h3>
+        <table class="ev">${S.gitLog.slice(0,6).map(c => `<tr><td class="t">${c.hash}</td><td>${esc(c.msg)}</td></tr>`).join('')}</table>
+      </div>
+    </div>`
+}
+
+// ── 에셋 현황 (매니페스트) ──
+function renderManifest() {
+  const cats = S.manifest.categories || []
+  $('#main').innerHTML = `
+    <h1>에셋 현황</h1>
+    <div class="sub">게임에 필요한 전 에셋 슬롯의 단일 목록 (pipeline/manifest.json). ${esc(S.manifest._note || '')}</div>
+    <table class="man">
+      <tr><th></th><th>슬롯</th><th>설명</th><th>종류</th><th>상태</th></tr>
+      ${cats.map(c => {
+        const done = c.slots.filter(s => ['approved','golden'].includes(s.status)).length
+        return `
+        <tr class="cat"><td colspan="5">${esc(c.name)} <span style="opacity:.5;font-weight:400;font-size:11px">— ${done}/${c.slots.length} 확보</span></td></tr>
+        ${c.slots.map(s => `
+          <tr>
+            <td>${s.url ? `<img class="th" src="${s.url}" onclick="zoom('${s.url}','${s.id}')">` : ''}</td>
+            <td style="font-family:monospace">${s.id}</td>
+            <td style="opacity:.75">${esc(s.desc)}</td>
+            <td style="opacity:.5">${s.kind}</td>
+            <td><span class="chip ${s.status}">${CHIP[s.status] || s.status}</span></td>
+          </tr>`).join('')}`
+      }).join('')}
+    </table>`
+}
+
+// ── 게임 ──
+function renderGame() {
+  $('#main').innerHTML = `
+    <h1>게임</h1>
+    <div class="sub">개발 서버(${esc(S.status.playUrl || 'http://localhost:5173/')})를 임베드합니다. 안 보이면 터미널에서 <code>pnpm dev</code> 실행.</div>
+    <iframe class="game" src="${S.status.playUrl || 'http://localhost:5173/'}"></iframe>`
+}
+
+// ── 이미지 검수 ──
 function renderImages() {
   const imgOrders = S.orders.filter(o => o.kind === 'image')
   $('#main').innerHTML = `
     <h1>이미지 검수</h1>
-    <div class="sub">골든 레퍼런스: ${S.goldenRef ? `<b style="color:#f5b942">${S.goldenRef.item}</b> (pipeline/refs/style-ref.png — 모든 발주가 여기 앵커됨)` : '<b style="color:#e08f8f">미지정</b> — 아래에서 1장을 골든으로 지정하세요'}</div>
-    <div class="bgpick">${['bg-checker:투명','bg-white:밝음','bg-dark:어둠','bg-game:게임 목업'].map(x => { const [c,l] = x.split(':'); return `<button class="${bg===c?'on':''}" onclick="setBg('${c}')">${l}</button>` }).join('')}</div>
+    <div class="sub">골든 레퍼런스: ${S.goldenRef ? `<b style="color:#f5b942">${S.goldenRef.item}</b> — 모든 발주가 여기 앵커됨` : '<b style="color:#e08f8f">미지정</b>'}</div>
+    ${criteriaPanel(['image'])}
+    ${bgBtns()}
     ${imgOrders.length ? imgOrders.map(o => `
       <div class="order-block">
         <div class="order-head">order#${o.order} · ${o.name}</div>
         <div class="order-goal">${esc(o.goal)}</div>
         <div class="grid">${o.items.map(it => `
           <div class="card ${it.isGolden?'golden':''}">
-            <span class="chip ${it.isGolden?'golden':it.status}">${it.isGolden?'★ 골든 REF':CHIP[it.status]||it.status}</span>
+            <span class="chip abs ${it.isGolden?'golden':it.status}">${it.isGolden?'★ 골든 REF':CHIP[it.status]||it.status}</span>
             <h2>${esc(it.label)}</h2>
             <div class="id">${it.id}</div>
             ${it.exists
@@ -154,31 +274,43 @@ function renderImages() {
       </div>`).join('') : '<div class="empty">이미지 발주가 없습니다.</div>'}`
 }
 
+// ── 오디오 검수 ──
 function renderAudio() {
   $('#main').innerHTML = `
     <h1>오디오 검수</h1>
-    <div class="sub">pipeline/staging/audio/ 의 후보를 재생·비교합니다. BGM은 다중 모델 경쟁 배치(ADR-005)로 후보가 들어옵니다.</div>
+    <div class="sub">pipeline/staging/audio/ 후보 재생·비교. BGM은 다중 모델 경쟁 배치(ADR-005).</div>
+    ${criteriaPanel(['sfx','bgm'])}
     ${S.audio.length
       ? S.audio.map(a => `<div class="audio-row"><div class="name">${esc(a.name)}</div><audio controls preload="none" src="${a.url}"></audio></div>`).join('')
       : '<div class="empty">아직 오디오 발주가 없습니다.<br>P4(아트·오디오 배치)에서 SFX 슬롯 + BGM 다중 모델 후보가 이곳에 들어옵니다.</div>'}`
 }
 
-function renderOrders() {
+// ── 히스토리 ──
+function renderHistory() {
+  const keys = Object.keys(S.threads).sort()
   $('#main').innerHTML = `
-    <h1>발주·이벤트</h1>
-    <div class="sub">이벤트 스토어(pipeline/events/events.jsonl) 실측값 — 문서·스태프롤의 모든 숫자가 여기서 나옵니다.</div>
+    <h1>히스토리</h1>
+    <div class="sub">아이템별 전 과정(발주→생성→반려·사유→재발주→승인)과 커밋 로그 — 원인과 결과의 기록. 기술 문서가 여기서 조립됩니다.</div>
     <div class="counts">
-      <div class="c"><b>${S.counts.ordered}</b>발주</div>
-      <div class="c"><b>${S.counts.generated}</b>생성</div>
-      <div class="c"><b>${S.counts.approved}</b>승인</div>
-      <div class="c"><b>${S.counts.rejected}</b>반려</div>
+      <div class="c"><b>${S.counts.ordered}</b>발주</div><div class="c"><b>${S.counts.generated}</b>생성</div>
+      <div class="c"><b>${S.counts.approved}</b>승인</div><div class="c"><b>${S.counts.rejected}</b>반려</div>
+      <div class="c"><b>${S.gitLog.length}</b>커밋(최근)</div>
     </div>
-    ${S.orders.map(o => `<div style="font-size:13px; margin-bottom:6px;">📦 <b>order#${o.order} ${o.name}</b> (${o.kind}) — ${o.items.length}건 <span style="opacity:.5">· ${o.file}</span></div>`).join('')}
-    <h1 style="margin-top:22px; font-size:15px;">최근 이벤트</h1>
-    <table class="ev">${S.events.map(e => `<tr><td class="t">${e.ts?.slice(5,19).replace('T',' ')}</td><td><b>${e.event}</b> · order#${e.order} · ${e.item}${e.reason?` — <span style="color:#e08f8f">${esc(e.reason)}</span>`:''}${e.by?` <span style="opacity:.4">(${e.by})</span>`:''}</td></tr>`).join('')}</table>`
+    <h1 style="font-size:15px;margin-bottom:10px">에셋 스레드</h1>
+    ${keys.map(k => `
+      <div class="thread">
+        <div class="tid">${k}</div>
+        ${S.threads[k].map(e => `
+          <div class="step"><span class="ts">${e.ts?.slice(5,19).replace('T',' ')}</span>
+          <span class="ev-${e.event}">${e.event}</span>
+          ${e.reason ? `<span style="color:#e08f8f">— ${esc(e.reason)}</span>` : ''}
+          ${e.by ? `<span style="opacity:.35">(${e.by})</span>` : ''}</div>`).join('')}
+      </div>`).join('')}
+    <h1 style="font-size:15px;margin:22px 0 10px">커밋 로그</h1>
+    <table class="ev">${S.gitLog.map(c => `<tr><td class="t">${c.hash}</td><td class="t">${c.date}</td><td>${esc(c.msg)}</td></tr>`).join('')}</table>`
 }
 
-// ── 미니 마크다운 렌더러 (문서 탭용) ──
+// ── 미니 마크다운 렌더러 ──
 function md(src) {
   const lines = src.split('\n'); const out = []; let i = 0, inCode = false, codeBuf = []
   const inline = s => esc(s)
@@ -211,26 +343,23 @@ function md(src) {
 }
 
 async function renderDocs() {
-  const list = S.docs.map(d => `<button class="btn ${d===curDoc?'ok':''}" style="${d===curDoc?'background:#f5b942;color:#1a1815;border-color:#f5b942;font-weight:700':''}" onclick="setDoc('${d}')">${d.replace('.md','')}</button>`).join('')
-  $('#main').innerHTML = `<h1>문서</h1><div class="sub">docs/ 의 설계·전략 문서를 열람합니다. 편집은 에디터에서.</div><div class="doclist">${list}</div><div class="md" id="mdbox">불러오는 중...</div>`
+  const list = S.docs.map(d => `<button class="btn" style="${d===curDoc?'background:#f5b942;color:#1a1815;border-color:#f5b942;font-weight:700':''}" onclick="setDoc('${d}')">${d.replace('.md','')}</button>`).join('')
+  $('#main').innerHTML = `<h1>문서</h1><div class="sub">docs/ 의 설계·전략 문서 열람. 편집은 에디터에서.</div><div class="doclist">${list}</div><div class="md" id="mdbox">불러오는 중...</div>`
   const src = await (await fetch('/docs/' + curDoc)).text()
   const box = document.getElementById('mdbox'); if (box) box.innerHTML = md(src)
 }
 
 function render() {
-  if (view === 'images') renderImages()
-  else if (view === 'audio') renderAudio()
-  else if (view === 'orders') renderOrders()
-  else if (view === 'docs') renderDocs()
+  ({ dash: renderDash, manifest: renderManifest, game: renderGame, images: renderImages, audio: renderAudio, history: renderHistory, docs: renderDocs })[view]()
 }
 
 load()
 setInterval(async () => {
-  if (view === 'docs') return
-  const prev = JSON.stringify(S?.counts) + JSON.stringify(S?.orders?.map(o => o.items.map(i => i.exists + i.status)))
+  if (view === 'docs' || view === 'game') return
+  const sig = s => JSON.stringify([s?.counts, s?.orders?.map(o => o.items.map(i => i.exists + i.status)), s?.gitLog?.[0]])
+  const prev = sig(S)
   S = await (await fetch('/api/state')).json()
-  const now = JSON.stringify(S?.counts) + JSON.stringify(S?.orders?.map(o => o.items.map(i => i.exists + i.status)))
-  if (prev !== now) render()
+  if (prev !== sig(S)) render()
 }, 5000)
 </script>
 </body>
