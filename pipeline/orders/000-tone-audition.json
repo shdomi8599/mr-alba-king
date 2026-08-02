@@ -1,0 +1,31 @@
+{
+  "order": 0,
+  "name": "tone-audition",
+  "kind": "image",
+  "goal": "골든 레퍼런스 확정을 위한 아트 톤 오디션 — 같은 피사체를 4개 톤으로 생성, 디렉터가 1장 승인하면 그것이 전 에셋의 앵커가 된다 (ADR-007)",
+  "subject": "a single tuna nigiri sushi: an oval mound of white rice with a glossy slice of raw tuna draped on top",
+  "common": "single centered object, isolated on a fully transparent background, no text, no watermark, no logo, 1024x1024 PNG with alpha, generous ~12% margin around the object",
+  "items": [
+    {
+      "id": "tone-a-pop-comic",
+      "label": "팝 코믹 카툰 (스피드 코미디)",
+      "style": "bold clean dark outlines, vibrant high-saturation colors, energetic comic cartoon sticker style, playful slightly exaggerated chunky proportions, flat cel shading with one simple gloss highlight, mischievous fun energy, party game item art"
+    },
+    {
+      "id": "tone-b-clay-pastel",
+      "label": "소프트 클레이 파스텔 (코지)",
+      "style": "soft 3D claymorphic render, rounded chunky friendly shape, smooth matte clay texture, warm cozy pastel palette, soft global illumination with gentle top-left highlight, soft ambient occlusion, subtle soft drop shadow beneath, adorable kawaii mood"
+    },
+    {
+      "id": "tone-c-retro-pixel",
+      "label": "레트로 아케이드 픽셀",
+      "style": "chunky retro pixel art rendered crisp at high resolution, limited vibrant arcade palette, 1-pixel dark outline, subtle dithering shading, 90s arcade game item sprite, nostalgic coin-op energy"
+    },
+    {
+      "id": "tone-d-flat-vector",
+      "label": "플랫 벡터 모던 캐주얼",
+      "style": "modern flat vector illustration, bold simple rounded geometric shapes, minimal shading with 2-3 tone color blocking, no outlines, trendy contemporary Korean food-app illustration mood, clean and friendly"
+    }
+  ],
+  "out": "pipeline/staging/tone-audition/{id}.png"
+}

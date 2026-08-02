@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>톤 오디션 — 골든 레퍼런스 검수 보드</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#1a1815; color:#f5efe4; font-family:'Pretendard Variable',Pretendard,system-ui,sans-serif; padding:24px; }
+  h1 { font-size:20px; margin-bottom:4px; }
+  .sub { opacity:.55; font-size:13px; margin-bottom:20px; }
+  .bgpick { display:flex; gap:8px; margin-bottom:20px; }
+  .bgpick button { padding:6px 14px; border-radius:8px; border:1px solid #4a443a; background:#26221d; color:#f5efe4; cursor:pointer; font-size:13px; }
+  .bgpick button.on { background:#f5b942; color:#1a1815; border-color:#f5b942; font-weight:700; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+  .card { background:#26221d; border:1px solid #38332b; border-radius:14px; overflow:hidden; }
+  .card h2 { font-size:14px; padding:12px 14px 2px; }
+  .card .id { font-size:11px; opacity:.45; padding:0 14px 10px; font-family:monospace; }
+  .stage { aspect-ratio:1; display:flex; align-items:center; justify-content:center; margin:0 14px; border-radius:10px; overflow:hidden; }
+  .stage img { max-width:86%; max-height:86%; }
+  .bg-checker { background:repeating-conic-gradient(#3a352d 0% 25%, #2c2822 0% 50%) 0 0/24px 24px; }
+  .bg-white { background:#f7f3ea; }
+  .bg-dark { background:#14120f; }
+  .bg-game { background:linear-gradient(180deg,#3d6b4f,#2b4d38); }
+  .small { display:flex; align-items:center; gap:12px; padding:12px 14px 16px; }
+  .small .label { font-size:11px; opacity:.5; }
+  .small .dot { width:72px; height:72px; border-radius:8px; display:flex; align-items:center; justify-content:center; }
+  .small .dot img { max-width:88%; max-height:88%; }
+  .missing { padding:40px 14px; text-align:center; opacity:.4; font-size:13px; }
+</style>
+</head>
+<body>
+<h1>🎨 톤 오디션 — 골든 레퍼런스 검수</h1>
+<div class="sub">같은 피사체(참치 초밥) × 4개 톤. 승인된 1장이 전 에셋의 앵커가 됩니다. 아래 72px 미니뷰 = 실제 게임 스케일 근사(0.5초 판독성 체크).</div>
+<div class="bgpick" id="bgpick">
+  <button data-bg="bg-checker" class="on">투명(체커)</button>
+  <button data-bg="bg-white">밝은 배경</button>
+  <button data-bg="bg-dark">어두운 배경</button>
+  <button data-bg="bg-game">게임 목업(그린)</button>
+</div>
+<div class="grid" id="grid"></div>
+<script>
+const CANDIDATES = [
+  { id:'tone-a-pop-comic',  label:'A · 팝 코믹 카툰 (스피드 코미디)' },
+  { id:'tone-b-clay-pastel',label:'B · 소프트 클레이 파스텔 (코지)' },
+  { id:'tone-c-retro-pixel',label:'C · 레트로 아케이드 픽셀' },
+  { id:'tone-d-flat-vector',label:'D · 플랫 벡터 모던 캐주얼' },
+]
+const grid = document.getElementById('grid')
+let bg = 'bg-checker'
+function render() {
+  grid.innerHTML = CANDIDATES.map(c => `
+    <div class="card">
+      <h2>${c.label}</h2>
+      <div class="id">${c.id}.png</div>
+      <div class="stage ${bg}"><img src="${c.id}.png" onerror="this.closest('.stage').outerHTML='<div class=missing>아직 생성 안 됨</div>'"></div>
+      <div class="small"><div class="dot ${bg}"><img src="${c.id}.png" onerror="this.remove()"></div><div class="label">← 게임 스케일(72px)<br>0.5초 안에 초밥으로 읽히는가?</div></div>
+    </div>`).join('')
+}
+document.getElementById('bgpick').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return
+  bg = b.dataset.bg
+  document.querySelectorAll('.bgpick button').forEach(x => x.classList.toggle('on', x === b))
+  render()
+})
+render()
+</script>
+</body>
+</html>
