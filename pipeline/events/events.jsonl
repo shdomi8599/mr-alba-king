@@ -6,3 +6,5 @@
 {"ts":"2026-08-02T02:13:11.777Z","order":0,"item":"tone-c-retro-pixel","event":"generated","out":"pipeline/staging/tone-audition/tone-c-retro-pixel.png"}
 {"ts":"2026-08-02T02:13:11.778Z","order":0,"item":"tone-d-flat-vector","event":"ordered","out":"pipeline/staging/tone-audition/tone-d-flat-vector.png","ref":false}
 {"ts":"2026-08-02T02:17:25.587Z","order":0,"item":"tone-d-flat-vector","event":"generated","out":"pipeline/staging/tone-audition/tone-d-flat-vector.png"}
+{"ts":"2026-08-02T02:32:33.651Z","order":0,"item":"tone-a-pop-comic","event":"promoted-golden-ref","by":"director"}
+{"ts":"2026-08-02T02:32:33.652Z","order":0,"item":"tone-a-pop-comic","event":"approved","by":"director"}
