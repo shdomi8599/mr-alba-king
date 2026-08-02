@@ -66,6 +66,15 @@
   audio { width:100%; }
   .audio-row { background:#26221d; border:1px solid #38332b; border-radius:12px; padding:12px 14px; margin-bottom:10px; max-width:640px; }
   .audio-row .name { font-size:12.5px; margin-bottom:8px; font-family:monospace; }
+  .stage img, .mini .dot img { cursor: zoom-in; }
+  #lightbox { position:fixed; inset:0; background:rgba(10,9,7,.92); display:none; align-items:center; justify-content:center; flex-direction:column; gap:14px; z-index:100; cursor: zoom-out; }
+  #lightbox.show { display:flex; }
+  #lightbox .frame { width:min(82vmin,900px); height:min(82vmin,900px); display:flex; align-items:center; justify-content:center; border-radius:16px; }
+  #lightbox .frame img { max-width:92%; max-height:92%; }
+  #lightbox .cap { font-size:13px; opacity:.7; font-family:monospace; }
+  #lightbox .bgs { display:flex; gap:6px; }
+  #lightbox .bgs button { padding:5px 12px; border-radius:8px; border:1px solid #4a443a; background:#26221d; color:#f5efe4; cursor:pointer; font-size:12px; }
+  #lightbox .bgs button.on { background:#f5b942; color:#1a1815; border-color:#f5b942; font-weight:700; }
 </style>
 </head>
 <body>
@@ -78,6 +87,11 @@
   <div class="foot">결정은 이벤트로 기록되며<br>언제든 번복 가능합니다.<br>최신 결정이 이깁니다.</div>
 </nav>
 <main id="main"></main>
+<div id="lightbox">
+  <div class="frame bg-checker" id="lbFrame"><img id="lbImg" src="" alt=""></div>
+  <div class="cap" id="lbCap"></div>
+  <div class="bgs" id="lbBgs"></div>
+</div>
 <script>
 let S = null, view = 'images', bg = 'bg-checker', curDoc = 'STRATEGY.md'
 const $ = s => document.querySelector(s)
@@ -90,6 +104,19 @@ window.approve = (o,i) => post('/api/decision', { order:o, item:i, decision:'app
 window.reject = (o,i) => { const r = prompt('반려 사유 (게임플레이 요구사항 언어로):'); if (r !== null) post('/api/decision', { order:o, item:i, decision:'rejected', reason:r }) }
 window.golden = (o,i) => { if (confirm('이 이미지를 골든 레퍼런스로 지정합니다.\n이후 모든 이미지 발주가 이 톤에 앵커됩니다. (나중에 변경 가능)')) post('/api/golden-ref', { order:o, item:i }) }
 window.setBg = b => { bg = b; render() }
+window.zoom = (url, cap) => {
+  document.getElementById('lbImg').src = url
+  document.getElementById('lbCap').textContent = cap
+  document.getElementById('lbFrame').className = 'frame ' + bg
+  renderLbBgs()
+  document.getElementById('lightbox').classList.add('show')
+}
+function renderLbBgs() {
+  document.getElementById('lbBgs').innerHTML = ['bg-checker:투명','bg-white:밝음','bg-dark:어둠','bg-game:게임 목업']
+    .map(x => { const [c,l] = x.split(':'); return `<button class="${document.getElementById('lbFrame').className.includes(c)?'on':''}" onclick="event.stopPropagation(); document.getElementById('lbFrame').className='frame ${c}'; renderLbBgs()">${l}</button>` }).join('')
+}
+document.getElementById('lightbox').addEventListener('click', e => { if (!e.target.closest('.bgs')) document.getElementById('lightbox').classList.remove('show') })
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('show') })
 window.setView = v => { view = v; document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x.dataset.v === v)); render() }
 window.setDoc = d => { curDoc = d; renderDocs() }
 document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => setView(b.dataset.v)))
@@ -112,8 +139,8 @@ function renderImages() {
             <h2>${esc(it.label)}</h2>
             <div class="id">${it.id}</div>
             ${it.exists
-              ? `<div class="stage ${bg}"><img src="${it.url}?t=${Date.now()}"></div>
-                 <div class="mini"><div class="dot ${bg}"><img src="${it.url}?t=${Date.now()}"></div><div class="label">게임 스케일 72px<br>0.5초 판독성 체크</div></div>`
+              ? `<div class="stage ${bg}"><img src="${it.url}?t=${Date.now()}" onclick="zoom('${it.url}','${it.id}')"></div>
+                 <div class="mini"><div class="dot ${bg}"><img src="${it.url}?t=${Date.now()}" onclick="zoom('${it.url}','${it.id}')"></div><div class="label">게임 스케일 72px<br>0.5초 판독성 체크</div></div>`
               : `<div class="missing">생성 중 / 미생성<br>(자동 새로고침)</div>`}
             ${it.reason ? `<div class="reason">반려: ${esc(it.reason)}</div>` : ''}
             <div class="actions">
