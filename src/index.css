@@ -40,15 +40,17 @@ body {
   transition: transform .08s;
 }
 .cta:active { transform: translateY(4px); box-shadow: 0 2px 0 #b8871e; }
-/* 실아트 버튼 프레임 (9-slice) */
-.cta.cta-img {
-  /* 프레임 에셋은 내부가 투명(발주 스펙 'EMPTY center') — 버튼 얼굴은 코드가 깐다 */
-  background: linear-gradient(180deg, #fff6dd, #ffedbe); background-clip: padding-box;
-  box-shadow: none; border-radius: 22px;
-  border: 27px solid transparent; /* border-image가 이 영역을 프레임으로 채움 */
-  color: #5b3d0e; padding: 6px 46px 10px; font-size: 24px; font-weight: 900;
+/* 실아트 완성형 버튼 — 원본 비율(1508:592) 유지, 슬라이스 없음 */
+.cta.cta-full {
+  background-color: transparent; background-size: 100% 100%; background-repeat: no-repeat;
+  box-shadow: none; border: none; border-radius: 0;
+  width: 300px; aspect-ratio: 1508 / 592; padding: 0 0 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: #5b3208; font-size: 27px; font-weight: 900; letter-spacing: 3px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35));
 }
-.cta.cta-img:active { transform: translateY(3px) scale(.98); box-shadow: none; }
+.cta.cta-full:active { transform: translateY(4px) scale(0.97); }
 /* 타이틀 — 풀블리드 배경 + 비네트, 딤 박스 없음 */
 .title-screen { background-size: cover; background-position: center; position: relative; }
 .title-screen::after, .over-screen::after {

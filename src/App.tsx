@@ -7,15 +7,11 @@ import type { Session } from './engine/session'
 
 type Screen = 'title' | 'game' | 'over'
 
-// 실아트 버튼 — ui-button-frame(트림본)을 border-image 9-slice로: 모서리는 원본 비율 유지, 중앙만 늘어남
+// 실아트 버튼 — 완성형 통짜 버튼(ui-button-full)을 원본 비율 그대로, 글자만 코드로 (9-slice 기각: 질감 소실)
 function Cta({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
-  const u = spriteUrl('ui-button-frame')
+  const u = spriteUrl('ui-button-full')
   return (
-    <button
-      className={`cta ${u ? 'cta-img' : ''}`}
-      style={u ? { borderImageSource: `url(${u})`, borderImageSlice: '110 fill', borderImageWidth: '27px', borderImageRepeat: 'stretch' } : undefined}
-      onClick={onClick}
-    >
+    <button className={`cta ${u ? 'cta-full' : ''}`} style={u ? { backgroundImage: `url(${u})` } : undefined} onClick={onClick}>
       {children}
     </button>
   )
