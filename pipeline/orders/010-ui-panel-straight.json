@@ -1,0 +1,16 @@
+{
+  "order": 10,
+  "name": "ui-panel-straight",
+  "kind": "image",
+  "goal": "평가서 패널 재발주 — v1이 기울어져 텍스트 오버레이 불가(반려). 완전 정면·수직 구도로.",
+  "style": "bold clean dark outlines, vibrant high-saturation colors, energetic comic cartoon sticker style, flat cel shading",
+  "common": "no text, no letters, no watermark, 1024x1024 PNG with alpha, transparent background, single centered subject, PERFECTLY STRAIGHT front view with no tilt or rotation, vertical portrait orientation",
+  "items": [
+    {
+      "id": "ui-panel",
+      "label": "평가서 패널(정면)",
+      "subject": "a clipboard-style evaluation board seen perfectly straight-on: warm wood board with a metal clip at the top center, a cream EMPTY paper sheet covering most of it, portrait orientation, no tilt"
+    }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

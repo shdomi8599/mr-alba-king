@@ -229,14 +229,24 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
           </div>
           <div className="score">{s.score}</div>
         </div>
-        <div className={`timerbar ${s.phase === 'play' && lv.timeRemain < lv.timeLimit * 0.3 ? 'low' : ''}`}>
-          <i
-            style={{
-              width: `${Math.max(0, lv.timeRemain / lv.timeLimit) * 100}%`,
-              background: lv.timeRemain < lv.timeLimit * 0.3 ? '#e5484d' : '#f5b942',
-            }}
-          />
-        </div>
+        {(() => {
+          const pct = Math.max(0, lv.timeRemain / lv.timeLimit) * 100
+          const col = lv.timeRemain < lv.timeLimit * 0.3 ? '#e5484d' : '#f5b942'
+          const low = s.phase === 'play' && lv.timeRemain < lv.timeLimit * 0.3
+          const frame = spriteUrl('ui-timer-frame')
+          return frame ? (
+            <div className={`timerwrap ${low ? 'low' : ''}`}>
+              <img className="tframe" src={frame} alt="" draggable={false} />
+              <div className="tfill">
+                <i style={{ width: `${pct}%`, background: col }} />
+              </div>
+            </div>
+          ) : (
+            <div className={`timerbar ${low ? 'low' : ''}`}>
+              <i style={{ width: `${pct}%`, background: col }} />
+            </div>
+          )
+        })()}
         {s.combo >= 2 && (
           <div className="combo" key={s.combo}>
             {T('sys-combo').replace('{n}', String(s.combo))}
@@ -246,7 +256,10 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
         {lv.template === 'drag' && (
           <>
             {lv.orderIds.length > 0 && (
-              <div className="order">
+              <div
+                className={`order ${spriteUrl('ui-order-panel') ? 'framed' : ''}`}
+                style={spriteUrl('ui-order-panel') ? { backgroundImage: `url(${spriteUrl('ui-order-panel')})` } : undefined}
+              >
                 <span>{T('order-label')}</span>
                 {lv.sequence
                   ? lv.orderIds.map((id, i) => (
@@ -364,6 +377,9 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
               fxRef.current.pops.map((p, i) => (
                 <div key={i} className="foampop" style={{ left: p.x - 50, top: p.y - 50, opacity: p.t / 400 }} />
               ))}
+            {lv.kind === 'scrub' && lv.lastP && spriteUrl('wash-sponge') && (
+              <Ph id="wash-sponge" x={lv.lastP.x - 70} y={lv.lastP.y - 78} w={140} h={140} cls="flyghost" />
+            )}
             {lv.kind === 'tap' && (
               <>
                 <div className="reps">

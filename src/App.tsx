@@ -7,6 +7,16 @@ import type { Session } from './engine/session'
 
 type Screen = 'title' | 'game' | 'over'
 
+// 실아트 버튼 — ui-button-frame 승격 시 프레임 아트, 없으면 CSS 폴백
+function Cta({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+  const u = spriteUrl('ui-button-frame')
+  return (
+    <button className={`cta ${u ? 'cta-img' : ''}`} style={u ? { backgroundImage: `url(${u})` } : undefined} onClick={onClick}>
+      {children}
+    </button>
+  )
+}
+
 // 캡처·QA 전용 진입 파라미터 (?shot=over|game) — 스튜디오 텍스트 검수용 상황 캡처(shots) 촬영에 사용
 const shotParam = new URLSearchParams(window.location.search).get('shot')
 const mockOverSession = (): Session =>
@@ -62,9 +72,7 @@ export default function App() {
             </div>
           </div>
         </div>
-        <button className="cta" onClick={() => setScreen('game')}>
-          {T('over-retry')}
-        </button>
+        <Cta onClick={() => setScreen('game')}>{T('over-retry')}</Cta>
       </div>
     )
   }
@@ -77,9 +85,7 @@ export default function App() {
         {logo && <img className="title-logo" src={logo} alt="" />}
         <h1 className="title">{T('title-name')}</h1>
         <p className="tagline">{T('title-tagline')}</p>
-        <button className="cta" onClick={() => setScreen('game')}>
-          {T('title-start')}
-        </button>
+        <Cta onClick={() => setScreen('game')}>{T('title-start')}</Cta>
       </div>
     </div>
   )
