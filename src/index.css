@@ -1,18 +1,88 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body, #root { height: 100%; }
 body {
-  background: #14120f;
+  background: #0d0c0a;
   color: #fff8ec;
   font-family: 'Pretendard Variable', Pretendard, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  user-select: none;
 }
-.boot {
+
+/* ── 타이틀/게임오버 화면 ── */
+.screen {
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 12px;
+  text-align: center;
 }
-.boot h1 { font-size: 48px; letter-spacing: 2px; }
-.boot p { opacity: 0.5; font-size: 13px; letter-spacing: 4px; }
+.title { font-size: 72px; font-weight: 900; letter-spacing: 4px; color: #f5b942; text-shadow: 0 6px 0 rgba(0,0,0,.4); }
+.tagline { opacity: .55; font-size: 15px; letter-spacing: 1px; margin-bottom: 18px; }
+.cta {
+  padding: 16px 52px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1815;
+  background: #f5b942;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #b8871e;
+  transition: transform .08s;
+}
+.cta:active { transform: translateY(4px); box-shadow: 0 2px 0 #b8871e; }
+.over-title { font-size: 52px; font-weight: 900; }
+.score-label { opacity: .55; font-size: 14px; margin-top: 10px; }
+.score-big { font-size: 84px; font-weight: 900; color: #f5b942; line-height: 1.1; }
+.over-sub { opacity: .6; font-size: 15px; margin-bottom: 20px; }
+
+/* ── 게임 캔버스 (논리 720×1280, scale로 맞춤) ── */
+.game-wrap { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.game-canvas {
+  position: relative;
+  flex-shrink: 0;
+  transform-origin: center center;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+}
+
+/* HUD */
+.hud { position: absolute; top: 26px; left: 30px; right: 30px; display: flex; justify-content: space-between; align-items: center; z-index: 20; }
+.hud .lives { font-size: 34px; letter-spacing: 2px; }
+.hud .score { font-size: 44px; font-weight: 900; color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.35); }
+.timerbar { position: absolute; top: 92px; left: 30px; right: 30px; height: 16px; background: rgba(0,0,0,.35); border-radius: 10px; overflow: hidden; z-index: 20; }
+.timerbar i { display: block; height: 100%; border-radius: 10px; }
+.combo { position: absolute; top: 124px; right: 30px; font-size: 30px; font-weight: 900; color: #f5b942; text-shadow: 0 3px 0 rgba(0,0,0,.35); z-index: 20; animation: pop .18s ease-out; }
+
+/* 스프라이트 대역 */
+.ph { position: absolute; border: 4px solid; box-shadow: 0 8px 14px rgba(0,0,0,.28); }
+.ph.held { transform: scale(1.1) rotate(-3deg); filter: brightness(1.12); z-index: 10; cursor: grabbing; }
+.ph.done { animation: pop .18s ease-out; }
+.target { position: absolute; border: 4px dashed rgba(255,255,255,.55); border-radius: 24px; animation: pulse 1.2s ease-in-out infinite; }
+
+/* 오버레이 */
+.instruct {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 130px; font-weight: 900; color: #fff; text-shadow: 0 10px 0 rgba(0,0,0,.35);
+  animation: pop .22s cubic-bezier(.2,1.6,.4,1); z-index: 30; pointer-events: none;
+}
+.levelup {
+  position: absolute; top: 64%; left: 0; right: 0; text-align: center;
+  font-size: 32px; font-weight: 800; color: #f5b942; text-shadow: 0 3px 0 rgba(0,0,0,.4);
+  z-index: 30; animation: pop .3s ease-out; pointer-events: none;
+}
+.result {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 96px; font-weight: 900; z-index: 30; pointer-events: none;
+  animation: pop .2s cubic-bezier(.2,1.6,.4,1);
+  text-shadow: 0 8px 0 rgba(0,0,0,.35);
+}
+.result.clear { color: #8ae08f; }
+.result.fail { color: #e5484d; }
+
+@keyframes pop { from { transform: scale(.55); opacity: .2; } to { transform: scale(1); opacity: 1; } }
+@keyframes pulse { 0%, 100% { border-color: rgba(255,255,255,.35); } 50% { border-color: rgba(255,255,255,.75); } }

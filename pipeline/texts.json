@@ -38,6 +38,8 @@
       "entries": [
         { "id": "over-title", "ko": "근무 종료!", "context": "게임오버 화면 헤더" },
         { "id": "over-score", "ko": "오늘의 알바 점수", "context": "점수 라벨" },
+        { "id": "over-combo", "ko": "최고 콤보 x{n}", "context": "게임오버 요약, {n}=숫자 치환" },
+        { "id": "over-level", "ko": "레벨 {n}까지 근무", "context": "게임오버 요약, {n}=숫자 치환" },
         { "id": "over-writing", "ko": "사장님이 평가서를 쓰는 중...", "context": "LLM 평가서 로딩 연출 2~3초 (ADR-002)" },
         { "id": "over-retry", "ko": "재출근", "context": "다시하기 버튼" }
       ]
