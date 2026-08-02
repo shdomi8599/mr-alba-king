@@ -277,3 +277,6 @@
 {"ts":"2026-08-02T09:42:06.877Z","order":8,"item":"sfx-tap","event":"failed","reason":"fal fal-ai/elevenlabs/sound-effects/v2 → 422: {\"detail\":[{\"type\":\"greater_than_equal\",\"loc\":[\"body\",\"duration_seconds\"],\"msg\":\"Input should be greater than or equal to 0.5\",\"input\":0.4,\"ctx\":{\"ge\":0.5"}
 {"ts":"2026-08-02T09:42:36.583Z","order":8,"item":"sfx-tap","event":"ordered","type":"sfx"}
 {"ts":"2026-08-02T09:42:40.439Z","order":8,"item":"sfx-tap","event":"generated","out":"pipeline\\staging\\audio\\sfx-tap.ogg"}
+{"ts":"2026-08-02T10:04:48.871Z","order":6,"item":"ui-boss-angry","event":"approved","by":"director"}
+{"ts":"2026-08-02T10:04:49.697Z","order":6,"item":"ui-boss-happy","event":"approved","by":"director"}
+{"ts":"2026-08-02T10:04:52.155Z","order":7,"item":"ui-boss-angry","event":"approved","by":"director"}

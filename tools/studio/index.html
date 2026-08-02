@@ -369,13 +369,31 @@ function renderImages() {
 
 // ── 오디오 검수 ──
 function renderAudio() {
+  const audioOrders = S.orders.filter(o => o.kind === 'audio')
   $('#main').innerHTML = `
     <h1>오디오 검수</h1>
-    <div class="sub">pipeline/staging/audio/ 후보 재생·비교. BGM은 다중 모델 경쟁 배치(ADR-005).</div>
+    <div class="sub">후보 재생·비교 후 승인/반려. BGM 후보(bgm-main-*, bgm-fast-*)는 <b>각 1개만 승인</b>하면 승격 시 정식 id로 장착됩니다 (ADR-005).</div>
     ${criteriaPanel(['sfx','bgm'])}
-    ${S.audio.length
-      ? S.audio.map(a => `<div class="audio-row"><div class="name">${esc(a.name)}</div><audio controls preload="none" src="${a.url}"></audio></div>`).join('')
-      : '<div class="empty">아직 오디오 발주가 없습니다.<br>P4(아트·오디오 배치)에서 SFX 슬롯 + BGM 다중 모델 후보가 이곳에 들어옵니다.</div>'}`
+    ${audioOrders.length
+      ? audioOrders.map(o => `
+        <div class="order-block">
+          <div class="order-head">order#${o.order} · ${o.name}
+            <button class="btn ok" style="margin-left:12px; font-size:11px" onclick="approveAll(${o.order})">✓ 전체 승인</button>
+          </div>
+          <div class="order-goal">${esc(o.goal)}</div>
+          ${o.items.map(it => `
+            <div class="audio-row">
+              <div class="name">${esc(it.label || it.id)} <span class="chip ${it.status}" style="margin-left:8px">${CHIP[it.status] || it.status}</span>
+                ${it.reason ? `<span style="color:#e08f8f; font-size:11px; margin-left:8px">반려: ${esc(it.reason)}</span>` : ''}</div>
+              ${it.exists ? `
+                <audio controls preload="none" src="${it.url}"></audio>
+                <div class="actions" style="padding:8px 0 0">
+                  <button class="btn ok" onclick="approve(${o.order},'${it.id}')">승인</button>
+                  <button class="btn no" onclick="reject(${o.order},'${it.id}')">반려</button>
+                </div>` : '<div class="missing" style="padding:10px">미생성</div>'}
+            </div>`).join('')}
+        </div>`).join('')
+      : '<div class="empty">아직 오디오 발주가 없습니다.</div>'}`
 }
 
 // ── 히스토리 ──
