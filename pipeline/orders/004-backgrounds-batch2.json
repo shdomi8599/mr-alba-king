@@ -1,0 +1,18 @@
+{
+  "order": 4,
+  "name": "backgrounds-batch2",
+  "kind": "image",
+  "goal": "2차 배경 배치 — 나머지 7테마 씬. order#2에서 승인된 배경 톤(차분한 일러스트, 오브젝트 부각)과 일관되게. 중앙~하단 게임플레이 영역은 저대비로 비움.",
+  "style": "bold clean dark outlines on foreground shapes, vibrant but slightly desaturated background palette so gameplay objects pop, energetic comic cartoon style, flat cel shading",
+  "common": "portrait 1024x1536 game background scene filling the whole frame (no transparency), uncluttered low-contrast center and lower area reserved for gameplay, no text, no watermark, no characters, no people",
+  "items": [
+    { "id": "cvs-bg", "label": "편의점 배경", "subject": "the checkout counter area inside a korean convenience store: shelves with colorful plain goods in the far background, green accent tones" },
+    { "id": "bakery-bg", "label": "빵집 배경", "subject": "a warm bakery interior: bread display shelves far in the background, butter-yellow and warm brown tones" },
+    { "id": "chicken-bg", "label": "치킨집 배경", "subject": "a korean fried chicken shop kitchen: stainless fryer station silhouettes in the background, warm reddish-brown tones" },
+    { "id": "fish-bg", "label": "붕어빵 노점 배경", "subject": "a cozy korean winter street food stall at dusk: cart canopy above, soft falling snow, cool blue evening tones with warm lamp glow" },
+    { "id": "box-bg", "label": "물류창고 배경", "subject": "a logistics warehouse interior: stacked plain cardboard boxes and metal shelving in the background, grey-brown tones" },
+    { "id": "wash-bg", "label": "세차장 배경", "subject": "an outdoor self car wash bay: tiled floor, hanging hose, soap bubbles floating, fresh water-blue tones" },
+    { "id": "song-bg", "label": "노래방 배경", "subject": "a cozy korean karaoke room interior: dim purple lighting, subtle disco ball glow, padded sofa along the far wall" }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

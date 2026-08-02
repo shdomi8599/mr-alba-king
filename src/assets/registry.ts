@@ -1,5 +1,10 @@
-// 에셋 레지스트리 — 지금은 SVG 대역(색 도형). P2에서 manifest 연동, P4에서 승인 PNG가 같은 id로 드롭인.
-// 배경은 색으로, 오브젝트는 도형+색으로 대역 처리. 실제 에셋 교체 시 이 파일만 바뀐다.
+// 에셋 레지스트리 — 승인·승격된 PNG(src/assets/img/<id>.png)가 있으면 그걸 쓰고, 없으면 SVG 대역(색 도형).
+// 승격은 tools/promote.mjs — 디렉터 승인(이벤트) 기반. 게임 코드는 id만 안다.
+
+const IMG = import.meta.glob('./img/*.{png,webp}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
+
+/** 승격된 실아트 URL — 없으면 null(대역 렌더) */
+export const spriteUrl = (id: string): string | null => IMG[`./img/${id}.webp`] ?? IMG[`./img/${id}.png`] ?? null
 
 export const BG: Record<string, string> = {
   'sushi-bg': '#31556b', // 일식집 — 짙은 청록

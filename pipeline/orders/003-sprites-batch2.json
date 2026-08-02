@@ -1,0 +1,31 @@
+{
+  "order": 3,
+  "name": "sprites-batch2",
+  "kind": "image",
+  "goal": "2차 스프라이트 배치 — 나머지 테마(편의점·빵집·치킨·붕어빵·택배·세차·노래방) 인게임 오브젝트 20종. 골든 레퍼런스 앵커, 0.5초 판독성 최우선.",
+  "style": "bold clean dark outlines, vibrant high-saturation colors, energetic comic cartoon sticker style, playful slightly exaggerated chunky proportions, flat cel shading with one simple gloss highlight",
+  "common": "single centered object, isolated on a fully transparent background, no text, no watermark, no logo, no lettering of any kind, 1024x1024 PNG with alpha, generous ~12% margin, slight 3/4 top-down angle, instantly readable silhouette even at small size",
+  "items": [
+    { "id": "cvs-scanner", "label": "바코드 스캐너", "subject": "a handheld barcode scanner resting on a small stand, dark grey with a red scan light" },
+    { "id": "cvs-item-ramen", "label": "컵라면", "subject": "a korean instant cup ramen with a red lid and plain packaging" },
+    { "id": "cvs-item-drink", "label": "음료캔", "subject": "a blue aluminum soda can with plain surface" },
+    { "id": "cvs-item-snack", "label": "과자봉지", "subject": "a puffy green snack bag with plain surface" },
+    { "id": "cvs-item-milk", "label": "우유", "subject": "a small white milk carton with light blue accents, plain surface" },
+    { "id": "bakery-tray", "label": "트레이", "subject": "a wooden bakery tray with raised edges, empty, seen from slight 3/4 top-down" },
+    { "id": "bakery-bread-cream", "label": "크림빵", "subject": "a round golden cream-filled bun with cream visible at the split" },
+    { "id": "bakery-bread-red", "label": "단팥빵", "subject": "a round korean red bean bun with glossy brown top and sesame seeds" },
+    { "id": "bakery-bread-salt", "label": "소금빵", "subject": "a rolled pale-golden salt butter bread roll" },
+    { "id": "bakery-bread-choco", "label": "초코소라빵", "subject": "a cone-shaped korean chocolate cornet bread with swirl ridges and chocolate filling visible" },
+    { "id": "chicken-pot", "label": "기름솥", "subject": "a deep dark commercial fryer pot filled with bubbling golden oil, front view" },
+    { "id": "chicken-net", "label": "튀김망", "subject": "a wire mesh frying skimmer basket with a long handle" },
+    { "id": "chicken-piece", "label": "치킨 조각", "subject": "a crispy golden-brown korean fried chicken piece with crunchy texture" },
+    { "id": "fish-mold", "label": "붕어빵 틀", "subject": "a cast-iron bungeoppang mold plate with two fish-shaped cavities, dark metal" },
+    { "id": "fish-bread", "label": "붕어빵", "subject": "a golden fish-shaped korean bungeoppang bread with crisp scale pattern" },
+    { "id": "box-parcel", "label": "택배 박스", "subject": "a plain cardboard parcel box sealed with tape" },
+    { "id": "box-truck", "label": "트럭 적재함", "subject": "a small delivery truck seen from the rear with its cargo door open and boxes stacked inside" },
+    { "id": "wash-car", "label": "자동차", "subject": "a rounded friendly compact car in side view, partially covered with patches of white soap foam" },
+    { "id": "song-tambourine", "label": "탬버린", "subject": "a golden tambourine with shiny metal jingles" },
+    { "id": "song-mic", "label": "마이크", "subject": "a wired karaoke microphone with dark body and silver mesh head" }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

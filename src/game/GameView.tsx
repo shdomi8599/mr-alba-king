@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { createSession, pointerSession, tickSession, LIVES, ROUNDS_TOTAL, type Session } from '../engine/session'
 import { currentZone } from '../engine/templates/timing'
 import type { GuideStep, Level, PointerInput, Rect, ThemeId } from '../engine/types'
-import { BG, PLACEHOLDER } from '../assets/registry'
+import { BG, PLACEHOLDER, spriteUrl } from '../assets/registry'
 import { T } from './texts'
 
 const LW = 720
@@ -35,7 +35,12 @@ const HINT: Partial<Record<ThemeId, string>> = {
   song: 'hint-song',
 }
 
+// 스프라이트: 승격된 실아트(PNG)가 있으면 이미지, 없으면 SVG 대역(색 도형)
 function Ph({ id, x, y, w, h, cls = '' }: { id: string; x: number; y: number; w: number; h: number; cls?: string }) {
+  const url = spriteUrl(id)
+  if (url) {
+    return <img className={`ph-img ${cls}`} src={url} alt="" draggable={false} style={{ left: x, top: y, width: w, height: h }} />
+  }
   const p = PLACEHOLDER[id] ?? { fill: '#888', stroke: '#555', shape: 'rect' as const }
   return (
     <div
@@ -43,6 +48,13 @@ function Ph({ id, x, y, w, h, cls = '' }: { id: string; x: number; y: number; w:
       style={{ left: x, top: y, width: w, height: h, background: p.fill, borderColor: p.stroke, borderRadius: p.shape === 'ellipse' ? '50%' : 18 }}
     />
   )
+}
+
+// 주문표/매칭 칩: 실아트 미니 이미지 우선, 없으면 색 사각형
+function Chip({ id }: { id: string }) {
+  const url = spriteUrl(id)
+  if (url) return <img className="chipimg" src={url} alt="" draggable={false} />
+  return <i style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
 }
 
 // 1라운드 가이드 스텝별 스포트라이트 영역
@@ -122,7 +134,14 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
     <div className="game-wrap" ref={wrapRef}>
       <div
         className="game-canvas"
-        style={{ width: LW, height: LH, transform: `scale(${scale})`, background: BG[lv.bgSprite] ?? '#222' }}
+        style={{
+          width: LW,
+          height: LH,
+          transform: `scale(${scale})`,
+          background: spriteUrl(lv.bgSprite)
+            ? `#1a1815 url(${spriteUrl(lv.bgSprite)}) center / cover no-repeat`
+            : BG[lv.bgSprite] ?? '#222',
+        }}
         onPointerDown={pointer('down')}
         onPointerMove={pointer('move')}
         onPointerUp={pointer('up')}
@@ -156,7 +175,7 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
                 {lv.sequence
                   ? lv.orderIds.map((id, i) => (
                       <div key={`${id}-${i}`} className={`chipwrap ${i < lv.seqIdx ? 'used' : ''}`}>
-                        <i style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
+                        <Chip id={id} />
                         <b>{i + 1}</b>
                       </div>
                     ))
@@ -164,7 +183,7 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
                       const n = lv.orderIds.filter(x => x === id).length
                       return (
                         <div key={id} className="chipwrap">
-                          <i style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
+                          <Chip id={id} />
                           {n > 1 && <b>×{n}</b>}
                         </div>
                       )
@@ -176,15 +195,9 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
                 <div className="target" style={{ left: t.rect.x - 10, top: t.rect.y - 10, width: t.rect.w + 20, height: t.rect.h + 20 }} />
                 <Ph id={t.sprite} x={t.rect.x} y={t.rect.y} w={t.rect.w} h={t.rect.h} />
                 {t.wants && t.filled < t.capacity && (
-                  <div
-                    className="wantchip"
-                    style={{
-                      left: t.rect.x + t.rect.w / 2 - 19,
-                      top: t.rect.y - 52,
-                      background: PLACEHOLDER[t.wants]?.fill ?? '#888',
-                      borderColor: PLACEHOLDER[t.wants]?.stroke ?? '#555',
-                    }}
-                  />
+                  <div className="wantchip" style={{ left: t.rect.x + t.rect.w / 2 - 22, top: t.rect.y - 58 }}>
+                    <Chip id={t.wants} />
+                  </div>
                 )}
               </div>
             ))}

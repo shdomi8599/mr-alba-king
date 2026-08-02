@@ -43,7 +43,9 @@
   .mini .label { font-size:10.5px; opacity:.5; line-height:1.5; }
   .reason { font-size:11px; color:#e08f8f; padding:4px 12px 0; }
   .actions { display:flex; gap:6px; padding:10px 12px 12px; flex-wrap:wrap; }
-  .btn.ok { border-color:#3f6b46; } .btn.no { border-color:#6b3f3f; } .btn.gold { border-color:#f5b942; color:#f5b942; }
+  .btn.ok { border-color:#3f6b46; } .btn.no { border-color:#6b3f3f; }
+  .btn.gold { border-color:#4a443a; color:#f5b942; opacity:.3; font-size:11px; margin-left:auto; }
+  .btn.gold:hover { opacity:1; border-color:#f5b942; }
   .missing { padding:40px 12px; text-align:center; opacity:.4; font-size:12.5px; }
   .empty { opacity:.45; font-size:13px; padding:30px 0; line-height:1.7; }
   .panel { background:#26221d; border:1px solid #38332b; border-radius:12px; padding:14px 16px; margin-bottom:16px; }
@@ -317,7 +319,7 @@ function renderImages() {
               ${it.exists ? `
                 <button class="btn ok" onclick="approve(${o.order},'${it.id}')">승인</button>
                 <button class="btn no" onclick="reject(${o.order},'${it.id}')">반려</button>
-                <button class="btn gold" onclick="golden(${o.order},'${it.id}')">★ 골든 지정</button>` : ''}
+                <button class="btn gold" title="톤 기준(앵커) 교체용 — 평소 검수에선 쓸 일 없음" onclick="golden(${o.order},'${it.id}')">★</button>` : ''}
             </div>
           </div>`).join('')}
         </div>
