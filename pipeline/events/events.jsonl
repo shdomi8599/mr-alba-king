@@ -233,3 +233,12 @@
 {"ts":"2026-08-02T07:37:25.964Z","order":5,"item":"wash-bg","event":"promoted","to":"src/assets/img/wash-bg.webp"}
 {"ts":"2026-08-02T07:37:26.416Z","order":5,"item":"song-bg","event":"promoted","to":"src/assets/img/song-bg.webp"}
 {"ts":"2026-08-02T07:38:07.986Z","order":6,"item":"title-bg","event":"ordered","out":"pipeline/staging/assets/title-bg.png","ref":true}
+{"ts":"2026-08-02T07:41:04.579Z","order":6,"item":"title-bg","event":"generated","out":"pipeline/staging/assets/title-bg.png"}
+{"ts":"2026-08-02T07:41:04.580Z","order":6,"item":"logo-symbol","event":"ordered","out":"pipeline/staging/assets/logo-symbol.png","ref":true}
+{"ts":"2026-08-02T07:45:06.250Z","order":6,"item":"logo-symbol","event":"generated","out":"pipeline/staging/assets/logo-symbol.png"}
+{"ts":"2026-08-02T07:45:06.252Z","order":6,"item":"ui-boss-happy","event":"ordered","out":"pipeline/staging/assets/ui-boss-happy.png","ref":true}
+{"ts":"2026-08-02T07:49:11.500Z","order":6,"item":"ui-boss-happy","event":"generated","out":"pipeline/staging/assets/ui-boss-happy.png"}
+{"ts":"2026-08-02T07:49:11.502Z","order":6,"item":"ui-boss-angry","event":"ordered","out":"pipeline/staging/assets/ui-boss-angry.png","ref":true}
+{"ts":"2026-08-02T07:58:14.607Z","order":6,"item":"ui-boss-angry","event":"generated","out":"pipeline/staging/assets/ui-boss-angry.png"}
+{"ts":"2026-08-02T07:58:14.609Z","order":6,"item":"ui-life","event":"ordered","out":"pipeline/staging/assets/ui-life.png","ref":true}
+{"ts":"2026-08-02T08:02:38.261Z","order":6,"item":"ui-life","event":"generated","out":"pipeline/staging/assets/ui-life.png"}
