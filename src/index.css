@@ -96,5 +96,30 @@ body {
 .result.clear { color: #8ae08f; }
 .result.fail { color: #e5484d; }
 
+/* 타이밍 게이지 (템플릿 B) */
+.reps { position: absolute; top: 726px; left: 0; right: 0; text-align: center; font-size: 34px; font-weight: 900; text-shadow: 0 3px 0 rgba(0,0,0,.35); z-index: 15; }
+.gauge { position: absolute; background: rgba(0,0,0,.45); border-radius: 22px; border: 4px solid rgba(255,255,255,.25); overflow: hidden; z-index: 15; }
+.gauge .zone { position: absolute; top: 0; bottom: 0; background: rgba(122,224,143,.5); border-left: 3px solid #8ae08f; border-right: 3px solid #8ae08f; }
+.gauge .fill { position: absolute; top: 0; bottom: 0; left: 0; background: rgba(245,185,66,.45); }
+.gauge .marker { position: absolute; top: -4px; bottom: -4px; width: 8px; background: #fff; border-radius: 4px; box-shadow: 0 0 10px rgba(255,255,255,.8); }
+
+/* 가이드 (타임스탑 + 스포트라이트) */
+.guide-hole {
+  position: absolute; border-radius: 26px; z-index: 40; pointer-events: none;
+  box-shadow: 0 0 0 2000px rgba(0, 0, 0, .68);
+  border: 3px dashed rgba(245,185,66,.9);
+  animation: pop .25s ease-out;
+}
+.guide-bubble {
+  position: absolute; left: 50%; transform: translateX(-50%); z-index: 41; pointer-events: none;
+  max-width: 560px; text-align: center;
+  background: #26221d; border: 3px solid #f5b942; border-radius: 18px;
+  padding: 20px 28px; font-size: 30px; font-weight: 800; line-height: 1.4;
+  animation: pop .25s ease-out;
+}
+.guide-bubble .tap { margin-top: 10px; font-size: 16px; font-weight: 500; opacity: .55; }
+.guide-hand { position: absolute; z-index: 41; font-size: 60px; pointer-events: none; animation: bounce 1s ease-in-out infinite; }
+
 @keyframes pop { from { transform: scale(.55); opacity: .2; } to { transform: scale(1); opacity: 1; } }
 @keyframes pulse { 0%, 100% { border-color: rgba(255,255,255,.35); } 50% { border-color: rgba(255,255,255,.75); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }

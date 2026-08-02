@@ -1,14 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createSession, pointerSession, tickSession, LIVES, ROUNDS_TOTAL, type Session } from '../engine/session'
-import type { PointerInput, ThemeId } from '../engine/types'
+import type { GuideStep, Level, PointerInput, Rect, ThemeId } from '../engine/types'
 import { BG, PLACEHOLDER } from '../assets/registry'
 import { T } from './texts'
 
 const LW = 720
 const LH = 1280
 const FIXED = 1000 / 60
+const GAUGE: Rect = { x: 80, y: 790, w: 560, h: 84 }
 
-const INSTR: Record<ThemeId, string> = { sushi: 'instr-sushi', gimbap: 'instr-gimbap', cvs: 'instr-cvs' }
+const INSTR: Record<ThemeId, string> = {
+  sushi: 'instr-sushi',
+  gimbap: 'instr-gimbap',
+  cvs: 'instr-cvs',
+  cafe: 'instr-cafe',
+  chicken: 'instr-chicken',
+  fish: 'instr-fish',
+}
 
 function Ph({ id, x, y, w, h, cls = '' }: { id: string; x: number; y: number; w: number; h: number; cls?: string }) {
   const p = PLACEHOLDER[id] ?? { fill: '#888', stroke: '#555', shape: 'rect' as const }
@@ -18,6 +26,23 @@ function Ph({ id, x, y, w, h, cls = '' }: { id: string; x: number; y: number; w:
       style={{ left: x, top: y, width: w, height: h, background: p.fill, borderColor: p.stroke, borderRadius: p.shape === 'ellipse' ? '50%' : 18 }}
     />
   )
+}
+
+// 가이드 스텝별 스포트라이트 영역 (논리 좌표)
+function guideFocus(lv: Level, step: GuideStep): Rect {
+  if (lv.template === 'drag' && (step === 'drag' || step === 'drop')) {
+    const rects: Rect[] =
+      step === 'drag'
+        ? lv.items.map(i => ({ x: i.home.x - i.size.x / 2, y: i.home.y - i.size.y / 2, w: i.size.x, h: i.size.y }))
+        : lv.targets.map(t => t.rect)
+    const x1 = Math.min(...rects.map(r => r.x)) - 24
+    const y1 = Math.min(...rects.map(r => r.y)) - 24
+    const x2 = Math.max(...rects.map(r => r.x + r.w)) + 24
+    const y2 = Math.max(...rects.map(r => r.y + r.h)) + 24
+    return { x: x1, y: y1, w: x2 - x1, h: y2 - y1 }
+  }
+  if (step === 'order') return { x: 18, y: 106, w: 380, h: 80 }
+  return { x: GAUGE.x - 24, y: GAUGE.y - 70, w: GAUGE.w + 48, h: GAUGE.h + 118 } // hold / tapzone
 }
 
 export default function GameView({ onGameOver }: { onGameOver: (s: Session) => void }) {
@@ -74,6 +99,10 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
 
   const s = sRef.current
   const lv = s.level
+  const guideStep = s.phase === 'play' && s.guide.length > 0 ? s.guide[0] : null
+  const focus = guideStep ? guideFocus(lv, guideStep) : null
+  const bubbleAbove = focus ? focus.y > 420 : false
+
   return (
     <div className="game-wrap" ref={wrapRef}>
       <div
@@ -102,35 +131,71 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
             }}
           />
         </div>
-        {lv.orderIds.length > 0 && (
-          <div className="order">
-            <span>{T('order-label')}</span>
-            {lv.orderIds.map(id => (
-              <i key={id} style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
-            ))}
-          </div>
-        )}
         {s.combo >= 2 && <div className="combo">{T('sys-combo').replace('{n}', String(s.combo))}</div>}
 
-        {lv.targets.map((t, i) => (
-          <div key={i}>
-            <div className="target" style={{ left: t.rect.x - 10, top: t.rect.y - 10, width: t.rect.w + 20, height: t.rect.h + 20 }} />
-            <Ph id={t.sprite} x={t.rect.x} y={t.rect.y} w={t.rect.w} h={t.rect.h} />
-          </div>
-        ))}
-        {lv.items.map(it => (
-          <Ph
-            key={it.key}
-            id={it.id}
-            x={it.pos.x - it.size.x / 2}
-            y={it.pos.y - it.size.y / 2}
-            w={it.size.x}
-            h={it.size.y}
-            cls={it.held ? 'held' : it.done ? 'done' : ''}
-          />
-        ))}
+        {lv.template === 'drag' && (
+          <>
+            {lv.orderIds.length > 0 && (
+              <div className="order">
+                <span>{T('order-label')}</span>
+                {lv.orderIds.map(id => (
+                  <i key={id} style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
+                ))}
+              </div>
+            )}
+            {lv.targets.map((t, i) => (
+              <div key={i}>
+                <div className="target" style={{ left: t.rect.x - 10, top: t.rect.y - 10, width: t.rect.w + 20, height: t.rect.h + 20 }} />
+                <Ph id={t.sprite} x={t.rect.x} y={t.rect.y} w={t.rect.w} h={t.rect.h} />
+              </div>
+            ))}
+            {lv.items.map(it => (
+              <Ph
+                key={it.key}
+                id={it.id}
+                x={it.pos.x - it.size.x / 2}
+                y={it.pos.y - it.size.y / 2}
+                w={it.size.x}
+                h={it.size.y}
+                cls={it.held ? 'held' : it.done ? 'done' : ''}
+              />
+            ))}
+          </>
+        )}
+
+        {lv.template === 'timing' && (
+          <>
+            {lv.deco.map(d => (
+              <Ph key={d.id} id={d.id} x={d.rect.x} y={d.rect.y} w={d.rect.w} h={d.rect.h} />
+            ))}
+            <div className="reps">
+              {lv.done} / {lv.reps}
+            </div>
+            <div className="gauge" style={{ left: GAUGE.x, top: GAUGE.y, width: GAUGE.w, height: GAUGE.h }}>
+              <div
+                className="zone"
+                style={{ left: `${lv.zone.start * 100}%`, width: `${(lv.zone.end - lv.zone.start) * 100}%` }}
+              />
+              {lv.pattern === 'hold' && <div className="fill" style={{ width: `${lv.value * 100}%` }} />}
+              <div className="marker" style={{ left: `calc(${lv.value * 100}% - 4px)` }} />
+            </div>
+          </>
+        )}
 
         {lv.penaltyT > 0 && <div className="penalty" />}
+
+        {guideStep && focus && (
+          <>
+            <div className="guide-hole" style={{ left: focus.x, top: focus.y, width: focus.w, height: focus.h }} />
+            <div className="guide-hand" style={{ left: focus.x + focus.w / 2 - 30, top: focus.y + focus.h - 16 }}>
+              👆
+            </div>
+            <div className="guide-bubble" style={bubbleAbove ? { top: focus.y - 190 } : { top: focus.y + focus.h + 40 }}>
+              {T(`tut-${guideStep}`)}
+              <div className="tap">{T('tut-tap')}</div>
+            </div>
+          </>
+        )}
 
         {s.phase === 'instruct' && (
           <>
