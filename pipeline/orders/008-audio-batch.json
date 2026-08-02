@@ -4,17 +4,79 @@
   "kind": "audio",
   "goal": "오디오 1차 배치 — SFX 6종 + BGM 후보 5개(메인 3시드 경쟁 + 템포업 2시드). IP-safe(작곡가/작품명 금지, 분위기 묘사만). BGM은 심리스 루프 폴드 처리. Lyria/MiniMax 등 추가 모델 경쟁은 fal 모델 id 검증 후 2차에서.",
   "items": [
-    { "id": "sfx-start", "type": "sfx", "dur": 0.6, "prompt": "quick energetic comic game round start blip, snappy rising whistle pop, playful" },
-    { "id": "sfx-success", "type": "sfx", "dur": 0.7, "prompt": "bright cheerful success ding with a comic bounce, satisfying, short" },
-    { "id": "sfx-perfect", "type": "sfx", "dur": 1.2, "prompt": "sparkling triumphant short jingle, golden chime run with a tiny fanfare, joyful" },
-    { "id": "sfx-fail", "type": "sfx", "dur": 0.9, "prompt": "comic sad fail honk, short descending womp womp, cartoonish, not harsh" },
-    { "id": "sfx-tap", "type": "sfx", "dur": 0.5, "prompt": "soft snappy pop tap, light wooden tok, very short" },
-    { "id": "sfx-penalty", "type": "sfx", "dur": 0.5, "prompt": "quick comic buzzer wrong-answer sound, short, cartoonish" },
-    { "id": "bgm-main-a", "type": "bgm", "seconds": 60, "seed": 11, "prompt": "Fast upbeat comedic instrumental for a frantic part-time job minigame rush. Bouncy brass stabs, plucky bass, cheeky organ, tight punchy drums, handclaps. Mischievous slapstick kitchen-rush energy. Medium-fast tempo, clean punchy mix, no vocals, smooth and loopable." },
-    { "id": "bgm-main-b", "type": "bgm", "seconds": 60, "seed": 22, "prompt": "Fast upbeat comedic instrumental for a frantic part-time job minigame rush. Bouncy brass stabs, plucky bass, cheeky organ, tight punchy drums, handclaps. Mischievous slapstick kitchen-rush energy. Medium-fast tempo, clean punchy mix, no vocals, smooth and loopable." },
-    { "id": "bgm-main-c", "type": "bgm", "seconds": 60, "seed": 33, "prompt": "Playful high-energy instrumental for a comedic arcade job-rush game. Funky clavinet, punchy horns, upbeat disco drums, bouncy bassline, occasional whistle hits. Fun, cheeky, driving. No vocals, clean mix, smooth and loopable." },
-    { "id": "bgm-fast-a", "type": "bgm", "seconds": 45, "seed": 44, "prompt": "Very fast frantic comedic instrumental, escalating urgency for a final difficulty rush. Racing double-time drums, urgent brass riffs, rapid plucky bass, rising tension stabs but still fun and playful. No vocals, clean punchy mix, smooth and loopable." },
-    { "id": "bgm-fast-b", "type": "bgm", "seconds": 45, "seed": 55, "prompt": "Very fast frantic comedic instrumental, escalating urgency for a final difficulty rush. Racing double-time drums, urgent brass riffs, rapid plucky bass, rising tension stabs but still fun and playful. No vocals, clean punchy mix, smooth and loopable." }
+    {
+      "id": "sfx-start",
+      "type": "sfx",
+      "dur": 0.6,
+      "prompt": "quick energetic comic game round start blip, snappy rising whistle pop, playful"
+    },
+    {
+      "id": "sfx-success",
+      "type": "sfx",
+      "dur": 0.7,
+      "prompt": "bright cheerful success ding with a comic bounce, satisfying, short"
+    },
+    {
+      "id": "sfx-perfect",
+      "type": "sfx",
+      "dur": 1.2,
+      "prompt": "sparkling triumphant short jingle, golden chime run with a tiny fanfare, joyful"
+    },
+    {
+      "id": "sfx-fail",
+      "type": "sfx",
+      "dur": 0.9,
+      "prompt": "comic sad fail honk, short descending womp womp, cartoonish, not harsh"
+    },
+    {
+      "id": "sfx-tap",
+      "type": "sfx",
+      "dur": 0.5,
+      "prompt": "soft snappy pop tap, light wooden tok, very short"
+    },
+    {
+      "id": "sfx-penalty",
+      "type": "sfx",
+      "dur": 0.5,
+      "prompt": "quick comic buzzer wrong-answer sound, short, cartoonish"
+    },
+    {
+      "id": "bgm-main-a",
+      "type": "bgm",
+      "seconds": 60,
+      "seed": 11,
+      "prompt": "Fast upbeat comedic instrumental for a frantic part-time job minigame rush. Bouncy brass stabs, plucky bass, cheeky organ, tight punchy drums, handclaps. Mischievous slapstick kitchen-rush energy. Medium-fast tempo, clean punchy mix, no vocals, smooth and loopable.",
+      "canonical": "bgm-title",
+      "label": "메인 후보 A → 타이틀 BGM 재활용"
+    },
+    {
+      "id": "bgm-main-b",
+      "type": "bgm",
+      "seconds": 60,
+      "seed": 22,
+      "prompt": "Fast upbeat comedic instrumental for a frantic part-time job minigame rush. Bouncy brass stabs, plucky bass, cheeky organ, tight punchy drums, handclaps. Mischievous slapstick kitchen-rush energy. Medium-fast tempo, clean punchy mix, no vocals, smooth and loopable."
+    },
+    {
+      "id": "bgm-main-c",
+      "type": "bgm",
+      "seconds": 60,
+      "seed": 33,
+      "prompt": "Playful high-energy instrumental for a comedic arcade job-rush game. Funky clavinet, punchy horns, upbeat disco drums, bouncy bassline, occasional whistle hits. Fun, cheeky, driving. No vocals, clean mix, smooth and loopable."
+    },
+    {
+      "id": "bgm-fast-a",
+      "type": "bgm",
+      "seconds": 45,
+      "seed": 44,
+      "prompt": "Very fast frantic comedic instrumental, escalating urgency for a final difficulty rush. Racing double-time drums, urgent brass riffs, rapid plucky bass, rising tension stabs but still fun and playful. No vocals, clean punchy mix, smooth and loopable."
+    },
+    {
+      "id": "bgm-fast-b",
+      "type": "bgm",
+      "seconds": 45,
+      "seed": 55,
+      "prompt": "Very fast frantic comedic instrumental, escalating urgency for a final difficulty rush. Racing double-time drums, urgent brass riffs, rapid plucky bass, rising tension stabs but still fun and playful. No vocals, clean punchy mix, smooth and loopable."
+    }
   ],
   "out": "pipeline/staging/audio/{id}.ogg"
 }

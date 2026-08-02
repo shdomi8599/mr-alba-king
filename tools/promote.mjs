@@ -30,7 +30,7 @@ for (const o of orders) {
     const src = path.join(ROOT, o.out.replace('{id}', it.id))
     if (!existsSync(src)) continue
     mkdirSync(AUDIO_DEST, { recursive: true })
-    const canonical = it.type === 'bgm' ? it.id.replace(/-[a-e]$/, '') : it.id
+    const canonical = it.canonical ?? (it.type === 'bgm' ? it.id.replace(/-[a-e]$/, '') : it.id)
     const dest = path.join(AUDIO_DEST, `${canonical}.ogg`)
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', src, '-c', 'copy', dest])
     appendFileSync(EVENTS, JSON.stringify({ ts: new Date().toISOString(), order: o.order, item: it.id, event: 'promoted', to: `src/assets/audio/${canonical}.ogg` }) + '\n')

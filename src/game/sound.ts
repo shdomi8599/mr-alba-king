@@ -26,7 +26,11 @@ export function startBgm(id: string): void {
   bgm.loop = true
   bgm.volume = 0.5
   bgmId = id
-  void bgm.play().catch(() => {})
+  void bgm.play().catch(() => {
+    // 자동재생 차단(제스처 전) — 상태를 리셋해 다음 제스처에서 재시도 가능하게
+    bgm = null
+    bgmId = null
+  })
 }
 
 export function stopBgm(): void {

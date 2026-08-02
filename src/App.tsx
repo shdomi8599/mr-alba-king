@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import GameView from './game/GameView'
 import { T } from './game/texts'
 import { makeEval } from './game/evaluate'
+import { playSfx, startBgm } from './game/sound'
 import { spriteUrl } from './assets/registry'
 import type { Session } from './engine/session'
 
@@ -10,8 +11,12 @@ type Screen = 'title' | 'game' | 'over'
 // 실아트 버튼 — 완성형 통짜 버튼(ui-button-full)을 원본 비율 그대로, 글자만 코드로 (9-slice 기각: 질감 소실)
 function Cta({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
   const u = spriteUrl('ui-button-full')
+  const click = () => {
+    playSfx('sfx-tap') // 버튼 피드백 — 시작 인지
+    onClick()
+  }
   return (
-    <button className={`cta ${u ? 'cta-full' : ''}`} style={u ? { backgroundImage: `url(${u})` } : undefined} onClick={onClick}>
+    <button className={`cta ${u ? 'cta-full' : ''}`} style={u ? { backgroundImage: `url(${u})` } : undefined} onClick={click}>
       {children}
     </button>
   )
@@ -40,6 +45,16 @@ export default function App() {
     setLast(s)
     setScreen('over')
   }, [])
+
+  // 타이틀 BGM(낙선 후보 재활용 트랙) — 자동재생 정책상 제스처 전엔 차단: 즉시 시도 + 첫 탭에서 시작.
+  // 출근하기 → 인게임은 별도 트랙(bgm-main)으로 전환된다.
+  useEffect(() => {
+    if (screen !== 'title') return
+    startBgm('bgm-title')
+    const once = () => startBgm('bgm-title')
+    window.addEventListener('pointerdown', once, { once: true })
+    return () => window.removeEventListener('pointerdown', once)
+  }, [screen])
 
   if (screen === 'game') return <GameView onGameOver={onGameOver} />
 
