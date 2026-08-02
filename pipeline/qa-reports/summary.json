@@ -1,0 +1,468 @@
+{
+  "sessionsPerPersona": 60,
+  "personas": [
+    {
+      "name": "expert",
+      "react": 200,
+      "jitter": 60,
+      "moveSpeed": 1600,
+      "tapRate": 9,
+      "errProb": 0.03
+    },
+    {
+      "name": "mid",
+      "react": 350,
+      "jitter": 90,
+      "moveSpeed": 1100,
+      "tapRate": 7,
+      "errProb": 0.08
+    },
+    {
+      "name": "novice",
+      "react": 500,
+      "jitter": 130,
+      "moveSpeed": 750,
+      "tapRate": 5,
+      "errProb": 0.15
+    }
+  ],
+  "totalLevelAttempts": 4411,
+  "stats": {
+    "expert": {
+      "gimbap/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 50.83999999999984
+      },
+      "cafe/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 31.3166666666664
+      },
+      "sushi/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 49.76157082748952
+      },
+      "box/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 35.856854838709616
+      },
+      "cvs/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 46.748336358136484
+      },
+      "chicken/d0": {
+        "attempts": 60,
+        "clears": 58,
+        "timeFracSum": 24.47777777777758
+      },
+      "bakery/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 46.99637023593446
+      },
+      "wash/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 48.790229885057286
+      },
+      "fish/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 40.13888888888867
+      },
+      "song/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 38.4919354838706
+      },
+      "gimbap/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 47.880658436213785
+      },
+      "cafe/d1": {
+        "attempts": 60,
+        "clears": 57,
+        "timeFracSum": 25.879076086956132
+      },
+      "sushi/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 47.80108780108757
+      },
+      "box/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 31.28057065217368
+      },
+      "cvs/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 43.79454235985259
+      },
+      "chicken/d1": {
+        "attempts": 60,
+        "clears": 59,
+        "timeFracSum": 19.018115942028636
+      },
+      "bakery/d1": {
+        "attempts": 60,
+        "clears": 55,
+        "timeFracSum": 41.97908087629691
+      },
+      "wash/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 47.577639751552574
+      },
+      "fish/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 35.90353260869531
+      },
+      "song/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 31.01157082748929
+      },
+      "gimbap/d2": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 46.0996799268402
+      },
+      "cafe/d2": {
+        "attempts": 60,
+        "clears": 47,
+        "timeFracSum": 16.09065847510999
+      },
+      "sushi/d2": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 45.14942528735607
+      },
+      "box/d2": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 27.073538276069595
+      },
+      "cvs/d2": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 40.807248764414936
+      },
+      "chicken/d2": {
+        "attempts": 60,
+        "clears": 54,
+        "timeFracSum": 14.379253308128238
+      },
+      "bakery/d2": {
+        "attempts": 60,
+        "clears": 55,
+        "timeFracSum": 39.00146439685132
+      },
+      "wash/d2": {
+        "attempts": 59,
+        "clears": 59,
+        "timeFracSum": 44.55450535601738
+      },
+      "fish/d2": {
+        "attempts": 59,
+        "clears": 59,
+        "timeFracSum": 30.587507876496222
+      },
+      "song/d2": {
+        "attempts": 59,
+        "clears": 59,
+        "timeFracSum": 19.01969004065036
+      }
+    },
+    "mid": {
+      "gimbap/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 45.80333333333316
+      },
+      "cafe/d0": {
+        "attempts": 60,
+        "clears": 52,
+        "timeFracSum": 23.70833333333312
+      },
+      "sushi/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 44.057971014492836
+      },
+      "box/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 29.143145161290324
+      },
+      "cvs/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 38.75983061101006
+      },
+      "chicken/d0": {
+        "attempts": 60,
+        "clears": 59,
+        "timeFracSum": 16.927777777777564
+      },
+      "bakery/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 39.08045977011472
+      },
+      "wash/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 43.35057471264339
+      },
+      "fish/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 32.16388888888867
+      },
+      "song/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 30.381720430107233
+      },
+      "gimbap/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 38.424456202233735
+      },
+      "cafe/d1": {
+        "attempts": 60,
+        "clears": 41,
+        "timeFracSum": 13.253170289854829
+      },
+      "sushi/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 40.48756798756783
+      },
+      "box/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 23.46524003623172
+      },
+      "cvs/d1": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 33.04947015867758
+      },
+      "chicken/d1": {
+        "attempts": 60,
+        "clears": 39,
+        "timeFracSum": 9.552536231883826
+      },
+      "bakery/d1": {
+        "attempts": 59,
+        "clears": 54,
+        "timeFracSum": 31.94158018997394
+      },
+      "wash/d1": {
+        "attempts": 58,
+        "clears": 58,
+        "timeFracSum": 40.13740873923909
+      },
+      "fish/d1": {
+        "attempts": 58,
+        "clears": 57,
+        "timeFracSum": 24.715126811593873
+      },
+      "song/d1": {
+        "attempts": 58,
+        "clears": 58,
+        "timeFracSum": 18.314399251986796
+      },
+      "gimbap/d2": {
+        "attempts": 58,
+        "clears": 58,
+        "timeFracSum": 35.555686197661394
+      },
+      "cafe/d2": {
+        "attempts": 58,
+        "clears": 14,
+        "timeFracSum": 2.9118620037806457
+      },
+      "sushi/d2": {
+        "attempts": 52,
+        "clears": 52,
+        "timeFracSum": 32.50862068965494
+      },
+      "box/d2": {
+        "attempts": 52,
+        "clears": 52,
+        "timeFracSum": 16.02200120554529
+      },
+      "cvs/d2": {
+        "attempts": 52,
+        "clears": 51,
+        "timeFracSum": 25.510342302763917
+      },
+      "chicken/d2": {
+        "attempts": 51,
+        "clears": 2,
+        "timeFracSum": 0.37547258979205034
+      },
+      "bakery/d2": {
+        "attempts": 25,
+        "clears": 23,
+        "timeFracSum": 11.928549636951555
+      },
+      "wash/d2": {
+        "attempts": 23,
+        "clears": 23,
+        "timeFracSum": 15.099873976055314
+      },
+      "fish/d2": {
+        "attempts": 23,
+        "clears": 4,
+        "timeFracSum": 0.9143824826716889
+      },
+      "song/d2": {
+        "attempts": 7,
+        "clears": 0,
+        "timeFracSum": 0
+      }
+    },
+    "novice": {
+      "gimbap/d0": {
+        "attempts": 60,
+        "clears": 59,
+        "timeFracSum": 38.44666666666656
+      },
+      "cafe/d0": {
+        "attempts": 60,
+        "clears": 41,
+        "timeFracSum": 14.43888888888873
+      },
+      "sushi/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 37.50116877045362
+      },
+      "box/d0": {
+        "attempts": 60,
+        "clears": 60,
+        "timeFracSum": 18.373655913978503
+      },
+      "cvs/d0": {
+        "attempts": 60,
+        "clears": 58,
+        "timeFracSum": 26.905021173623567
+      },
+      "chicken/d0": {
+        "attempts": 60,
+        "clears": 46,
+        "timeFracSum": 9.566666666666514
+      },
+      "bakery/d0": {
+        "attempts": 60,
+        "clears": 57,
+        "timeFracSum": 26.621899576527376
+      },
+      "wash/d0": {
+        "attempts": 59,
+        "clears": 59,
+        "timeFracSum": 35.4482758620687
+      },
+      "fish/d0": {
+        "attempts": 59,
+        "clears": 52,
+        "timeFracSum": 21.933333333333152
+      },
+      "song/d0": {
+        "attempts": 59,
+        "clears": 59,
+        "timeFracSum": 9.422043010752462
+      },
+      "gimbap/d1": {
+        "attempts": 59,
+        "clears": 58,
+        "timeFracSum": 27.14168136390341
+      },
+      "cafe/d1": {
+        "attempts": 59,
+        "clears": 18,
+        "timeFracSum": 5.62001811594191
+      },
+      "sushi/d1": {
+        "attempts": 50,
+        "clears": 50,
+        "timeFracSum": 26.278813778813713
+      },
+      "box/d1": {
+        "attempts": 50,
+        "clears": 50,
+        "timeFracSum": 9.431612318840426
+      },
+      "cvs/d1": {
+        "attempts": 50,
+        "clears": 47,
+        "timeFracSum": 13.547905342337737
+      },
+      "chicken/d1": {
+        "attempts": 49,
+        "clears": 0,
+        "timeFracSum": 0
+      },
+      "bakery/d1": {
+        "attempts": 30,
+        "clears": 25,
+        "timeFracSum": 10.58996321308946
+      },
+      "wash/d1": {
+        "attempts": 26,
+        "clears": 26,
+        "timeFracSum": 14.02168464639848
+      },
+      "fish/d1": {
+        "attempts": 26,
+        "clears": 8,
+        "timeFracSum": 2.3093297101448846
+      },
+      "song/d1": {
+        "attempts": 14,
+        "clears": 0,
+        "timeFracSum": 0
+      },
+      "gimbap/d2": {
+        "attempts": 3,
+        "clears": 3,
+        "timeFracSum": 1.6543863087072928
+      },
+      "cafe/d2": {
+        "attempts": 3,
+        "clears": 1,
+        "timeFracSum": 0.19856647763074672
+      },
+      "sushi/d2": {
+        "attempts": 1,
+        "clears": 1,
+        "timeFracSum": 0.4396551724137902
+      },
+      "box/d2": {
+        "attempts": 1,
+        "clears": 1,
+        "timeFracSum": 0.09081776170383297
+      },
+      "cvs/d2": {
+        "attempts": 1,
+        "clears": 1,
+        "timeFracSum": 0.1366160229422146
+      },
+      "chicken/d2": {
+        "attempts": 1,
+        "clears": 0,
+        "timeFracSum": 0
+      }
+    }
+  }
+}

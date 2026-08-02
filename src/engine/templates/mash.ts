@@ -6,7 +6,8 @@ const TAP_SLOP = 40
 export function tickMash(level: MashLevel, dt: number): PlayResult {
   level.timeRemain -= dt
   if (level.penaltyT > 0) level.penaltyT -= dt
-  if (level.kind === 'shake') {
+  if (level.kind === 'shake' && level.gauge < 1) {
+    // 게이지 만충(1.0) 도달 시 래치 — 감쇠가 클리어 판정을 선점하면 클리어 불가 (QA 봇이 잡은 버그)
     level.gauge = Math.max(0, level.gauge - level.decay * (dt / 1000))
   }
   const clear =

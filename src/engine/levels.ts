@@ -167,13 +167,16 @@ function makeDragLevel(theme: ThemeId, cfg: DragCfg, difficulty: number, rng: Rn
   }
 
   const sequence = cfg.gimmick === 'sequence'
+  // QA: 김밥(sequence) 벤치마크 대비 match·quantity 테마가 과하게 쉬움 → 시간 소폭 조임
+  const gimmickTimeScale = cfg.gimmick === 'match' ? 0.93 : cfg.gimmick === 'quantity' ? 0.95 : 1
   const timeLimit = Math.round(
     (1500 +
       wantedIds.length * 1300 +
       fakeIds.length * 400 +
       (sequence ? 500 : 0) +
       (cfg.gimmick === 'match' ? wantedIds.length * 250 : 0)) *
-      Math.pow(0.9, difficulty),
+      Math.pow(0.9, difficulty) *
+      gimmickTimeScale,
   )
 
   const allIds = shuffle(
@@ -205,15 +208,16 @@ function makeDragLevel(theme: ThemeId, cfg: DragCfg, difficulty: number, rng: Rn
 
 function makeTimingLevel(theme: ThemeId, cfg: TimingCfg, difficulty: number, rng: Rng): TimingLevel {
   const reps = Math.min(2 + difficulty, 4)
-  const zoneWidth = (cfg.pattern === 'hold' ? 0.21 : 0.22) - 0.04 * difficulty
+  const zoneWidth = (cfg.pattern === 'hold' ? 0.21 : cfg.pattern === 'sine' ? 0.24 : 0.22) - 0.035 * difficulty // QA run2: 사인 기본 폭 상향
   // rep마다 다른 구간 — 성공할 때마다 목표선이 이동한다 (hold는 40% 이상 구간 보장)
   const minStart = cfg.pattern === 'hold' ? 0.4 : 0.15
   const zones = Array.from({ length: reps }, () => {
     const start = minStart + rng.next() * (0.92 - zoneWidth - minStart)
     return { start, end: start + zoneWidth }
   })
+  // QA run1: 사인 1.7+0.4d는 전문가 봇도 d2 0% → run2: 초보 d0 37%·mid d1 23% 여전히 서열 밖 → 추가 완화
   const speed =
-    cfg.pattern === 'hold' ? 0.55 + 0.12 * difficulty : cfg.pattern === 'sine' ? 1.7 + 0.4 * difficulty : 0.5 + 0.13 * difficulty
+    cfg.pattern === 'hold' ? 0.55 + 0.1 * difficulty : cfg.pattern === 'sine' ? 1.3 + 0.22 * difficulty : 0.5 + 0.1 * difficulty
   const timeLimit = Math.round((2000 + reps * 2000) * Math.pow(0.92, difficulty))
   return {
     template: 'timing',
@@ -237,7 +241,7 @@ function makeTimingLevel(theme: ThemeId, cfg: TimingCfg, difficulty: number, rng
 
 function makeMashLevel(theme: ThemeId, cfg: MashCfg, difficulty: number, rng: Rng): MashLevel {
   if (cfg.kind === 'tap') {
-    const goal = 12 + 5 * difficulty
+    const goal = 14 + 6 * difficulty // QA: 전 페르소나 100% + 시간 여유 → 목표 상향
     const positions: Rect[] = Array.from({ length: 8 }, () => ({
       x: cfg.area.x + rng.next() * (cfg.area.w - cfg.size.x),
       y: cfg.area.y + rng.next() * (cfg.area.h - cfg.size.y),
@@ -256,7 +260,7 @@ function makeMashLevel(theme: ThemeId, cfg: MashCfg, difficulty: number, rng: Rn
     const n = 4 + difficulty
     const blobs = Array.from({ length: n }, () => {
       const r = 58 + rng.next() * 30
-      const hp = 260 + 50 * difficulty
+      const hp = 300 + 60 * difficulty // QA: 전 페르소나 100% → 내구 상향
       return {
         x: cfg.area.x + r + rng.next() * (cfg.area.w - r * 2),
         y: cfg.area.y + r + rng.next() * (cfg.area.h - r * 2),
