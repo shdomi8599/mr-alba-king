@@ -37,9 +37,13 @@ export function tickTiming(level: TimingLevel, dt: number): PlayResult {
   return 'playing'
 }
 
+export const currentZone = (level: TimingLevel): { start: number; end: number } =>
+  level.zones[Math.min(level.done, level.zones.length - 1)]
+
 const judge = (level: TimingLevel): void => {
-  if (level.value >= level.zone.start && level.value <= level.zone.end) {
-    level.done += 1
+  const z = currentZone(level)
+  if (level.value >= z.start && level.value <= z.end) {
+    level.done += 1 // 다음 rep은 다른 구간(zones[done])
   } else {
     miss(level)
   }

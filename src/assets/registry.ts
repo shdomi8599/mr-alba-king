@@ -19,6 +19,8 @@ export type Placeholder = { fill: string; stroke: string; shape: 'rect' | 'ellip
 export const PLACEHOLDER: Record<string, Placeholder> = {
   'sushi-rice': { fill: '#f2ecdd', stroke: '#c9bfa5', shape: 'ellipse' },
   'sushi-tuna': { fill: '#e5484d', stroke: '#a53236', shape: 'rect' },
+  'sushi-salmon': { fill: '#f08a5e', stroke: '#b85f38', shape: 'rect' },
+  'sushi-egg': { fill: '#f5d24a', stroke: '#c9a52f', shape: 'rect' },
   'sushi-plate': { fill: '#3b3b46', stroke: '#23232b', shape: 'ellipse' },
   'gimbap-base': { fill: '#2a2a2a', stroke: '#111111', shape: 'rect' },
   'gimbap-ham': { fill: '#e88a9a', stroke: '#b25e6e', shape: 'rect' },

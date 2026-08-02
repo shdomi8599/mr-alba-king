@@ -13,6 +13,7 @@ export type TargetSlot = {
   sprite: string
   capacity: number
   filled: number
+  wants: string | null // 매칭 기믹(초밥): 이 슬롯이 요구하는 아이템 id — 다른 걸 놓으면 페널티
 }
 
 export type DragItem = {
@@ -57,7 +58,7 @@ export type TimingLevel = {
   t: number
   holding: boolean
   speed: number
-  zone: { start: number; end: number }
+  zones: { start: number; end: number }[] // rep마다 다른 성공 구간 — 성공할 때마다 다음 구간으로
   reps: number
   done: number
   penaltyT: number

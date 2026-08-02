@@ -13,7 +13,9 @@
       "slots": [
         { "id": "sushi-bg", "kind": "image", "desc": "초밥집 카운터 배경" },
         { "id": "sushi-rice", "kind": "image", "desc": "샤리(밥) — 드롭 대상" },
-        { "id": "sushi-tuna", "kind": "image", "desc": "참치 회 — 드래그 재료" },
+        { "id": "sushi-tuna", "kind": "image", "desc": "참치 회 — 매칭 재료 1" },
+        { "id": "sushi-salmon", "kind": "image", "desc": "연어 회 — 매칭 재료 2" },
+        { "id": "sushi-egg", "kind": "image", "desc": "계란 — 매칭 재료 3" },
         { "id": "sushi-plate", "kind": "image", "desc": "접시" }
       ]
     },

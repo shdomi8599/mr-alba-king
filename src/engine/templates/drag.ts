@@ -51,7 +51,8 @@ export function applyPointer(level: DragLevel, input: PointerInput): void {
     return
   }
   const wrongOrder = level.sequence && held.wanted && held.id !== level.orderIds[level.seqIdx]
-  if (held.wanted && !wrongOrder) {
+  const wrongMatch = slot.wants !== null && held.id !== slot.wants
+  if (held.wanted && !wrongOrder && !wrongMatch) {
     held.done = true
     slot.filled += 1
     if (level.sequence) level.seqIdx += 1

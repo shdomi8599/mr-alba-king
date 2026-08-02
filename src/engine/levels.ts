@@ -10,14 +10,17 @@ import type { Rng } from './rng'
 // 1라운드 = 김밥(주문 순서 기믹) — 가이드가 조작+기믹을 한 번에 안내
 export const THEME_ORDER: ThemeId[] = ['gimbap', 'cafe', 'sushi', 'box', 'cvs', 'chicken', 'bakery', 'wash', 'fish', 'song']
 
-const slot = (rect: Rect, sprite: string, capacity: number): TargetSlot => ({ rect, sprite, capacity, filled: 0 })
+const slot = (rect: Rect, sprite: string, capacity: number): TargetSlot => ({ rect, sprite, capacity, filled: 0, wants: null })
+
+// 드래그 기믹 3종 — 모든 A 테마는 이 중 하나를 가진다 (김밥 수준 난이도 평준화)
+// sequence: 주문 순서대로만 / match: 슬롯마다 요구 아이템이 다름 / quantity: 같은 아이템 ×n 수량 주문
+type DragGimmick = 'sequence' | 'match' | 'quantity'
 
 type DragCfg = {
   template: 'drag'
   bg: string
   pool: string[]
-  repeatItem?: boolean
-  sequence?: boolean // 주문 순서 기믹
+  gimmick: DragGimmick
   itemSize: Vec
   makeTargets: (wanted: number) => TargetSlot[]
 }
@@ -30,11 +33,12 @@ type ThemeCfg = DragCfg | TimingCfg | MashCfg
 
 const THEMES: Record<ThemeId, ThemeCfg> = {
   // ── A 드래그 ──
+  // 초밥집: 샤리마다 요구 어종이 다름(매칭) — 참치/연어/계란을 맞는 샤리에
   sushi: {
     template: 'drag',
     bg: 'sushi-bg',
-    pool: ['sushi-tuna'],
-    repeatItem: true,
+    pool: ['sushi-tuna', 'sushi-salmon', 'sushi-egg'],
+    gimmick: 'match',
     itemSize: { x: 150, y: 92 },
     makeTargets: wanted => {
       const gap = 720 / (wanted + 1)
@@ -45,7 +49,7 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     template: 'drag',
     bg: 'gimbap-bg',
     pool: ['gimbap-ham', 'gimbap-egg', 'gimbap-pickle', 'gimbap-crab'],
-    sequence: true, // 주문 순서대로만
+    gimmick: 'sequence', // 주문 순서대로만
     itemSize: { x: 132, y: 80 },
     makeTargets: wanted => [slot({ x: 160, y: 580, w: 400, h: 180 }, 'gimbap-base', wanted)],
   },
@@ -53,6 +57,7 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     template: 'drag',
     bg: 'cvs-bg',
     pool: ['cvs-item-ramen', 'cvs-item-drink', 'cvs-item-snack', 'cvs-item-milk'],
+    gimmick: 'quantity', // 같은 상품 ×n 수량 주문
     itemSize: { x: 122, y: 122 },
     makeTargets: wanted => [slot({ x: 430, y: 540, w: 230, h: 220 }, 'cvs-scanner', wanted)],
   },
@@ -60,6 +65,7 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     template: 'drag',
     bg: 'bakery-bg',
     pool: ['bakery-bread-cream', 'bakery-bread-red', 'bakery-bread-salt', 'bakery-bread-choco'],
+    gimmick: 'quantity',
     itemSize: { x: 134, y: 96 },
     makeTargets: wanted => [slot({ x: 180, y: 560, w: 360, h: 200 }, 'bakery-tray', wanted)],
   },
@@ -129,16 +135,45 @@ const shuffle = <T,>(arr: T[], rng: Rng): T[] => {
 }
 
 function makeDragLevel(theme: ThemeId, cfg: DragCfg, difficulty: number, rng: Rng): DragLevel {
-  const wanted = cfg.repeatItem ? Math.min(2 + difficulty, 4) : Math.min(2 + difficulty, 3)
-  const wantedIds = cfg.repeatItem
-    ? Array.from({ length: wanted }, () => cfg.pool[0])
-    : shuffle(cfg.pool, rng).slice(0, wanted)
-  const fakePool = cfg.repeatItem ? [] : cfg.pool.filter(id => !wantedIds.includes(id))
-  const fakeIds = shuffle(fakePool, rng).slice(0, fakePool.length > 0 ? 1 : 0)
-  const sequence = cfg.sequence === true
+  let wantedIds: string[]
+  let fakeIds: string[] = []
+  let targets: TargetSlot[]
 
+  if (cfg.gimmick === 'match') {
+    // 슬롯마다 요구 아이템을 랜덤 배정(중복 허용) — 아이템은 요구 목록과 정확히 일치
+    const wanted = Math.min(2 + difficulty, 4)
+    const slotWants = Array.from({ length: wanted }, () => cfg.pool[Math.floor(rng.next() * cfg.pool.length)])
+    targets = cfg.makeTargets(wanted)
+    targets.forEach((t, i) => (t.wants = slotWants[i]))
+    wantedIds = shuffle(slotWants, rng)
+  } else if (cfg.gimmick === 'quantity') {
+    // 수량 주문: 상품 2종 중 일부는 ×n — 총 3+diff개(최대 4) + 페이크 1
+    const count = Math.min(3 + difficulty, 4)
+    const distinct = shuffle(cfg.pool, rng).slice(0, 2)
+    wantedIds = [
+      ...distinct,
+      ...Array.from({ length: count - 2 }, () => distinct[Math.floor(rng.next() * distinct.length)]),
+    ]
+    const fakePool = cfg.pool.filter(id => !distinct.includes(id))
+    fakeIds = shuffle(fakePool, rng).slice(0, 1)
+    targets = cfg.makeTargets(count)
+  } else {
+    // sequence(김밥): 서로 다른 재료를 주문 순서대로
+    const wanted = Math.min(2 + difficulty, 3)
+    wantedIds = shuffle(cfg.pool, rng).slice(0, wanted)
+    const fakePool = cfg.pool.filter(id => !wantedIds.includes(id))
+    fakeIds = shuffle(fakePool, rng).slice(0, 1)
+    targets = cfg.makeTargets(wanted)
+  }
+
+  const sequence = cfg.gimmick === 'sequence'
   const timeLimit = Math.round(
-    (1500 + wanted * 1300 + fakeIds.length * 400 + (sequence ? 500 : 0)) * Math.pow(0.9, difficulty),
+    (1500 +
+      wantedIds.length * 1300 +
+      fakeIds.length * 400 +
+      (sequence ? 500 : 0) +
+      (cfg.gimmick === 'match' ? wantedIds.length * 250 : 0)) *
+      Math.pow(0.9, difficulty),
   )
 
   const allIds = shuffle(
@@ -157,10 +192,11 @@ function makeDragLevel(theme: ThemeId, cfg: DragCfg, difficulty: number, rng: Rn
     difficulty,
     timeLimit,
     timeRemain: timeLimit,
-    targets: cfg.makeTargets(wanted),
+    targets,
     bgSprite: cfg.bg,
     items,
-    orderIds: sequence || fakeIds.length > 0 ? wantedIds : [],
+    // match는 슬롯 위 칩이 주문표 역할 — 별도 주문 패널 없음
+    orderIds: cfg.gimmick === 'match' ? [] : wantedIds,
     sequence,
     seqIdx: 0,
     penaltyT: 0,
@@ -170,7 +206,12 @@ function makeDragLevel(theme: ThemeId, cfg: DragCfg, difficulty: number, rng: Rn
 function makeTimingLevel(theme: ThemeId, cfg: TimingCfg, difficulty: number, rng: Rng): TimingLevel {
   const reps = Math.min(2 + difficulty, 4)
   const zoneWidth = (cfg.pattern === 'hold' ? 0.21 : 0.22) - 0.04 * difficulty
-  const zoneStart = 0.5 + rng.next() * (0.92 - zoneWidth - 0.5)
+  // rep마다 다른 구간 — 성공할 때마다 목표선이 이동한다 (hold는 40% 이상 구간 보장)
+  const minStart = cfg.pattern === 'hold' ? 0.4 : 0.15
+  const zones = Array.from({ length: reps }, () => {
+    const start = minStart + rng.next() * (0.92 - zoneWidth - minStart)
+    return { start, end: start + zoneWidth }
+  })
   const speed =
     cfg.pattern === 'hold' ? 0.55 + 0.12 * difficulty : cfg.pattern === 'sine' ? 1.7 + 0.4 * difficulty : 0.5 + 0.13 * difficulty
   const timeLimit = Math.round((2000 + reps * 2000) * Math.pow(0.92, difficulty))
@@ -187,7 +228,7 @@ function makeTimingLevel(theme: ThemeId, cfg: TimingCfg, difficulty: number, rng
     t: 0,
     holding: false,
     speed,
-    zone: { start: zoneStart, end: zoneStart + zoneWidth },
+    zones,
     reps,
     done: 0,
     penaltyT: 0,

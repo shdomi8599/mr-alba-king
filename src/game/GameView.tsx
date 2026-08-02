@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createSession, pointerSession, tickSession, LIVES, ROUNDS_TOTAL, type Session } from '../engine/session'
+import { currentZone } from '../engine/templates/timing'
 import type { GuideStep, Level, PointerInput, Rect, ThemeId } from '../engine/types'
 import { BG, PLACEHOLDER } from '../assets/registry'
 import { T } from './texts'
@@ -21,8 +22,11 @@ const INSTR: Record<ThemeId, string> = {
   wash: 'instr-wash',
   song: 'instr-song',
 }
-// 지시어 아래 한 줄 힌트 (가이드는 1라운드뿐이므로 조작이 새로운 테마엔 힌트로 안내)
+// 지시어 아래 한 줄 힌트 (가이드는 1라운드뿐이므로 새 조작/기믹 테마엔 힌트로 안내)
 const HINT: Partial<Record<ThemeId, string>> = {
+  sushi: 'hint-sushi',
+  cvs: 'hint-cvs',
+  bakery: 'hint-bakery',
   cafe: 'hint-cafe',
   chicken: 'hint-chicken',
   fish: 'hint-fish',
@@ -149,18 +153,39 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
             {lv.orderIds.length > 0 && (
               <div className="order">
                 <span>{T('order-label')}</span>
-                {lv.orderIds.map((id, i) => (
-                  <div key={`${id}-${i}`} className={`chipwrap ${lv.sequence && i < lv.seqIdx ? 'used' : ''}`}>
-                    <i style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
-                    {lv.sequence && <b>{i + 1}</b>}
-                  </div>
-                ))}
+                {lv.sequence
+                  ? lv.orderIds.map((id, i) => (
+                      <div key={`${id}-${i}`} className={`chipwrap ${i < lv.seqIdx ? 'used' : ''}`}>
+                        <i style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
+                        <b>{i + 1}</b>
+                      </div>
+                    ))
+                  : [...new Set(lv.orderIds)].map(id => {
+                      const n = lv.orderIds.filter(x => x === id).length
+                      return (
+                        <div key={id} className="chipwrap">
+                          <i style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
+                          {n > 1 && <b>×{n}</b>}
+                        </div>
+                      )
+                    })}
               </div>
             )}
             {lv.targets.map((t, i) => (
               <div key={i}>
                 <div className="target" style={{ left: t.rect.x - 10, top: t.rect.y - 10, width: t.rect.w + 20, height: t.rect.h + 20 }} />
                 <Ph id={t.sprite} x={t.rect.x} y={t.rect.y} w={t.rect.w} h={t.rect.h} />
+                {t.wants && t.filled < t.capacity && (
+                  <div
+                    className="wantchip"
+                    style={{
+                      left: t.rect.x + t.rect.w / 2 - 19,
+                      top: t.rect.y - 52,
+                      background: PLACEHOLDER[t.wants]?.fill ?? '#888',
+                      borderColor: PLACEHOLDER[t.wants]?.stroke ?? '#555',
+                    }}
+                  />
+                )}
               </div>
             ))}
             {lv.items.map(it => (
@@ -186,7 +211,13 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
               {lv.done} / {lv.reps}
             </div>
             <div className="gauge" style={{ left: GAUGE.x, top: GAUGE.y, width: GAUGE.w, height: GAUGE.h }}>
-              <div className="zone" style={{ left: `${lv.zone.start * 100}%`, width: `${(lv.zone.end - lv.zone.start) * 100}%` }} />
+              <div
+                className="zone"
+                style={{
+                  left: `${currentZone(lv).start * 100}%`,
+                  width: `${(currentZone(lv).end - currentZone(lv).start) * 100}%`,
+                }}
+              />
               {lv.pattern === 'hold' && <div className="fill" style={{ width: `${lv.value * 100}%` }} />}
               <div className="marker" style={{ left: `calc(${lv.value * 100}% - 4px)` }} />
             </div>
