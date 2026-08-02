@@ -1,0 +1,21 @@
+{
+  "order": 6,
+  "name": "ui-batch",
+  "kind": "image",
+  "goal": "UI·화면 에셋 — 타이틀 배경, 로고 심볼, 사장님 얼굴 2종(평가서·잔소리용), 목숨 아이콘. 골든 톤 앵커. 글자는 절대 이미지에 넣지 않음(코드 렌더).",
+  "style": "bold clean dark outlines, vibrant high-saturation colors, energetic comic cartoon sticker style, playful chunky proportions, flat cel shading with one simple gloss highlight",
+  "common": "no text, no watermark, no logo lettering, no letters of any alphabet, 1024x1024 PNG with alpha unless stated otherwise, single centered subject, transparent background",
+  "items": [
+    {
+      "id": "title-bg",
+      "label": "타이틀 배경",
+      "subject": "a lively collage-style scene of empty korean part-time job stations (sushi counter, gimbap kitchen, cafe bar, convenience store, delivery boxes) arranged around a bright empty center area",
+      "common": "portrait 1024x1536 full-frame scene (no transparency), the CENTER 50% must be simple and low-contrast to hold a logo and a button rendered by code, no text, no people, warm energetic lighting"
+    },
+    { "id": "logo-symbol", "label": "로고 심볼(왕관)", "subject": "a chunky golden king's crown with a tiny sweat drop, mascot-like, worn slightly tilted — symbol for a part-time-job king" },
+    { "id": "ui-boss-happy", "label": "사장님 얼굴(만족)", "subject": "the face and shoulders of a middle-aged korean shop owner character with an apron, satisfied proud smile with arms crossed, comic mascot style" },
+    { "id": "ui-boss-angry", "label": "사장님 얼굴(잔소리)", "subject": "the face and shoulders of the same middle-aged korean shop owner character with an apron, comically annoyed scolding expression with a popped vein, comic mascot style" },
+    { "id": "ui-life", "label": "목숨 아이콘(명찰)", "subject": "a small employee name badge clip pin with a heart symbol on it, game life icon" }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

@@ -63,6 +63,36 @@ const itemName = (id: string): string | null => {
   return n.startsWith('name-') ? null : n
 }
 
+// 성공 파티클 버스트 (판정 연출)
+const BURST_COLORS = ['#8ae08f', '#f5b942', '#5a86e6', '#e88a9a']
+function Burst({ gold = false }: { gold?: boolean }) {
+  const n = gold ? 22 : 14
+  return (
+    <div className="burst">
+      {Array.from({ length: n }, (_, i) => {
+        const a = (i / n) * Math.PI * 2 + (i % 2) * 0.35
+        const d = 150 + (i % 3) * 75
+        const s = 13 + (i % 3) * 8
+        return (
+          <i
+            key={i}
+            style={
+              {
+                '--dx': `${Math.cos(a) * d}px`,
+                '--dy': `${Math.sin(a) * d}px`,
+                width: s,
+                height: s,
+                animationDelay: `${(i % 4) * 28}ms`,
+                background: gold ? '#f5b942' : BURST_COLORS[i % 4],
+              } as React.CSSProperties
+            }
+          />
+        )
+      })}
+    </div>
+  )
+}
+
 // 1라운드 가이드 스텝별 스포트라이트 영역
 function guideFocus(lv: Level, step: GuideStep): Rect | null {
   if (lv.template !== 'drag') return null
@@ -136,8 +166,9 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
   const focus = guideStep ? guideFocus(lv, guideStep) : null
   const bubbleAbove = focus ? focus.y > 420 : false
 
+  const failing = s.phase === 'result' && s.lastResult === 'fail'
   return (
-    <div className="game-wrap" ref={wrapRef}>
+    <div className={`game-wrap ${failing ? 'shake' : ''}`} ref={wrapRef}>
       <div
         className="game-canvas"
         style={{
@@ -163,7 +194,7 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
           </div>
           <div className="score">{s.score}</div>
         </div>
-        <div className="timerbar">
+        <div className={`timerbar ${s.phase === 'play' && lv.timeRemain < lv.timeLimit * 0.3 ? 'low' : ''}`}>
           <i
             style={{
               width: `${Math.max(0, lv.timeRemain / lv.timeLimit) * 100}%`,
@@ -171,7 +202,11 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
             }}
           />
         </div>
-        {s.combo >= 2 && <div className="combo">{T('sys-combo').replace('{n}', String(s.combo))}</div>}
+        {s.combo >= 2 && (
+          <div className="combo" key={s.combo}>
+            {T('sys-combo').replace('{n}', String(s.combo))}
+          </div>
+        )}
 
         {lv.template === 'drag' && (
           <>
@@ -322,9 +357,13 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
           </>
         )}
         {s.phase === 'result' && (
-          <div className={`result ${s.lastResult ?? ''}`}>
-            {s.lastResult === 'clear' ? (s.lastPerfect ? T('sys-perfect') : 'OK!') : T('sys-fail')}
-          </div>
+          <>
+            {s.lastResult === 'clear' && <Burst gold={s.lastPerfect} />}
+            {s.lastResult === 'clear' && s.lastPerfect && <div className="goldflash" />}
+            <div className={`result ${s.lastResult ?? ''}`}>
+              {s.lastResult === 'clear' ? (s.lastPerfect ? T('sys-perfect') : 'OK!') : T('sys-fail')}
+            </div>
+          </>
         )}
       </div>
     </div>

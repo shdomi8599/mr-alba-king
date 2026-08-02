@@ -232,3 +232,4 @@
 {"ts":"2026-08-02T07:37:25.468Z","order":5,"item":"box-bg","event":"promoted","to":"src/assets/img/box-bg.webp"}
 {"ts":"2026-08-02T07:37:25.964Z","order":5,"item":"wash-bg","event":"promoted","to":"src/assets/img/wash-bg.webp"}
 {"ts":"2026-08-02T07:37:26.416Z","order":5,"item":"song-bg","event":"promoted","to":"src/assets/img/song-bg.webp"}
+{"ts":"2026-08-02T07:38:07.986Z","order":6,"item":"title-bg","event":"ordered","out":"pipeline/staging/assets/title-bg.png","ref":true}
