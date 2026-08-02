@@ -1,0 +1,12 @@
+#!/bin/sh
+# 커밋 컨벤션 강제: type(scope): 요약  (STRATEGY.md §10)
+# 예: feat(art): 초밥 스프라이트 3종 — order#12, 2회 반려 후 채택
+msg=$(head -n1 "$1")
+case "$msg" in
+  feat\(*\):\ *|fix\(*\):\ *|chore\(*\):\ *|docs\(*\):\ *|refactor\(*\):\ *|test\(*\):\ *|perf\(*\):\ *) exit 0 ;;
+  Merge*|Revert*) exit 0 ;;
+  *)
+    echo "✗ 커밋 메시지 컨벤션 위반: '$msg'"
+    echo "  형식: type(scope): 요약   (type: feat|fix|chore|docs|refactor|test|perf)"
+    exit 1 ;;
+esac
