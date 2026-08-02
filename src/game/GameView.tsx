@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { createSession, pointerSession, tickSession, LIVES, ROUNDS_TOTAL, type Session } from '../engine/session'
+import { createSession, difficultyOf, pointerSession, tickSession, LIVES, ROUNDS_TOTAL, type Session } from '../engine/session'
 import { currentZone } from '../engine/templates/timing'
+import { playSfx, startBgm, stopBgm } from './sound'
 import type { GuideStep, Level, PointerInput, Rect, ThemeId } from '../engine/types'
 import { BG, PLACEHOLDER, spriteUrl } from '../assets/registry'
 import { T } from './texts'
@@ -128,6 +129,9 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
     let raf = 0
     let last = performance.now()
     let acc = 0
+    let prevPhase = ''
+    let prevPenalty = 0
+    startBgm('bgm-main')
     const loop = (now: number) => {
       acc += Math.min(now - last, 100)
       last = now
@@ -136,7 +140,18 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
         tickSession(s, FIXED)
         acc -= FIXED
       }
+      // 사운드 트리거 (엣지 감지 — 승격된 오디오 없으면 전부 무음 no-op)
+      if (s.phase !== prevPhase) {
+        if (s.phase === 'instruct') playSfx('sfx-start')
+        if (s.phase === 'result') playSfx(s.lastResult === 'clear' ? (s.lastPerfect ? 'sfx-perfect' : 'sfx-success') : 'sfx-fail')
+        prevPhase = s.phase
+      }
+      const pen = s.level.penaltyT
+      if (pen > 0 && prevPenalty <= 0) playSfx('sfx-penalty')
+      prevPenalty = pen
+      if (difficultyOf(s.levelIndex) >= 2) startBgm('bgm-fast')
       if (s.phase === 'gameover' || s.phase === 'complete') {
+        stopBgm()
         onGameOver(s)
         return
       }
@@ -144,7 +159,10 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
       raf = requestAnimationFrame(loop)
     }
     raf = requestAnimationFrame(loop)
-    return () => cancelAnimationFrame(raf)
+    return () => {
+      cancelAnimationFrame(raf)
+      stopBgm()
+    }
   }, [onGameOver])
 
   const toLogical = useCallback(

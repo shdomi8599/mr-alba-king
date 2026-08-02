@@ -8,7 +8,7 @@
     { "id": "sfx-success", "type": "sfx", "dur": 0.7, "prompt": "bright cheerful success ding with a comic bounce, satisfying, short" },
     { "id": "sfx-perfect", "type": "sfx", "dur": 1.2, "prompt": "sparkling triumphant short jingle, golden chime run with a tiny fanfare, joyful" },
     { "id": "sfx-fail", "type": "sfx", "dur": 0.9, "prompt": "comic sad fail honk, short descending womp womp, cartoonish, not harsh" },
-    { "id": "sfx-tap", "type": "sfx", "dur": 0.4, "prompt": "soft snappy pop tap, light wooden tok, very short" },
+    { "id": "sfx-tap", "type": "sfx", "dur": 0.5, "prompt": "soft snappy pop tap, light wooden tok, very short" },
     { "id": "sfx-penalty", "type": "sfx", "dur": 0.5, "prompt": "quick comic buzzer wrong-answer sound, short, cartoonish" },
     { "id": "bgm-main-a", "type": "bgm", "seconds": 60, "seed": 11, "prompt": "Fast upbeat comedic instrumental for a frantic part-time job minigame rush. Bouncy brass stabs, plucky bass, cheeky organ, tight punchy drums, handclaps. Mischievous slapstick kitchen-rush energy. Medium-fast tempo, clean punchy mix, no vocals, smooth and loopable." },
     { "id": "bgm-main-b", "type": "bgm", "seconds": 60, "seed": 22, "prompt": "Fast upbeat comedic instrumental for a frantic part-time job minigame rush. Bouncy brass stabs, plucky bass, cheeky organ, tight punchy drums, handclaps. Mischievous slapstick kitchen-rush energy. Medium-fast tempo, clean punchy mix, no vocals, smooth and loopable." },

@@ -261,3 +261,19 @@
 {"ts":"2026-08-02T09:40:06.289Z","order":8,"item":"sfx-tap","event":"ordered","type":"sfx"}
 {"ts":"2026-08-02T09:40:06.639Z","order":8,"item":"sfx-tap","event":"failed","reason":"fal fal-ai/elevenlabs/sound-effects/v2 → 422: {\"detail\":[{\"type\":\"greater_than_equal\",\"loc\":[\"body\",\"duration_seconds\"],\"msg\":\"Input should be greater than or equal to 0.5\",\"input\":0.4,\"ctx\":{\"ge\":0.5"}
 {"ts":"2026-08-02T09:40:06.639Z","order":8,"item":"sfx-penalty","event":"ordered","type":"sfx"}
+{"ts":"2026-08-02T09:40:10.079Z","order":8,"item":"sfx-penalty","event":"generated","out":"pipeline\\staging\\audio\\sfx-penalty.ogg"}
+{"ts":"2026-08-02T09:40:10.080Z","order":8,"item":"bgm-main-a","event":"ordered","type":"bgm"}
+{"ts":"2026-08-02T09:40:17.034Z","order":8,"item":"bgm-main-a","event":"generated","out":"pipeline\\staging\\audio\\bgm-main-a.ogg"}
+{"ts":"2026-08-02T09:40:17.035Z","order":8,"item":"bgm-main-b","event":"ordered","type":"bgm"}
+{"ts":"2026-08-02T09:40:23.877Z","order":8,"item":"bgm-main-b","event":"generated","out":"pipeline\\staging\\audio\\bgm-main-b.ogg"}
+{"ts":"2026-08-02T09:40:23.878Z","order":8,"item":"bgm-main-c","event":"ordered","type":"bgm"}
+{"ts":"2026-08-02T09:40:30.316Z","order":8,"item":"bgm-main-c","event":"generated","out":"pipeline\\staging\\audio\\bgm-main-c.ogg"}
+{"ts":"2026-08-02T09:40:30.317Z","order":8,"item":"bgm-fast-a","event":"ordered","type":"bgm"}
+{"ts":"2026-08-02T09:40:36.603Z","order":8,"item":"bgm-fast-a","event":"generated","out":"pipeline\\staging\\audio\\bgm-fast-a.ogg"}
+{"ts":"2026-08-02T09:40:36.604Z","order":8,"item":"bgm-fast-b","event":"ordered","type":"bgm"}
+{"ts":"2026-08-02T09:40:42.778Z","order":8,"item":"bgm-fast-b","event":"generated","out":"pipeline\\staging\\audio\\bgm-fast-b.ogg"}
+{"ts":"2026-08-02T09:41:25.221Z","order":7,"item":"ui-boss-angry","event":"generated","out":"pipeline/staging/assets/ui-boss-angry.png"}
+{"ts":"2026-08-02T09:42:05.988Z","order":8,"item":"sfx-tap","event":"ordered","type":"sfx"}
+{"ts":"2026-08-02T09:42:06.877Z","order":8,"item":"sfx-tap","event":"failed","reason":"fal fal-ai/elevenlabs/sound-effects/v2 → 422: {\"detail\":[{\"type\":\"greater_than_equal\",\"loc\":[\"body\",\"duration_seconds\"],\"msg\":\"Input should be greater than or equal to 0.5\",\"input\":0.4,\"ctx\":{\"ge\":0.5"}
+{"ts":"2026-08-02T09:42:36.583Z","order":8,"item":"sfx-tap","event":"ordered","type":"sfx"}
+{"ts":"2026-08-02T09:42:40.439Z","order":8,"item":"sfx-tap","event":"generated","out":"pipeline\\staging\\audio\\sfx-tap.ogg"}
