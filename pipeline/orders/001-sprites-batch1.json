@@ -1,0 +1,23 @@
+{
+  "order": 1,
+  "name": "sprites-batch1",
+  "kind": "image",
+  "goal": "1차 스프라이트 배치 — 순환 앞쪽 테마(김밥·카페·초밥) 인게임 오브젝트 12종. 골든 레퍼런스(tone-a-pop-comic, ADR-008) 앵커. 0.5초 판독성이 최우선 검수 기준.",
+  "style": "bold clean dark outlines, vibrant high-saturation colors, energetic comic cartoon sticker style, playful slightly exaggerated chunky proportions, flat cel shading with one simple gloss highlight",
+  "common": "single centered object, isolated on a fully transparent background, no text, no watermark, no logo, 1024x1024 PNG with alpha, generous ~12% margin, slight 3/4 top-down angle, instantly readable silhouette even at small size",
+  "items": [
+    { "id": "gimbap-base", "label": "김밥 펼침면", "subject": "an unrolled gimbap in progress: a rectangular sheet of dark seaweed topped with a flat layer of white rice, ready for fillings" },
+    { "id": "gimbap-ham", "label": "재료: 햄", "subject": "a long rectangular strip of pink ham, a gimbap filling" },
+    { "id": "gimbap-egg", "label": "재료: 계란", "subject": "a long rectangular strip of yellow fried egg, a gimbap filling" },
+    { "id": "gimbap-pickle", "label": "재료: 단무지", "subject": "a long strip of bright yellow pickled radish (danmuji), a gimbap filling" },
+    { "id": "gimbap-crab", "label": "재료: 맛살", "subject": "a long strip of crab stick (surimi) with red-orange surface over white, a gimbap filling" },
+    { "id": "sushi-rice", "label": "샤리", "subject": "an oval mound of white sushi rice (shari) with visible plump grains, no topping" },
+    { "id": "sushi-tuna", "label": "참치 회", "subject": "a single glossy slice of raw red tuna sashimi" },
+    { "id": "sushi-salmon", "label": "연어 회", "subject": "a single glossy slice of raw salmon sashimi, orange with thin white fat stripes" },
+    { "id": "sushi-egg", "label": "계란 초밥 토핑", "subject": "a rectangular slice of tamagoyaki sweet egg omelette, pale yellow with light grill marks" },
+    { "id": "sushi-plate", "label": "접시", "subject": "a simple dark ceramic oval sushi plate, empty" },
+    { "id": "cafe-cup", "label": "컵", "subject": "a white coffee cup without lid, empty, slight 3/4 top-down view showing the opening" },
+    { "id": "cafe-kettle", "label": "주전자", "subject": "a slim stainless gooseneck pour-over coffee kettle" }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

@@ -33,9 +33,9 @@ for (const item of order.items) {
     : ''
   const prompt =
     `Generate ONE image and save it to the file "${out}" (relative to the current workspace). ` +
-    `Subject: ${order.subject}. ` + anchor +
-    `Art style: ${item.style}. ` +
-    `Output requirements: ${order.common}. ` +
+    `Subject: ${item.subject ?? order.subject}. ` + anchor +
+    `Art style: ${item.style ?? order.style ?? ''}. ` +
+    `Output requirements: ${item.common ?? order.common}. ` +
     `Use your image generation tool. Do not create or modify any other files. Do not write code.`
 
   emit('ordered', item.id, { out, ref: hasRef })

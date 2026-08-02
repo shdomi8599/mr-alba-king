@@ -1,0 +1,14 @@
+{
+  "order": 2,
+  "name": "backgrounds-batch1",
+  "kind": "image",
+  "goal": "1차 배경 배치 — 김밥·카페·초밥 테마 씬. 골든 톤 앵커. 중앙~하단은 게임플레이 영역이므로 비워두고(저대비), 배경이 오브젝트 판독성을 해치지 않아야 함.",
+  "style": "bold clean dark outlines on foreground shapes, vibrant but slightly desaturated background palette so gameplay objects pop, energetic comic cartoon style, flat cel shading",
+  "common": "portrait 1024x1536 game background scene filling the whole frame (no transparency), uncluttered low-contrast center and lower area reserved for gameplay, no text, no watermark, no characters, no people",
+  "items": [
+    { "id": "gimbap-bg", "label": "분식집 배경", "subject": "the interior counter of a cozy Korean snack diner (bunsikjip): warm wood counter, menu-less walls, steam pots in the far background" },
+    { "id": "sushi-bg", "label": "초밥집 배경", "subject": "a sushi restaurant counter scene: dark teal walls, wooden sushi bar counter in the foreground, subtle japanese lanterns in the far background" },
+    { "id": "cafe-bg", "label": "카페 배경", "subject": "a warm cafe bar counter scene: wooden counter, espresso machine silhouette to one side in the background, warm brown tones" }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}
