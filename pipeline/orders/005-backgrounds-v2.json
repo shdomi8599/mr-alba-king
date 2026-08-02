@@ -1,0 +1,21 @@
+{
+  "order": 5,
+  "name": "backgrounds-v2",
+  "kind": "image",
+  "goal": "배경 전면 재발주 (10테마) — 무대 정합성(ADR-009): 알바(작업자) 1인칭 시점, 화면 하단 40~45%는 게임 오브젝트가 '놓이는' 빈 작업 표면. 구세대(손님 시점 풍경, order#2·4)는 오브젝트가 공중에 떠 보여 반려됨.",
+  "style": "bold clean dark outlines on foreground shapes, vibrant but slightly desaturated palette so gameplay objects pop, energetic comic cartoon style, flat cel shading",
+  "common": "portrait 1024x1536 game background, first-person view from the WORKER's position at their station. CRITICAL COMPOSITION: the bottom 40-45% of the frame is one continuous EMPTY work surface seen at a gentle downward angle (like looking down at your own counter), completely clean and uncluttered so game objects can sit on it; the shop context fills the upper half with soft, low-contrast detail; consistent warm lighting; no text, no watermark, no people, no hands",
+  "items": [
+    { "id": "gimbap-bg", "label": "김밥천국 주방", "subject": "the prep station inside a korean snack diner kitchen from the worker's view: lower half is an empty stainless-and-wood prep counter, upper half shows ingredient containers, rice cooker and kitchen shelves in soft detail" },
+    { "id": "sushi-bg", "label": "초밥집 도마", "subject": "a sushi chef's station from the chef's own view: lower half is an empty pale hinoki wood cutting counter, upper half shows the quiet dark-teal restaurant interior and hanging lanterns in soft detail" },
+    { "id": "cafe-bg", "label": "카페 바 안쪽", "subject": "a barista's station from the barista's view: lower half is an empty wooden counter top, upper half shows an espresso machine to one side and cafe shelves in soft warm detail" },
+    { "id": "cvs-bg", "label": "편의점 계산대 안쪽", "subject": "a convenience store checkout from the cashier's side: lower half is an empty checkout counter surface, upper half shows store shelves with colorful plain goods in soft detail, green accents" },
+    { "id": "bakery-bg", "label": "빵집 작업대", "subject": "a bakery back-counter from the staff's view: lower half is an empty warm wooden work table, upper half shows bread display shelves in soft butter-yellow detail" },
+    { "id": "chicken-bg", "label": "치킨집 튀김 스테이션", "subject": "a korean fried chicken kitchen from the cook's view: lower half is an empty stainless steel fry station counter, upper half shows kitchen equipment in soft warm reddish-brown detail" },
+    { "id": "fish-bg", "label": "붕어빵 노점 철판", "subject": "a korean winter street stall from the vendor's view behind the griddle: lower half is an empty flat griddle station surface, upper half shows the stall canopy, falling snow and dusk street in soft blue detail with warm lamp glow" },
+    { "id": "box-bg", "label": "물류창고 작업 구역", "subject": "a warehouse loading area from the worker's view: lower half is an empty concrete floor and low roller-table surface, upper half shows stacked plain boxes, shelving and a truck bay in soft grey-brown detail" },
+    { "id": "wash-bg", "label": "세차장 베이", "subject": "a self car-wash bay from the washer's view: lower half is empty wet tiled ground with soft reflections, upper half shows the wash bay frame, hanging hose and floating soap bubbles in soft water-blue detail" },
+    { "id": "song-bg", "label": "노래방 테이블", "subject": "a karaoke room from a seated guest's view: lower half is an empty low table surface, upper half shows the padded sofa, dim purple lighting and a subtle disco ball glow in soft detail" }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

@@ -8,7 +8,7 @@ import { T } from './texts'
 const LW = 720
 const LH = 1280
 const FIXED = 1000 / 60
-const GAUGE: Rect = { x: 80, y: 790, w: 560, h: 84 }
+const GAUGE: Rect = { x: 80, y: 920, w: 560, h: 84 } // 작업 표면 밴드 하단 — 소품(컵/솥/틀)이 위에 놓임
 
 const INSTR: Record<ThemeId, string> = {
   sushi: 'instr-sushi',

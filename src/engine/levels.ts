@@ -42,7 +42,7 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     itemSize: { x: 150, y: 92 },
     makeTargets: wanted => {
       const gap = 720 / (wanted + 1)
-      return Array.from({ length: wanted }, (_, i) => slot({ x: gap * (i + 1) - 82, y: 600, w: 164, h: 128 }, 'sushi-rice', 1))
+      return Array.from({ length: wanted }, (_, i) => slot({ x: gap * (i + 1) - 82, y: 760, w: 164, h: 128 }, 'sushi-rice', 1))
     },
   },
   gimbap: {
@@ -51,7 +51,7 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     pool: ['gimbap-ham', 'gimbap-egg', 'gimbap-pickle', 'gimbap-crab'],
     gimmick: 'sequence', // 주문 순서대로만
     itemSize: { x: 132, y: 80 },
-    makeTargets: wanted => [slot({ x: 160, y: 580, w: 400, h: 180 }, 'gimbap-base', wanted)],
+    makeTargets: wanted => [slot({ x: 160, y: 730, w: 400, h: 180 }, 'gimbap-base', wanted)],
   },
   cvs: {
     template: 'drag',
@@ -59,7 +59,7 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     pool: ['cvs-item-ramen', 'cvs-item-drink', 'cvs-item-snack', 'cvs-item-milk'],
     gimmick: 'quantity', // 같은 상품 ×n 수량 주문
     itemSize: { x: 122, y: 122 },
-    makeTargets: wanted => [slot({ x: 430, y: 540, w: 230, h: 220 }, 'cvs-scanner', wanted)],
+    makeTargets: wanted => [slot({ x: 430, y: 720, w: 230, h: 220 }, 'cvs-scanner', wanted)],
   },
   bakery: {
     template: 'drag',
@@ -67,7 +67,7 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     pool: ['bakery-bread-cream', 'bakery-bread-red', 'bakery-bread-salt', 'bakery-bread-choco'],
     gimmick: 'quantity',
     itemSize: { x: 134, y: 96 },
-    makeTargets: wanted => [slot({ x: 180, y: 560, w: 360, h: 200 }, 'bakery-tray', wanted)],
+    makeTargets: wanted => [slot({ x: 180, y: 730, w: 360, h: 200 }, 'bakery-tray', wanted)],
   },
   // ── B 타이밍 ──
   cafe: {
@@ -75,8 +75,8 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     bg: 'cafe-bg',
     pattern: 'hold',
     deco: [
-      { id: 'cafe-kettle', rect: { x: 420, y: 380, w: 200, h: 170 } },
-      { id: 'cafe-cup', rect: { x: 250, y: 560, w: 220, h: 190 } },
+      { id: 'cafe-kettle', rect: { x: 430, y: 480, w: 200, h: 170 } },
+      { id: 'cafe-cup', rect: { x: 250, y: 660, w: 220, h: 190 } },
     ],
   },
   chicken: {
@@ -84,8 +84,8 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     bg: 'chicken-bg',
     pattern: 'sine',
     deco: [
-      { id: 'chicken-pot', rect: { x: 180, y: 420, w: 360, h: 260 } },
-      { id: 'chicken-net', rect: { x: 280, y: 330, w: 160, h: 120 } },
+      { id: 'chicken-pot', rect: { x: 180, y: 570, w: 360, h: 260 } },
+      { id: 'chicken-net', rect: { x: 280, y: 470, w: 160, h: 120 } },
     ],
   },
   fish: {
@@ -93,8 +93,8 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     bg: 'fish-bg',
     pattern: 'saw',
     deco: [
-      { id: 'fish-mold', rect: { x: 170, y: 430, w: 380, h: 250 } },
-      { id: 'fish-bread', rect: { x: 280, y: 480, w: 160, h: 140 } },
+      { id: 'fish-mold', rect: { x: 170, y: 570, w: 380, h: 250 } },
+      { id: 'fish-bread', rect: { x: 280, y: 620, w: 160, h: 140 } },
     ],
   },
   // ── C 연타/스와이프 ──
@@ -104,23 +104,23 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     bg: 'box-bg',
     sprite: 'box-parcel',
     size: { x: 180, y: 150 },
-    area: { x: 60, y: 420, w: 480, h: 520 },
-    deco: [{ id: 'box-truck', rect: { x: 480, y: 300, w: 220, h: 300 } }],
+    area: { x: 60, y: 520, w: 480, h: 460 },
+    deco: [{ id: 'box-truck', rect: { x: 470, y: 450, w: 230, h: 300 } }],
   },
   wash: {
     template: 'mash',
     kind: 'scrub',
     bg: 'wash-bg',
-    area: { x: 110, y: 470, w: 500, h: 300 },
-    deco: [{ id: 'wash-car', rect: { x: 90, y: 450, w: 540, h: 330 } }],
+    area: { x: 110, y: 560, w: 500, h: 290 },
+    deco: [{ id: 'wash-car', rect: { x: 90, y: 540, w: 540, h: 330 } }],
   },
   song: {
     template: 'mash',
     kind: 'shake',
     bg: 'song-bg',
     deco: [
-      { id: 'song-tambourine', rect: { x: 250, y: 460, w: 220, h: 220 } },
-      { id: 'song-mic', rect: { x: 500, y: 420, w: 110, h: 210 } },
+      { id: 'song-tambourine', rect: { x: 250, y: 580, w: 220, h: 220 } },
+      { id: 'song-mic', rect: { x: 500, y: 540, w: 110, h: 210 } },
     ],
   },
 }

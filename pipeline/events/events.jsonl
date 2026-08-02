@@ -85,3 +85,17 @@
 {"ts":"2026-08-02T05:23:40.670Z","order":2,"item":"sushi-bg","event":"promoted","to":"src/assets/img/sushi-bg.webp"}
 {"ts":"2026-08-02T05:23:41.016Z","order":2,"item":"cafe-bg","event":"promoted","to":"src/assets/img/cafe-bg.webp"}
 {"ts":"2026-08-02T05:24:28.131Z","order":3,"item":"cvs-scanner","event":"ordered","out":"pipeline/staging/assets/cvs-scanner.png","ref":true}
+{"ts":"2026-08-02T05:28:08.526Z","order":3,"item":"cvs-scanner","event":"generated","out":"pipeline/staging/assets/cvs-scanner.png"}
+{"ts":"2026-08-02T05:28:08.527Z","order":3,"item":"cvs-item-ramen","event":"ordered","out":"pipeline/staging/assets/cvs-item-ramen.png","ref":true}
+{"ts":"2026-08-02T05:34:35.829Z","order":3,"item":"cvs-item-ramen","event":"generated","out":"pipeline/staging/assets/cvs-item-ramen.png"}
+{"ts":"2026-08-02T05:34:35.830Z","order":3,"item":"cvs-item-drink","event":"ordered","out":"pipeline/staging/assets/cvs-item-drink.png","ref":true}
+{"ts":"2026-08-02T05:37:46.394Z","order":3,"item":"cvs-item-drink","event":"generated","out":"pipeline/staging/assets/cvs-item-drink.png"}
+{"ts":"2026-08-02T05:37:46.395Z","order":3,"item":"cvs-item-snack","event":"ordered","out":"pipeline/staging/assets/cvs-item-snack.png","ref":true}
+{"ts":"2026-08-02T05:42:52.377Z","order":3,"item":"cvs-item-snack","event":"generated","out":"pipeline/staging/assets/cvs-item-snack.png"}
+{"ts":"2026-08-02T05:42:52.378Z","order":3,"item":"cvs-item-milk","event":"ordered","out":"pipeline/staging/assets/cvs-item-milk.png","ref":true}
+{"ts":"2026-08-02T05:46:16.760Z","order":3,"item":"cvs-item-milk","event":"generated","out":"pipeline/staging/assets/cvs-item-milk.png"}
+{"ts":"2026-08-02T05:46:16.761Z","order":3,"item":"bakery-tray","event":"ordered","out":"pipeline/staging/assets/bakery-tray.png","ref":true}
+{"ts":"2026-08-02T05:47:48.963Z","order":2,"item":"gimbap-bg","event":"rejected","reason":"���� ���ռ� ���� ? �մ� ���� ǳ���̶� ���� ������Ʈ�� ���߿� ��. �˹� 1��Ī + �ϴ� 45% �� �۾� ǥ�� ������ ����� (ADR-009)","by":"director"}
+{"ts":"2026-08-02T05:47:49.068Z","order":2,"item":"sushi-bg","event":"rejected","reason":"���� ���ռ� ���� ? �մ� ���� ǳ���̶� ���� ������Ʈ�� ���߿� ��. �˹� 1��Ī + �ϴ� 45% �� �۾� ǥ�� ������ ����� (ADR-009)","by":"director"}
+{"ts":"2026-08-02T05:47:49.177Z","order":2,"item":"cafe-bg","event":"rejected","reason":"���� ���ռ� ���� ? �մ� ���� ǳ���̶� ���� ������Ʈ�� ���߿� ��. �˹� 1��Ī + �ϴ� 45% �� �۾� ǥ�� ������ ����� (ADR-009)","by":"director"}
+{"ts":"2026-08-02T05:48:44.085Z","order":3,"item":"bakery-tray","event":"ordered","out":"pipeline/staging/assets/bakery-tray.png","ref":true}
