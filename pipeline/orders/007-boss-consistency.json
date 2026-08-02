@@ -1,0 +1,17 @@
+{
+  "order": 7,
+  "name": "boss-consistency",
+  "kind": "image",
+  "goal": "사장님 캐릭터 일관성 재발주 — 만족/잔소리가 서로 다른 인물로 나옴(디렉터 반려). 잔소리 표정을 만족 컷(기준)에 캐릭터 앵커로 재생성. PIPELINE 캐릭터 일관성 규칙의 첫 적용.",
+  "style": "bold clean dark outlines, vibrant high-saturation colors, energetic comic cartoon sticker style, flat cel shading with one simple gloss highlight",
+  "common": "no text, no watermark, 1024x1024 PNG with alpha, transparent background, single centered subject, face and shoulders framing identical to the reference",
+  "items": [
+    {
+      "id": "ui-boss-angry",
+      "label": "사장님 잔소리 (기준 컷 앵커)",
+      "ref": "pipeline/staging/assets/ui-boss-happy.png",
+      "subject": "EXACTLY the same middle-aged shop owner as the attached reference — identical face shape, hairstyle, skin tone, navy shirt and red apron, same framing — but change ONLY the expression: comically annoyed scolding, one eyebrow raised, a small popped-vein mark on the temple, mouth open mid-nag, arms still crossed"
+    }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

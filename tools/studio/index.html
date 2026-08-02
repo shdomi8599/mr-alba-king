@@ -107,6 +107,14 @@
   #lightbox .bgs { display:flex; gap:6px; }
   #lightbox .bgs button { padding:5px 12px; border-radius:8px; border:1px solid #4a443a; background:#26221d; color:#f5efe4; cursor:pointer; font-size:12px; }
   #lightbox .bgs button.on { background:#f5b942; color:#1a1815; border-color:#f5b942; font-weight:700; }
+  /* 자체 모달 — VS Code 내장 브라우저가 prompt/confirm을 차단하므로 */
+  #modal { position:fixed; inset:0; background:rgba(10,9,7,.75); display:none; align-items:center; justify-content:center; z-index:200; }
+  #modal.show { display:flex; }
+  #modal .mbox { width:min(480px, 90vw); background:#26221d; border:2px solid #f5b942; border-radius:16px; padding:22px 24px; display:flex; flex-direction:column; gap:14px; }
+  #modal .mtext { font-size:14.5px; line-height:1.6; white-space:pre-line; }
+  #modal textarea { background:#1a1815; color:#f5efe4; border:1px solid #4a443a; border-radius:10px; padding:10px 12px; font-size:13.5px; font-family:inherit; resize:vertical; }
+  #modal .mbtns { display:flex; justify-content:flex-end; gap:8px; }
+  #modal .mbtns .primary { background:#f5b942; color:#1a1815; border-color:#f5b942; font-weight:700; }
 </style>
 </head>
 <body>
@@ -126,6 +134,13 @@
   <div class="foot">결정은 이벤트로 기록되며<br>언제든 번복 가능합니다.<br>최신 결정이 이깁니다.</div>
 </nav>
 <main id="main"></main>
+<div id="modal">
+  <div class="mbox">
+    <div class="mtext" id="mText"></div>
+    <textarea id="mInput" rows="3" placeholder="반려 사유 (검수 기준의 언어로)"></textarea>
+    <div class="mbtns"><button class="btn" id="mCancel">취소</button><button class="btn primary" id="mOk">확인</button></div>
+  </div>
+</div>
 <div id="lightbox">
   <div class="frame bg-checker" id="lbFrame"><img id="lbImg" src="" alt=""></div>
   <div class="cap" id="lbCap"></div>
@@ -142,20 +157,35 @@ const STATUS_COLOR = { planned:'#4a443a', ordered:'#5c5334', generated:'#3a4a5c'
 async function load() { S = await (await fetch('/api/state')).json(); render() }
 async function post(url, data) { await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) }); await load() }
 
+// 자체 모달 — 내장 브라우저의 prompt/confirm 차단 대응
+function ask({ text, input = false }) {
+  return new Promise(res => {
+    $('#mText').textContent = text
+    const ta = $('#mInput')
+    ta.style.display = input ? 'block' : 'none'
+    ta.value = ''
+    $('#modal').classList.add('show')
+    const done = v => { $('#modal').classList.remove('show'); res(v) }
+    $('#mOk').onclick = () => done(input ? ta.value.trim() : true)
+    $('#mCancel').onclick = () => done(null)
+    if (input) setTimeout(() => ta.focus(), 50)
+  })
+}
+
 window.approve = (o,i) => post('/api/decision', { order:o, item:i, decision:'approved' })
 window.approveAll = async (o) => {
   const ord = S.orders.find(x => x.order === o)
   const targets = ord.items.filter(i => i.exists && i.status !== 'approved')
   if (!targets.length) return
-  if (!confirm(`order#${o}의 미승인 ${targets.length}건을 모두 승인합니다.`)) return
+  if (!(await ask({ text: `order#${o}의 미승인 ${targets.length}건을 모두 승인합니다.` }))) return
   for (const it of targets)
     await fetch('/api/decision', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ order:o, item:it.id, decision:'approved' }) })
   await load()
 }
-window.reject = (o,i) => { const r = prompt('반려 사유 (검수 기준의 언어로):'); if (r !== null) post('/api/decision', { order:o, item:i, decision:'rejected', reason:r }) }
+window.reject = async (o,i) => { const r = await ask({ text:'반려 사유 (검수 기준의 언어로):', input:true }); if (r !== null) post('/api/decision', { order:o, item:i, decision:'rejected', reason:r }) }
 window.approveText = i => post('/api/decision', { order:'texts', item:i, decision:'approved' })
-window.rejectText = i => { const r = prompt('반려 사유 (수정 방향 포함):'); if (r !== null) post('/api/decision', { order:'texts', item:i, decision:'rejected', reason:r }) }
-window.golden = (o,i) => { if (confirm('이 이미지를 골든 레퍼런스로 지정합니다.\n이후 모든 이미지 발주가 이 톤에 앵커됩니다. (나중에 변경 가능)')) post('/api/golden-ref', { order:o, item:i }) }
+window.rejectText = async i => { const r = await ask({ text:'반려 사유 (수정 방향 포함):', input:true }); if (r !== null) post('/api/decision', { order:'texts', item:i, decision:'rejected', reason:r }) }
+window.golden = async (o,i) => { if (await ask({ text:'이 이미지를 골든 레퍼런스로 지정합니다.\n이후 모든 이미지 발주가 이 톤에 앵커됩니다. (나중에 변경 가능)' })) post('/api/golden-ref', { order:o, item:i }) }
 window.setBg = b => { bg = b; render() }
 window.setView = v => { view = v; document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x.dataset.v === v)); render() }
 window.setDoc = d => { curDoc = d; renderDocs() }

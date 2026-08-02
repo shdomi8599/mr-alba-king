@@ -28,9 +28,14 @@ for (const item of order.items) {
   if (existsSync(abs) && !force) { console.log(`skip (있음): ${out}`); continue }
   mkdirSync(path.dirname(abs), { recursive: true })
 
-  const anchor = hasRef
-    ? 'The attached reference image defines the art style. MATCH IT EXACTLY: same rendering style, same palette and saturation, same outline treatment, same lighting, same viewing angle. '
-    : ''
+  // 캐릭터 일관성: item.ref가 있으면 골든 ref 대신 그 이미지(같은 캐릭터의 기준 컷)에 앵커
+  const itemRef = item.ref ? path.join(ROOT, item.ref) : null
+  const useRef = itemRef && existsSync(itemRef) ? itemRef : hasRef ? REF : null
+  const anchor = itemRef
+    ? 'The attached image is the SAME CHARACTER — this is a character reference, not just a style reference. Keep the identity absolutely consistent: same face shape, same hairstyle, same skin tone, same outfit and colors. '
+    : hasRef
+      ? 'The attached reference image defines the art style. MATCH IT EXACTLY: same rendering style, same palette and saturation, same outline treatment, same lighting, same viewing angle. '
+      : ''
   const prompt =
     `Generate ONE image and save it to the file "${out}" (relative to the current workspace). ` +
     `Subject: ${item.subject ?? order.subject}. ` + anchor +
@@ -38,12 +43,12 @@ for (const item of order.items) {
     `Output requirements: ${item.common ?? order.common}. ` +
     `Use your image generation tool. Do not create or modify any other files. Do not write code.`
 
-  emit('ordered', item.id, { out, ref: hasRef })
+  emit('ordered', item.id, { out, ref: useRef ? path.relative(ROOT, useRef) : false })
   console.log(`▶ ${item.id} 생성 중...`)
   try {
     // 프롬프트는 stdin으로(이스케이프 안전), Windows에선 cmd 경유(.cmd 셔틀 spawn 제약)
     const args = ['exec', '-s', 'workspace-write']
-    if (hasRef) args.push('-i', REF)
+    if (useRef) args.push('-i', useRef)
     args.push('-')
     const [bin, finalArgs] = process.platform === 'win32'
       ? ['cmd.exe', ['/c', 'codex', ...args]]

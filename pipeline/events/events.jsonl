@@ -245,3 +245,19 @@
 {"ts":"2026-08-02T08:05:12.505Z","order":"qa","item":"bot-run","event":"qa-run","sessions":180,"levelAttempts":3194}
 {"ts":"2026-08-02T08:07:24.617Z","order":"qa","item":"bot-run","event":"qa-run","sessions":180,"levelAttempts":4244}
 {"ts":"2026-08-02T08:08:32.284Z","order":"qa","item":"bot-run","event":"qa-run","sessions":180,"levelAttempts":4411}
+{"ts":"2026-08-02T09:35:05.100Z","order":6,"item":"logo-symbol","event":"approved","by":"director"}
+{"ts":"2026-08-02T09:35:10.731Z","order":6,"item":"ui-life","event":"approved","by":"director"}
+{"ts":"2026-08-02T09:35:17.385Z","order":6,"item":"title-bg","event":"approved","by":"director"}
+{"ts":"2026-08-02T09:38:32.920Z","order":6,"item":"ui-boss-angry","event":"rejected","reason":"캐릭터 불일치 — 만족 컷과 다른 인물. 캐릭터 변형은 기준 1장에 앵커해야 함 (PIPELINE 캐릭터 일관성 규칙 신설, order#7 재발주)","by":"director"}
+{"ts":"2026-08-02T09:38:33.248Z","order":7,"item":"ui-boss-angry","event":"ordered","out":"pipeline/staging/assets/ui-boss-angry.png","ref":"pipeline\\staging\\assets\\ui-boss-happy.png"}
+{"ts":"2026-08-02T09:39:52.690Z","order":8,"item":"sfx-start","event":"ordered","type":"sfx"}
+{"ts":"2026-08-02T09:39:56.544Z","order":8,"item":"sfx-start","event":"generated","out":"pipeline\\staging\\audio\\sfx-start.ogg"}
+{"ts":"2026-08-02T09:39:56.545Z","order":8,"item":"sfx-success","event":"ordered","type":"sfx"}
+{"ts":"2026-08-02T09:39:59.425Z","order":8,"item":"sfx-success","event":"generated","out":"pipeline\\staging\\audio\\sfx-success.ogg"}
+{"ts":"2026-08-02T09:39:59.426Z","order":8,"item":"sfx-perfect","event":"ordered","type":"sfx"}
+{"ts":"2026-08-02T09:40:03.368Z","order":8,"item":"sfx-perfect","event":"generated","out":"pipeline\\staging\\audio\\sfx-perfect.ogg"}
+{"ts":"2026-08-02T09:40:03.369Z","order":8,"item":"sfx-fail","event":"ordered","type":"sfx"}
+{"ts":"2026-08-02T09:40:06.289Z","order":8,"item":"sfx-fail","event":"generated","out":"pipeline\\staging\\audio\\sfx-fail.ogg"}
+{"ts":"2026-08-02T09:40:06.289Z","order":8,"item":"sfx-tap","event":"ordered","type":"sfx"}
+{"ts":"2026-08-02T09:40:06.639Z","order":8,"item":"sfx-tap","event":"failed","reason":"fal fal-ai/elevenlabs/sound-effects/v2 → 422: {\"detail\":[{\"type\":\"greater_than_equal\",\"loc\":[\"body\",\"duration_seconds\"],\"msg\":\"Input should be greater than or equal to 0.5\",\"input\":0.4,\"ctx\":{\"ge\":0.5"}
+{"ts":"2026-08-02T09:40:06.639Z","order":8,"item":"sfx-penalty","event":"ordered","type":"sfx"}
