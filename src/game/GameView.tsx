@@ -57,6 +57,12 @@ function Chip({ id }: { id: string }) {
   return <i style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
 }
 
+// 아이템 이름표 — texts.json의 name-<id>가 있을 때만 (식별이 필요한 드래그 재료)
+const itemName = (id: string): string | null => {
+  const n = T(`name-${id}`)
+  return n.startsWith('name-') ? null : n
+}
+
 // 1라운드 가이드 스텝별 스포트라이트 영역
 function guideFocus(lv: Level, step: GuideStep): Rect | null {
   if (lv.template !== 'drag') return null
@@ -195,22 +201,29 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
                 <div className="target" style={{ left: t.rect.x - 10, top: t.rect.y - 10, width: t.rect.w + 20, height: t.rect.h + 20 }} />
                 <Ph id={t.sprite} x={t.rect.x} y={t.rect.y} w={t.rect.w} h={t.rect.h} />
                 {t.wants && t.filled < t.capacity && (
-                  <div className="wantchip" style={{ left: t.rect.x + t.rect.w / 2 - 22, top: t.rect.y - 58 }}>
+                  <div className="wantchip" style={{ left: t.rect.x + t.rect.w / 2 - 22, top: t.rect.y - 74 }}>
                     <Chip id={t.wants} />
+                    {itemName(t.wants) && <div className="wantlabel">{itemName(t.wants)}</div>}
                   </div>
                 )}
               </div>
             ))}
             {lv.items.map(it => (
-              <Ph
-                key={it.key}
-                id={it.id}
-                x={it.pos.x - it.size.x / 2}
-                y={it.pos.y - it.size.y / 2}
-                w={it.size.x}
-                h={it.size.y}
-                cls={it.held ? 'held' : it.done ? 'done' : ''}
-              />
+              <div key={it.key}>
+                <Ph
+                  id={it.id}
+                  x={it.pos.x - it.size.x / 2}
+                  y={it.pos.y - it.size.y / 2}
+                  w={it.size.x}
+                  h={it.size.y}
+                  cls={it.held ? 'held' : it.done ? 'done' : ''}
+                />
+                {!it.done && itemName(it.id) && (
+                  <div className="itemlabel" style={{ left: it.pos.x, top: it.pos.y + it.size.y / 2 + 8 }}>
+                    {itemName(it.id)}
+                  </div>
+                )}
+              </div>
             ))}
           </>
         )}

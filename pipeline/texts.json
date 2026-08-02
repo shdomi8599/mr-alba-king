@@ -28,6 +28,26 @@
       ]
     },
     {
+      "name": "아이템 이름표 (드래그 아이템 아래 코드 렌더 — 재료 식별용)",
+      "entries": [
+        { "id": "name-gimbap-ham", "ko": "햄", "context": "김밥 재료 이름표" },
+        { "id": "name-gimbap-egg", "ko": "계란", "context": "김밥 재료 이름표" },
+        { "id": "name-gimbap-pickle", "ko": "단무지", "context": "김밥 재료 이름표" },
+        { "id": "name-gimbap-crab", "ko": "맛살", "context": "김밥 재료 이름표" },
+        { "id": "name-sushi-tuna", "ko": "참치", "context": "초밥 재료 이름표 (매칭 칩에도 표시)" },
+        { "id": "name-sushi-salmon", "ko": "연어", "context": "초밥 재료 이름표" },
+        { "id": "name-sushi-egg", "ko": "계란", "context": "초밥 재료 이름표" },
+        { "id": "name-cvs-item-ramen", "ko": "컵라면", "context": "편의점 상품 이름표" },
+        { "id": "name-cvs-item-drink", "ko": "음료", "context": "편의점 상품 이름표" },
+        { "id": "name-cvs-item-snack", "ko": "과자", "context": "편의점 상품 이름표" },
+        { "id": "name-cvs-item-milk", "ko": "우유", "context": "편의점 상품 이름표" },
+        { "id": "name-bakery-bread-cream", "ko": "크림빵", "context": "빵집 이름표" },
+        { "id": "name-bakery-bread-red", "ko": "단팥빵", "context": "빵집 이름표" },
+        { "id": "name-bakery-bread-salt", "ko": "소금빵", "context": "빵집 이름표" },
+        { "id": "name-bakery-bread-choco", "ko": "초코소라빵", "context": "빵집 이름표" }
+      ]
+    },
+    {
       "name": "튜토리얼 가이드 (타임스탑 + 스포트라이트, 각 1회)",
       "entries": [
         { "id": "tut-drag", "ko": "재료를 잡아서 끌어 올려!", "context": "1라운드 — 아이템 줄 스포트라이트" },

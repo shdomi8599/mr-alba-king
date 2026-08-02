@@ -148,3 +148,6 @@
 {"ts":"2026-08-02T07:17:38.985Z","order":5,"item":"wash-bg","event":"generated","out":"pipeline/staging/assets/wash-bg.png"}
 {"ts":"2026-08-02T07:17:38.988Z","order":5,"item":"song-bg","event":"ordered","out":"pipeline/staging/assets/song-bg.png","ref":true}
 {"ts":"2026-08-02T07:20:16.344Z","order":5,"item":"song-bg","event":"generated","out":"pipeline/staging/assets/song-bg.png"}
+{"ts":"2026-08-02T07:31:57.392Z","order":2,"item":"gimbap-bg","event":"rejected","reason":"무대 정합성 위반 — 손님 시점 풍경이라 게임 오브젝트가 공중에 뜸. 알바 1인칭 + 하단 45% 빈 작업 표면 구도로 재발주 (ADR-009)","by":"director","note":"셸 인코딩으로 깨진 사유 재기록"}
+{"ts":"2026-08-02T07:31:57.398Z","order":2,"item":"sushi-bg","event":"rejected","reason":"무대 정합성 위반 — 손님 시점 풍경이라 게임 오브젝트가 공중에 뜸. 알바 1인칭 + 하단 45% 빈 작업 표면 구도로 재발주 (ADR-009)","by":"director","note":"셸 인코딩으로 깨진 사유 재기록"}
+{"ts":"2026-08-02T07:31:57.399Z","order":2,"item":"cafe-bg","event":"rejected","reason":"무대 정합성 위반 — 손님 시점 풍경이라 게임 오브젝트가 공중에 뜸. 알바 1인칭 + 하단 45% 빈 작업 표면 구도로 재발주 (ADR-009)","by":"director","note":"셸 인코딩으로 깨진 사유 재기록"}
