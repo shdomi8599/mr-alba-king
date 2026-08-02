@@ -2,7 +2,7 @@
 // 총 30라운드 완주제 — 10라운드마다 난이도 1단계 상승(테마 10종 기준, 티어 3개).
 // 가이드(튜토리얼): 1라운드 조작 안내 + 기믹(주문표/타이밍) 첫 등장 시 1회 — 타임스탑 + 스포트라이트.
 // 순수 로직 — 렌더는 이 상태를 그리기만 한다. 봇 QA는 tickSession/pointerSession을 직접 호출(가이드 off).
-import type { GuideStep, Level, PointerInput } from './types'
+import type { GuideStep, Level, PointerInput, ThemeId } from './types'
 import { tickDrag, applyPointer } from './templates/drag'
 import { tickTiming, applyTimingPointer } from './templates/timing'
 import { tickMash, applyMashPointer } from './templates/mash'
@@ -31,6 +31,7 @@ export type Session = {
   lastPerfect: boolean
   levelUpFlash: boolean
   guide: GuideStep[] // 1라운드 전용 — 비어있지 않으면 타임스탑
+  telemetry: Partial<Record<ThemeId, { tries: number; clears: number; perfects: number }>> // 사장님 평가서 입력 (로컬 전용, ADR-002)
   level: Level
 }
 
@@ -52,8 +53,16 @@ export function createSession(seed: number, opts?: { guide?: boolean }): Session
     lastPerfect: false,
     levelUpFlash: false,
     guide: [],
+    telemetry: {},
     level: makeLevel(THEME_ORDER[0], 0, rng),
   }
+}
+
+const recordResult = (s: Session, clear: boolean): void => {
+  const t = (s.telemetry[s.level.theme] = s.telemetry[s.level.theme] ?? { tries: 0, clears: 0, perfects: 0 })
+  t.tries += 1
+  if (clear) t.clears += 1
+  if (clear && s.lastPerfect) t.perfects += 1
 }
 
 // 가이드는 1라운드에서만: 조작(잡기→놓기) + 그 라운드의 기믹(주문 순서)까지 한 번에 확인
@@ -89,6 +98,7 @@ export function tickSession(s: Session, dt: number): void {
       s.combo += 1
       s.bestCombo = Math.max(s.bestCombo, s.combo)
       s.lastResult = 'clear'
+      recordResult(s, true)
       s.phase = 'result'
       s.phaseT = 0
     } else if (r === 'fail') {
@@ -96,6 +106,7 @@ export function tickSession(s: Session, dt: number): void {
       s.combo = 0
       s.lastResult = 'fail'
       s.lastPerfect = false
+      recordResult(s, false)
       s.phase = 'result'
       s.phaseT = 0
     }

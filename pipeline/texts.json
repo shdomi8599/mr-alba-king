@@ -79,6 +79,42 @@
       ]
     },
     {
+      "name": "테마 이름 (평가서·통계용)",
+      "entries": [
+        { "id": "theme-gimbap", "ko": "김밥천국", "context": "테마 표시명" },
+        { "id": "theme-cafe", "ko": "카페", "context": "테마 표시명" },
+        { "id": "theme-sushi", "ko": "초밥집", "context": "테마 표시명" },
+        { "id": "theme-box", "ko": "택배 상하차", "context": "테마 표시명" },
+        { "id": "theme-cvs", "ko": "편의점", "context": "테마 표시명" },
+        { "id": "theme-chicken", "ko": "치킨집", "context": "테마 표시명" },
+        { "id": "theme-bakery", "ko": "빵집", "context": "테마 표시명" },
+        { "id": "theme-wash", "ko": "세차장", "context": "테마 표시명" },
+        { "id": "theme-fish", "ko": "붕어빵 노점", "context": "테마 표시명" },
+        { "id": "theme-song", "ko": "노래방", "context": "테마 표시명" }
+      ]
+    },
+    {
+      "name": "사장님 평가서 폴백 뱅크 (텔레메트리 조립 — 츤데레 반말, ADR-002 폴백)",
+      "entries": [
+        { "id": "eval-grade-s", "ko": "이 정도면... 정직원 해라. 아니, 사장 해라.", "context": "30라운드 완주(만근) 시 총평" },
+        { "id": "eval-grade-a", "ko": "흠, 제법인데? 내일도 나와라.", "context": "21라운드 이상 도달 총평" },
+        { "id": "eval-grade-b", "ko": "나쁘진 않은데 아직 멀었어. 반찬은 만지지 마라.", "context": "11~20라운드 도달 총평" },
+        { "id": "eval-grade-c", "ko": "...알바가 처음이지? 티 많이 난다.", "context": "10라운드 이하 총평" },
+        { "id": "eval-best", "ko": "{theme} 일은 제법이더라. 소질 있어.", "context": "최고 성과 테마 코멘트, {theme} 치환" },
+        { "id": "eval-worst", "ko": "근데 {theme}에선 손이 왜 그래? 더 배워라.", "context": "최저 성과 테마 코멘트, {theme} 치환" },
+        { "id": "eval-perfect", "ko": "퍼펙트 {n}번은 인정한다.", "context": "퍼펙트 3회 이상일 때, {n} 치환" }
+      ]
+    },
+    {
+      "name": "AI 스태프롤 (게임오버 하단 3줄 — 숫자는 이벤트 스토어 실측값만, 빌드 시 주입)",
+      "entries": [
+        { "id": "credits-title", "ko": "이 가게의 AI 알바들", "context": "스태프롤 헤더" },
+        { "id": "credit-art", "ko": "아트알바 codex — {made}장 납품 · {rejected}장 반려", "context": "발주/반려 실측값 치환" },
+        { "id": "credit-qa", "ko": "QA알바 시뮬레이터 — 가상 알바 {sessions}명 · {levels}판 근무", "context": "QA 봇 실측값 치환" },
+        { "id": "credit-code", "ko": "코딩알바 Claude Code — 커밋 {commits}건", "context": "git 실측값 치환" }
+      ]
+    },
+    {
       "name": "게임오버·평가서",
       "entries": [
         { "id": "over-title", "ko": "근무 종료!", "context": "게임오버 화면 헤더" },
