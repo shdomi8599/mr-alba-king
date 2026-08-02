@@ -1,128 +1,368 @@
 {
-  "_note": "게임에 필요한 전 에셋 슬롯의 단일 목록 (DESIGN.md 미니게임 10종 기준). source가 있으면 상태는 이벤트에서 파생, 없으면 '기획됨'.",
+  "_note": "게임에 필요한 전 에셋 슬롯의 단일 목록 (DESIGN.md 미니게임 10종 기준). 상태는 슬롯 id ↔ 발주 아이템 자동 매칭으로 이벤트에서 파생. 거품 등 프로시저럴 연출은 슬롯 아님.",
   "categories": [
     {
       "name": "브랜드·톤",
       "slots": [
-        { "id": "style-ref", "kind": "image", "desc": "골든 레퍼런스 — 전 에셋의 톤 앵커 (ADR-008)", "source": { "order": 0, "item": "tone-a-pop-comic" } },
-        { "id": "logo-symbol", "kind": "image", "desc": "타이틀 심볼(왕관) — 글자는 코드로" }
+        {
+          "id": "style-ref",
+          "kind": "image",
+          "desc": "골든 레퍼런스 — 전 에셋의 톤 앵커 (ADR-008)",
+          "source": {
+            "order": 0,
+            "item": "tone-a-pop-comic"
+          }
+        },
+        {
+          "id": "logo-symbol",
+          "kind": "image",
+          "desc": "타이틀 심볼(왕관) — 글자는 코드로"
+        }
       ]
     },
     {
       "name": "1 초밥집 (A 드래그 · 올려!)",
       "slots": [
-        { "id": "sushi-bg", "kind": "image", "desc": "초밥집 카운터 배경" },
-        { "id": "sushi-rice", "kind": "image", "desc": "샤리(밥) — 드롭 대상" },
-        { "id": "sushi-tuna", "kind": "image", "desc": "참치 회 — 매칭 재료 1" },
-        { "id": "sushi-salmon", "kind": "image", "desc": "연어 회 — 매칭 재료 2" },
-        { "id": "sushi-egg", "kind": "image", "desc": "계란 — 매칭 재료 3" },
-        { "id": "sushi-plate", "kind": "image", "desc": "접시" }
+        {
+          "id": "sushi-bg",
+          "kind": "image",
+          "desc": "초밥집 카운터 배경"
+        },
+        {
+          "id": "sushi-rice",
+          "kind": "image",
+          "desc": "샤리(밥) — 드롭 대상"
+        },
+        {
+          "id": "sushi-tuna",
+          "kind": "image",
+          "desc": "참치 회 — 매칭 재료 1"
+        },
+        {
+          "id": "sushi-salmon",
+          "kind": "image",
+          "desc": "연어 회 — 매칭 재료 2"
+        },
+        {
+          "id": "sushi-egg",
+          "kind": "image",
+          "desc": "계란 — 매칭 재료 3"
+        },
+        {
+          "id": "sushi-plate",
+          "kind": "image",
+          "desc": "접시"
+        }
       ]
     },
     {
       "name": "2 김밥천국 (A 드래그 · 넣어!)",
       "slots": [
-        { "id": "gimbap-bg", "kind": "image", "desc": "분식집 배경" },
-        { "id": "gimbap-base", "kind": "image", "desc": "김+밥 펼침면 — 드롭 대상" },
-        { "id": "gimbap-ham", "kind": "image", "desc": "재료: 햄" },
-        { "id": "gimbap-egg", "kind": "image", "desc": "재료: 계란" },
-        { "id": "gimbap-pickle", "kind": "image", "desc": "재료: 단무지" },
-        { "id": "gimbap-crab", "kind": "image", "desc": "재료: 맛살 (페이크 재료 기믹용 4번째)" }
+        {
+          "id": "gimbap-bg",
+          "kind": "image",
+          "desc": "분식집 배경"
+        },
+        {
+          "id": "gimbap-base",
+          "kind": "image",
+          "desc": "김+밥 펼침면 — 드롭 대상"
+        },
+        {
+          "id": "gimbap-ham",
+          "kind": "image",
+          "desc": "재료: 햄"
+        },
+        {
+          "id": "gimbap-egg",
+          "kind": "image",
+          "desc": "재료: 계란"
+        },
+        {
+          "id": "gimbap-pickle",
+          "kind": "image",
+          "desc": "재료: 단무지"
+        },
+        {
+          "id": "gimbap-crab",
+          "kind": "image",
+          "desc": "재료: 맛살 (페이크 재료 기믹용 4번째)"
+        }
       ]
     },
     {
       "name": "3 편의점 (A 드래그 · 찍어!)",
       "slots": [
-        { "id": "cvs-bg", "kind": "image", "desc": "편의점 카운터 배경" },
-        { "id": "cvs-scanner", "kind": "image", "desc": "바코드 스캐너 — 드롭 대상" },
-        { "id": "cvs-item-ramen", "kind": "image", "desc": "상품: 컵라면" },
-        { "id": "cvs-item-drink", "kind": "image", "desc": "상품: 음료캔" },
-        { "id": "cvs-item-snack", "kind": "image", "desc": "상품: 과자봉지" },
-        { "id": "cvs-item-milk", "kind": "image", "desc": "상품: 우유 (페이크 상품 기믹용 4번째)" }
+        {
+          "id": "cvs-bg",
+          "kind": "image",
+          "desc": "편의점 카운터 배경"
+        },
+        {
+          "id": "cvs-scanner",
+          "kind": "image",
+          "desc": "바코드 스캐너 — 드롭 대상"
+        },
+        {
+          "id": "cvs-item-ramen",
+          "kind": "image",
+          "desc": "상품: 컵라면"
+        },
+        {
+          "id": "cvs-item-drink",
+          "kind": "image",
+          "desc": "상품: 음료캔"
+        },
+        {
+          "id": "cvs-item-snack",
+          "kind": "image",
+          "desc": "상품: 과자봉지"
+        },
+        {
+          "id": "cvs-item-milk",
+          "kind": "image",
+          "desc": "상품: 우유 (페이크 상품 기믹용 4번째)"
+        }
       ]
     },
     {
       "name": "4 빵집 (A 드래그 · 담아!)",
       "slots": [
-        { "id": "bakery-bg", "kind": "image", "desc": "빵집 진열대 배경" },
-        { "id": "bakery-tray", "kind": "image", "desc": "트레이 — 드롭 대상" },
-        { "id": "bakery-bread-cream", "kind": "image", "desc": "빵: 크림빵" },
-        { "id": "bakery-bread-red", "kind": "image", "desc": "빵: 단팥빵" },
-        { "id": "bakery-bread-salt", "kind": "image", "desc": "빵: 소금빵" },
-        { "id": "bakery-bread-choco", "kind": "image", "desc": "빵: 초코소라빵 (페이크 기믹용 4번째)" }
+        {
+          "id": "bakery-bg",
+          "kind": "image",
+          "desc": "빵집 진열대 배경"
+        },
+        {
+          "id": "bakery-tray",
+          "kind": "image",
+          "desc": "트레이 — 드롭 대상"
+        },
+        {
+          "id": "bakery-bread-cream",
+          "kind": "image",
+          "desc": "빵: 크림빵"
+        },
+        {
+          "id": "bakery-bread-red",
+          "kind": "image",
+          "desc": "빵: 단팥빵"
+        },
+        {
+          "id": "bakery-bread-salt",
+          "kind": "image",
+          "desc": "빵: 소금빵"
+        },
+        {
+          "id": "bakery-bread-choco",
+          "kind": "image",
+          "desc": "빵: 초코소라빵 (페이크 기믹용 4번째)"
+        }
       ]
     },
     {
       "name": "5 카페 (B 타이밍 · 부어!)",
       "slots": [
-        { "id": "cafe-bg", "kind": "image", "desc": "카페 바 배경" },
-        { "id": "cafe-cup", "kind": "image", "desc": "컵(아메리카노)" },
-        { "id": "cafe-kettle", "kind": "image", "desc": "주전자 — 붓기 연출" }
+        {
+          "id": "cafe-bg",
+          "kind": "image",
+          "desc": "카페 바 배경"
+        },
+        {
+          "id": "cafe-cup",
+          "kind": "image",
+          "desc": "컵(아메리카노)"
+        },
+        {
+          "id": "cafe-kettle",
+          "kind": "image",
+          "desc": "주전자 — 붓기 연출"
+        }
       ]
     },
     {
       "name": "6 치킨집 (B 타이밍 · 건져!)",
       "slots": [
-        { "id": "chicken-bg", "kind": "image", "desc": "치킨집 주방 배경" },
-        { "id": "chicken-pot", "kind": "image", "desc": "기름솥" },
-        { "id": "chicken-net", "kind": "image", "desc": "튀김망" },
-        { "id": "chicken-piece", "kind": "image", "desc": "치킨 조각" }
+        {
+          "id": "chicken-bg",
+          "kind": "image",
+          "desc": "치킨집 주방 배경"
+        },
+        {
+          "id": "chicken-pot",
+          "kind": "image",
+          "desc": "기름솥"
+        },
+        {
+          "id": "chicken-net",
+          "kind": "image",
+          "desc": "튀김망"
+        },
+        {
+          "id": "chicken-piece",
+          "kind": "image",
+          "desc": "치킨 조각"
+        }
       ]
     },
     {
       "name": "7 붕어빵 노점 (B 타이밍 · 뒤집어!)",
       "slots": [
-        { "id": "fish-bg", "kind": "image", "desc": "겨울 노점 배경" },
-        { "id": "fish-mold", "kind": "image", "desc": "붕어빵 틀" },
-        { "id": "fish-bread", "kind": "image", "desc": "붕어빵" }
+        {
+          "id": "fish-bg",
+          "kind": "image",
+          "desc": "겨울 노점 배경"
+        },
+        {
+          "id": "fish-mold",
+          "kind": "image",
+          "desc": "붕어빵 틀"
+        },
+        {
+          "id": "fish-bread",
+          "kind": "image",
+          "desc": "붕어빵"
+        }
       ]
     },
     {
       "name": "8 택배 상하차 (C 연타 · 날라!)",
       "slots": [
-        { "id": "box-bg", "kind": "image", "desc": "물류창고 배경" },
-        { "id": "box-parcel", "kind": "image", "desc": "택배 박스" },
-        { "id": "box-truck", "kind": "image", "desc": "트럭 적재함" }
+        {
+          "id": "box-bg",
+          "kind": "image",
+          "desc": "물류창고 배경"
+        },
+        {
+          "id": "box-parcel",
+          "kind": "image",
+          "desc": "택배 박스"
+        },
+        {
+          "id": "box-truck",
+          "kind": "image",
+          "desc": "트럭 적재함"
+        }
       ]
     },
     {
       "name": "9 세차장 (C 스와이프 · 문질러!)",
       "slots": [
-        { "id": "wash-bg", "kind": "image", "desc": "세차장 배경" },
-        { "id": "wash-car", "kind": "image", "desc": "자동차" },
-        { "id": "wash-sponge", "kind": "image", "desc": "스펀지" },
-        { "id": "wash-foam", "kind": "image", "desc": "거품 덩어리" }
+        {
+          "id": "wash-bg",
+          "kind": "image",
+          "desc": "세차장 배경"
+        },
+        {
+          "id": "wash-car",
+          "kind": "image",
+          "desc": "자동차"
+        },
+        {
+          "id": "wash-sponge",
+          "kind": "image",
+          "desc": "스펀지"
+        }
       ]
     },
     {
       "name": "10 노래방 (C 연타 · 흔들어!)",
       "slots": [
-        { "id": "song-bg", "kind": "image", "desc": "노래방 룸 배경" },
-        { "id": "song-tambourine", "kind": "image", "desc": "탬버린" },
-        { "id": "song-mic", "kind": "image", "desc": "마이크" }
+        {
+          "id": "song-bg",
+          "kind": "image",
+          "desc": "노래방 룸 배경"
+        },
+        {
+          "id": "song-tambourine",
+          "kind": "image",
+          "desc": "탬버린"
+        },
+        {
+          "id": "song-mic",
+          "kind": "image",
+          "desc": "마이크"
+        }
       ]
     },
     {
       "name": "UI·화면 (모든 화면 요소도 발주·검수 대상)",
       "slots": [
-        { "id": "title-bg", "kind": "image", "desc": "타이틀 화면 배경 일러스트 (다양한 알바 현장 콜라주 무드)" },
-        { "id": "ui-life", "kind": "image", "desc": "목숨 아이콘 (하트 대체 — 알바 배지/명찰 모티프 검토)" },
-        { "id": "ui-timer-frame", "kind": "image", "desc": "타이머 게이지 프레임" },
-        { "id": "ui-button-frame", "kind": "image", "desc": "버튼 9-slice 프레임 (글자 없음)" },
-        { "id": "ui-order-panel", "kind": "image", "desc": "주문표 패널 프레임 (페이크 재료 기믹 UI)" },
-        { "id": "ui-panel", "kind": "image", "desc": "게임오버/평가서 패널 프레임" },
-        { "id": "ui-boss", "kind": "image", "desc": "사장님 얼굴(평가서·잔소리용) — 표정 2종" }
+        {
+          "id": "title-bg",
+          "kind": "image",
+          "desc": "타이틀 화면 배경 일러스트 (다양한 알바 현장 콜라주 무드)"
+        },
+        {
+          "id": "ui-life",
+          "kind": "image",
+          "desc": "목숨 아이콘 (하트 대체 — 알바 배지/명찰 모티프 검토)"
+        },
+        {
+          "id": "ui-timer-frame",
+          "kind": "image",
+          "desc": "타이머 게이지 프레임"
+        },
+        {
+          "id": "ui-button-full",
+          "kind": "image",
+          "desc": "완성형 통짜 버튼 — 9-slice 기각(질감 소실), 원본 비율 사용"
+        },
+        {
+          "id": "ui-order-panel",
+          "kind": "image",
+          "desc": "주문표 패널 프레임 (페이크 재료 기믹 UI)"
+        },
+        {
+          "id": "ui-panel",
+          "kind": "image",
+          "desc": "게임오버/평가서 패널 프레임"
+        },
+        {
+          "id": "ui-boss-happy",
+          "kind": "image",
+          "desc": "사장님 얼굴(만족) — 평가서 상위 등급"
+        },
+        {
+          "id": "ui-boss-angry",
+          "kind": "image",
+          "desc": "사장님 얼굴(잔소리) — 만족 컷 캐릭터 앵커 (일관성 규칙)"
+        }
       ]
     },
     {
       "name": "오디오",
       "slots": [
-        { "id": "sfx-start", "kind": "sfx", "desc": "레벨 시작 신호" },
-        { "id": "sfx-success", "kind": "sfx", "desc": "성공" },
-        { "id": "sfx-fail", "kind": "sfx", "desc": "실패" },
-        { "id": "sfx-perfect", "kind": "sfx", "desc": "퍼펙트/콤보" },
-        { "id": "bgm-main", "kind": "bgm", "desc": "메인 BGM — 경쾌·코믹 (다중 모델 경쟁, ADR-005)" },
-        { "id": "bgm-fast", "kind": "bgm", "desc": "난이도 상승 템포업 버전" }
+        {
+          "id": "sfx-start",
+          "kind": "sfx",
+          "desc": "레벨 시작 신호"
+        },
+        {
+          "id": "sfx-success",
+          "kind": "sfx",
+          "desc": "성공"
+        },
+        {
+          "id": "sfx-fail",
+          "kind": "sfx",
+          "desc": "실패"
+        },
+        {
+          "id": "sfx-perfect",
+          "kind": "sfx",
+          "desc": "퍼펙트/콤보"
+        },
+        {
+          "id": "bgm-main",
+          "kind": "bgm",
+          "desc": "메인 BGM — 경쾌·코믹 (다중 모델 경쟁, ADR-005)"
+        },
+        {
+          "id": "bgm-fast",
+          "kind": "bgm",
+          "desc": "난이도 상승 템포업 버전"
+        }
       ]
     }
   ]

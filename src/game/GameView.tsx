@@ -231,8 +231,11 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
       >
         <div className="hud">
           <div className="lives">
-            {'❤️'.repeat(s.lives)}
-            {'🖤'.repeat(Math.max(0, LIVES - s.lives))}
+            {spriteUrl('ui-life')
+              ? Array.from({ length: LIVES }, (_, i) => (
+                  <img key={i} className={`lifeicon ${i < s.lives ? '' : 'lost'}`} src={spriteUrl('ui-life')!} alt="" draggable={false} />
+                ))
+              : `${'❤️'.repeat(s.lives)}${'🖤'.repeat(Math.max(0, LIVES - s.lives))}`}
           </div>
           <div className="round">
             {T('sys-round').replace('{n}', String(s.levelIndex + 1)).replace('{m}', String(ROUNDS_TOTAL))}

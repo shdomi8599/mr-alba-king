@@ -74,16 +74,30 @@ function state() {
   const criteria = readJson('criteria.json', {})
   const status = readJson('status.json', {})
 
-  // 매니페스트 슬롯 상태 파생: source(order/item) → 이벤트 기반, 없으면 기획됨
+  // 매니페스트 슬롯 상태 파생 — 슬롯 id ↔ 발주 아이템 id 자동 매칭 (명시 source > 정확 일치 > 접두사(BGM 후보), 승인본 우선)
   const itemIndex = {}
-  for (const o of orders) for (const it of o.items) itemIndex[`${o.order}/${it.id}`] = it
+  const byId = {}
+  for (const o of orders)
+    for (const it of o.items) {
+      itemIndex[`${o.order}/${it.id}`] = it
+      ;(byId[it.id] = byId[it.id] || []).push(it)
+    }
+  const pick = cands => {
+    if (!cands || !cands.length) return null
+    return cands.find(c => c.isGolden) || cands.find(c => c.status === 'approved') || cands[cands.length - 1]
+  }
   const manifest = readJson('manifest.json', { categories: [] })
   for (const cat of manifest.categories || []) {
     for (const slot of cat.slots || []) {
-      if (slot.source) {
-        const it = itemIndex[`${slot.source.order}/${slot.source.item}`]
-        slot.status = it ? (it.isGolden ? 'golden' : it.status) : 'ordered'
-        slot.url = it?.exists ? it.url : null
+      let it = slot.source ? itemIndex[`${slot.source.order}/${slot.source.item}`] : null
+      if (!it) it = pick(byId[slot.id])
+      if (!it) {
+        const prefixed = Object.keys(byId).filter(id => id.startsWith(slot.id + '-')).flatMap(id => byId[id])
+        it = pick(prefixed)
+      }
+      if (it) {
+        slot.status = it.isGolden ? 'golden' : it.status
+        slot.url = it.exists ? it.url : null
       } else slot.status = 'planned'
     }
   }
