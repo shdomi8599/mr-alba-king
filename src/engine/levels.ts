@@ -104,8 +104,8 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     bg: 'box-bg',
     sprite: 'box-parcel',
     size: { x: 180, y: 150 },
-    area: { x: 80, y: 700, w: 560, h: 380 },
-    deco: [{ id: 'box-truck', rect: { x: 130, y: 290, w: 460, h: 350 } }], // 짐칸을 크게 — 박스가 여기로 날아간다
+    area: { x: 80, y: 740, w: 560, h: 360 },
+    deco: [{ id: 'box-truck', rect: { x: 110, y: 170, w: 500, h: 560 } }], // 짐칸이 화면을 지배하는 무대 (트림된 세로형 아트)
   },
   wash: {
     template: 'mash',

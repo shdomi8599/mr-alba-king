@@ -22,14 +22,18 @@ export function startBgm(id: string): void {
   stopBgm()
   const u = urlOf(id)
   if (!u) return
-  bgm = new Audio(u)
-  bgm.loop = true
-  bgm.volume = 0.5
+  const a = new Audio(u)
+  a.loop = true
+  a.volume = 0.5
+  bgm = a
   bgmId = id
-  void bgm.play().catch(() => {
-    // 자동재생 차단(제스처 전) — 상태를 리셋해 다음 제스처에서 재시도 가능하게
-    bgm = null
-    bgmId = null
+  void a.play().catch(() => {
+    // 자동재생 차단(제스처 전) — 단, 그 사이 다른 트랙이 시작됐다면 그 등록을 지우면 안 됨
+    // (지우면 재생 중인 트랙이 '유령'이 되어 stopBgm이 못 멈추고 다음 곡과 겹친다)
+    if (bgm === a) {
+      bgm = null
+      bgmId = null
+    }
   })
 }
 
