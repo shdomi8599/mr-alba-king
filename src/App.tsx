@@ -11,9 +11,25 @@ type Screen = 'title' | 'game' | 'over'
 const fill = (id: string, vars: Record<string, number>): string =>
   Object.entries(vars).reduce((s, [k, v]) => s.replace(`{${k}}`, v.toLocaleString()), T(id))
 
+// 캡처·QA 전용 진입 파라미터 (?shot=over|game) — 스튜디오 텍스트 검수용 상황 캡처(shots) 촬영에 사용
+const shotParam = new URLSearchParams(window.location.search).get('shot')
+const mockOverSession = (): Session =>
+  ({
+    phase: 'gameover',
+    score: 4520,
+    bestCombo: 9,
+    levelIndex: 17,
+    lives: 0,
+    telemetry: {
+      sushi: { tries: 3, clears: 3, perfects: 2 },
+      gimbap: { tries: 2, clears: 2, perfects: 1 },
+      chicken: { tries: 2, clears: 0, perfects: 0 },
+    },
+  }) as unknown as Session
+
 export default function App() {
-  const [screen, setScreen] = useState<Screen>('title')
-  const [last, setLast] = useState<Session | null>(null)
+  const [screen, setScreen] = useState<Screen>(shotParam === 'over' ? 'over' : shotParam === 'game' ? 'game' : 'title')
+  const [last, setLast] = useState<Session | null>(shotParam === 'over' ? mockOverSession() : null)
   const onGameOver = useCallback((s: Session) => {
     setLast(s)
     setScreen('over')

@@ -1,0 +1,28 @@
+# 실격 방지 CI — 모든 푸시에서: 빌드 성공 + 스모크(뜨고, 시작되고, 입력에 반응하고, 콘솔 클린)
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install chromium --with-deps
+      - run: pnpm build
+      - name: Serve & smoke
+        run: |
+          pnpm exec vite preview --port 4173 &
+          sleep 3
+          node tools/smoke.mjs

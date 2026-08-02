@@ -12,7 +12,9 @@ export type EvalReport = {
 
 export function makeEval(s: Session): EvalReport {
   const grade: Grade = s.phase === 'complete' ? 's' : s.levelIndex >= 20 ? 'a' : s.levelIndex >= 10 ? 'b' : 'c'
-  const lines: string[] = [T(`eval-grade-${grade}`)]
+  // 총평 변형 중 랜덤 선택 — 빌드타임 AI 작성 뱅크 (ADR-010: 런타임 LLM 배제)
+  const variants = [`eval-grade-${grade}`, `eval-grade-${grade}-2`].filter(id => !T(id).startsWith('eval-'))
+  const lines: string[] = [T(variants[Math.floor(Math.random() * variants.length)] ?? `eval-grade-${grade}`)]
 
   const entries = (Object.entries(s.telemetry) as [ThemeId, { tries: number; clears: number; perfects: number }][]).filter(
     ([, t]) => t.tries >= 2,
@@ -31,6 +33,7 @@ export function makeEval(s: Session): EvalReport {
 
   const perfects = Object.values(s.telemetry).reduce((n, t) => n + t.perfects, 0)
   if (perfects >= 3) lines.push(T('eval-perfect').replace('{n}', String(perfects)))
+  else if (s.bestCombo >= 8) lines.push(T('eval-combo').replace('{n}', String(s.bestCombo)))
 
   return { grade, lines }
 }
