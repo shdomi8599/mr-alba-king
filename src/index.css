@@ -34,10 +34,11 @@ body {
   transition: transform .08s;
 }
 .cta:active { transform: translateY(4px); box-shadow: 0 2px 0 #b8871e; }
-/* 실아트 버튼 프레임 */
+/* 실아트 버튼 프레임 (9-slice) */
 .cta.cta-img {
-  background-color: transparent; background-size: 100% 100%; background-repeat: no-repeat;
-  box-shadow: none; border-radius: 0; color: #6b4310; padding: 22px 70px 26px;
+  background: none; box-shadow: none; border-radius: 0;
+  border: 27px solid transparent; /* border-image가 이 영역을 프레임으로 채움 */
+  color: #5b3d0e; padding: 6px 46px 10px; font-size: 24px; font-weight: 900;
 }
 .cta.cta-img:active { transform: translateY(3px) scale(.98); box-shadow: none; }
 /* 타이틀 */
@@ -98,8 +99,8 @@ body {
   background: #f5b942; color: #1a1815; font-size: 13px; font-weight: 900;
   display: flex; align-items: center; justify-content: center;
 }
-/* 실아트 주문표(티켓) */
-.order.framed { background-color: transparent; background-size: 100% 100%; border-radius: 0; padding: 20px 30px 18px; }
+/* 실아트 주문표(티켓) — 상단 빨간 밴드 아래에 내용 배치 */
+.order.framed { background-color: transparent; background-size: 100% 100%; border-radius: 0; padding: 40px 34px 20px; }
 .order.framed span { color: #6b3a1a; text-shadow: none; }
 .penalty {
   position: absolute; inset: 0; z-index: 25; pointer-events: none;
@@ -112,8 +113,8 @@ body {
 /* 실아트 타이머 프레임 (캡슐) — 프레임 아래, 필은 트랙 영역 안쪽 */
 .timerwrap { position: absolute; top: 78px; left: 24px; right: 24px; height: 46px; z-index: 20; }
 .timerwrap .tframe { position: absolute; inset: 0; width: 100%; height: 100%; }
-.timerwrap .tfill { position: absolute; inset: 30% 5%; border-radius: 14px; overflow: hidden; }
-.timerwrap .tfill i { display: block; height: 100%; border-radius: 14px; }
+.timerwrap .tfill { position: absolute; inset: 31% 9%; border-radius: 999px; overflow: hidden; }
+.timerwrap .tfill i { display: block; height: 100%; border-radius: 999px; }
 .timerwrap.low { animation: urgent .45s ease-in-out infinite; border-radius: 24px; }
 .combo { position: absolute; top: 124px; right: 30px; font-size: 30px; font-weight: 900; color: #f5b942; text-shadow: 0 3px 0 rgba(0,0,0,.35); z-index: 20; animation: pop .18s ease-out; }
 
@@ -168,7 +169,7 @@ body {
 .result.fail { color: #e5484d; }
 
 /* 타이밍 게이지 (템플릿 B) */
-.reps { position: absolute; top: 852px; left: 0; right: 0; text-align: center; font-size: 34px; font-weight: 900; text-shadow: 0 3px 0 rgba(0,0,0,.35); z-index: 15; }
+.reps { position: absolute; top: 1018px; left: 0; right: 0; text-align: center; font-size: 34px; font-weight: 900; text-shadow: 0 3px 0 rgba(0,0,0,.35); z-index: 15; }
 .gauge { position: absolute; background: rgba(0,0,0,.45); border-radius: 22px; border: 4px solid rgba(255,255,255,.25); overflow: hidden; z-index: 15; }
 .gauge .zone { position: absolute; top: 0; bottom: 0; background: rgba(122,224,143,.5); border-left: 3px solid #8ae08f; border-right: 3px solid #8ae08f; }
 .gauge .fill { position: absolute; top: 0; bottom: 0; left: 0; background: rgba(245,185,66,.45); }
@@ -221,7 +222,12 @@ body {
   animation: fadeout .32s ease-out forwards;
 }
 .dropstar { position: absolute; font-size: 58px; z-index: 16; pointer-events: none; animation: starpop .32s ease-out forwards; }
-.cupfill { position: absolute; background: linear-gradient(180deg, rgba(150,100,60,.85), rgba(110,70,40,.9)); border-radius: 0 0 16px 16px; z-index: 14; pointer-events: none; }
+.cupfill { position: absolute; background: linear-gradient(180deg, rgba(150,100,60,.88), rgba(96,60,34,.92)); border-radius: 6px 6px 40% 40%; z-index: 14; pointer-events: none; }
+.pour {
+  position: absolute; width: 14px; z-index: 13; pointer-events: none; border-radius: 8px;
+  background: linear-gradient(180deg, rgba(150,100,60,.35), rgba(120,78,45,.85));
+  animation: pop .12s ease-out;
+}
 .tilt { transform: rotate(-24deg) translateY(-12px); transition: transform .16s ease-out; }
 .dip { animation: dip .36s ease-out; }
 .flip { animation: flip .38s ease-out; }

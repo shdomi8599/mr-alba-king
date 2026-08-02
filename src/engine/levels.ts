@@ -75,8 +75,8 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     bg: 'cafe-bg',
     pattern: 'hold',
     deco: [
-      { id: 'cafe-kettle', rect: { x: 430, y: 480, w: 200, h: 170 } },
-      { id: 'cafe-cup', rect: { x: 250, y: 660, w: 220, h: 190 } },
+      { id: 'cafe-kettle', rect: { x: 330, y: 450, w: 220, h: 190 } }, // 컵 바로 위 — 물줄기가 자연 연결
+      { id: 'cafe-cup', rect: { x: 220, y: 680, w: 280, h: 240 } },
     ],
   },
   chicken: {

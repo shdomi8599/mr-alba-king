@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createSession, difficultyOf, pointerSession, tickSession, LIVES, ROUNDS_TOTAL, type Session } from '../engine/session'
+import { makeLevel, THEME_ORDER } from '../engine/levels'
 import { currentZone } from '../engine/templates/timing'
 import { playSfx, startBgm, stopBgm } from './sound'
 import type { GuideStep, Level, PointerInput, Rect, ThemeId } from '../engine/types'
@@ -112,7 +113,16 @@ function guideFocus(lv: Level, step: GuideStep): Rect | null {
 export default function GameView({ onGameOver }: { onGameOver: (s: Session) => void }) {
   const [, force] = useState(0)
   const sRef = useRef<Session | null>(null)
-  if (!sRef.current) sRef.current = createSession(Date.now() & 0xffffffff)
+  if (!sRef.current) {
+    const s = createSession(Date.now() & 0xffffffff)
+    // 캡처·QA 전용: ?round=N 으로 특정 라운드에서 시작 (심사 노출 없음 — 촬영·검수 도구)
+    const round = Number(new URLSearchParams(window.location.search).get('round') || 0)
+    if (round >= 2) {
+      s.levelIndex = round - 1
+      s.level = makeLevel(THEME_ORDER[(round - 1) % THEME_ORDER.length], difficultyOf(round - 1), s.rng)
+    }
+    sRef.current = s
+  }
   const wrapRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(0.5)
   // 이펙트 엣지 감지·거품 팝 상태 (렌더 전용)
@@ -330,8 +340,19 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
             {lv.pattern === 'hold' && (() => {
               const cup = lv.deco.find(d => d.id === 'cafe-cup')
               if (!cup) return null
-              const h = cup.rect.h * 0.5 * lv.value
-              return <div className="cupfill" style={{ left: cup.rect.x + cup.rect.w * 0.24, width: cup.rect.w * 0.52, top: cup.rect.y + cup.rect.h * 0.66 - h, height: h }} />
+              const r = cup.rect
+              const kettle = lv.deco.find(d => d.id === 'cafe-kettle')!.rect
+              // 커피는 컵 아트 안쪽에만 (가로 33~67%, 바닥 72%선, 최대 높이 30%) — 컵 밖 넘침 금지
+              const h = r.h * 0.3 * Math.min(1, lv.value)
+              const streamTop = kettle.y + kettle.h * 0.72
+              return (
+                <>
+                  {lv.holding && (
+                    <div className="pour" style={{ left: r.x + r.w * 0.5 - 6, top: streamTop, height: r.y + r.h * 0.34 - streamTop }} />
+                  )}
+                  <div className="cupfill" style={{ left: r.x + r.w * 0.34, width: r.w * 0.32, top: r.y + r.h * 0.72 - h, height: h }} />
+                </>
+              )
             })()}
             {lv.repFxT > 0 && <div className="dropstar" style={{ left: 330, top: GAUGE.y - 90 }}>✨</div>}
             <div className="reps">
