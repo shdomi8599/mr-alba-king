@@ -1,5 +1,5 @@
-// gen-credits.mjs — AI 스태프롤 실측값 생성 (정직 표기 원칙: 숫자는 전부 이벤트 스토어·git에서)
-// 빌드마다 실행되어 src/game/credits.json 갱신 → 게임오버 스태프롤에 주입.
+// gen-credits.mjs — AI 협업 실측값 생성 (정직 표기 원칙: 숫자는 전부 이벤트 스토어·git에서)
+// 게임 내 노출은 제거됨(ADR-011) — 기술 문서·영상 엔딩의 숫자 소스로만 사용. 출력: pipeline/credits.json
 import { readFileSync, writeFileSync } from 'node:fs'
 import { execSync } from 'node:child_process'
 import path from 'node:path'

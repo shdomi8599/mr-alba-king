@@ -409,35 +409,6 @@
       ]
     },
     {
-      "name": "AI 스태프롤 (게임오버 하단 3줄 — 숫자는 이벤트 스토어 실측값만, 빌드 시 주입)",
-      "entries": [
-        {
-          "id": "credits-title",
-          "ko": "이 가게의 AI 알바들",
-          "context": "스태프롤 헤더",
-          "shot": "screen-over.png"
-        },
-        {
-          "id": "credit-art",
-          "ko": "아트알바 codex — {made}장 납품 · {rejected}장 반려",
-          "context": "발주/반려 실측값 치환",
-          "shot": "screen-over.png"
-        },
-        {
-          "id": "credit-qa",
-          "ko": "QA알바 시뮬레이터 — 가상 알바 {sessions}명 · {levels}판 근무",
-          "context": "QA 봇 실측값 치환",
-          "shot": "screen-over.png"
-        },
-        {
-          "id": "credit-code",
-          "ko": "코딩알바 Claude Code — 커밋 {commits}건",
-          "context": "git 실측값 치환",
-          "shot": "screen-over.png"
-        }
-      ]
-    },
-    {
       "name": "게임오버·평가서",
       "entries": [
         {

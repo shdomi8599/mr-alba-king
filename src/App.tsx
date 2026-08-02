@@ -3,13 +3,9 @@ import GameView from './game/GameView'
 import { T } from './game/texts'
 import { makeEval } from './game/evaluate'
 import { spriteUrl } from './assets/registry'
-import credits from './game/credits.json'
 import type { Session } from './engine/session'
 
 type Screen = 'title' | 'game' | 'over'
-
-const fill = (id: string, vars: Record<string, number>): string =>
-  Object.entries(vars).reduce((s, [k, v]) => s.replace(`{${k}}`, v.toLocaleString()), T(id))
 
 // 캡처·QA 전용 진입 파라미터 (?shot=over|game) — 스튜디오 텍스트 검수용 상황 캡처(shots) 촬영에 사용
 const shotParam = new URLSearchParams(window.location.search).get('shot')
@@ -64,12 +60,6 @@ export default function App() {
               <br />
               {T('over-level').replace('{n}', String(last.levelIndex + 1))}
             </div>
-          </div>
-          <div className="staffroll">
-            <div className="staff-title">{T('credits-title')}</div>
-            <div>{fill('credit-art', { made: credits.made, rejected: credits.rejected })}</div>
-            <div>{fill('credit-qa', { sessions: credits.sessions, levels: credits.levels })}</div>
-            <div>{fill('credit-code', { commits: credits.commits })}</div>
           </div>
         </div>
         <button className="cta" onClick={() => setScreen('game')}>
