@@ -1,0 +1,16 @@
+{
+  "order": 11,
+  "name": "ui-button-full",
+  "kind": "image",
+  "goal": "CTA 버튼 재발주 — 프레임-온리(9-slice)는 질감 소실로 기각. 광택·입체감이 살아있는 완성형 통짜 버튼(글자 없는 면 포함)을 원본 비율 그대로 사용한다.",
+  "style": "bold clean dark outlines, vibrant high-saturation colors, energetic comic cartoon sticker style, flat cel shading with one simple gloss highlight",
+  "common": "no text, no letters, no watermark, transparent background, single centered subject, wide aspect ratio drawn large",
+  "items": [
+    {
+      "id": "ui-button-full",
+      "label": "완성형 버튼",
+      "subject": "a complete chunky golden game button: rounded rectangle with a rich amber-gold glossy face, warm gradient from light top to deeper bottom, one bright curved gloss highlight across the top, thick darker-gold rim with bold dark outline, subtle bottom depth edge like a pressable 3D button, COMPLETELY BLANK face"
+    }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

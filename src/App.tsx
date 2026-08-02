@@ -52,8 +52,9 @@ export default function App() {
     const bossUrl = spriteUrl(report.grade === 's' || report.grade === 'a' ? 'ui-boss-happy' : 'ui-boss-angry')
     const complete = last.phase === 'complete'
     const panelUrl = spriteUrl('ui-panel')
+    const bgUrl = spriteUrl('title-bg')
     return (
-      <div className="screen over-screen">
+      <div className="screen over-screen" style={bgUrl ? { backgroundImage: `url(${bgUrl})` } : undefined}>
         <div className={`evalpanel ${panelUrl ? 'framed' : ''}`} style={panelUrl ? { backgroundImage: `url(${panelUrl})` } : undefined}>
           <h1 className="over-title">{complete ? T('complete-title') : T('over-title')}</h1>
           {complete && <p className="tagline">{T('complete-sub')}</p>}

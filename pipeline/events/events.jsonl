@@ -587,3 +587,5 @@
 {"ts":"2026-08-02T15:59:12.477Z","order":9,"item":"box-truck","event":"promoted","to":"src/assets/img/box-truck.webp"}
 {"ts":"2026-08-02T15:59:12.705Z","order":9,"item":"wash-sponge","event":"promoted","to":"src/assets/img/wash-sponge.webp"}
 {"ts":"2026-08-02T15:59:13.011Z","order":10,"item":"ui-panel","event":"promoted","to":"src/assets/img/ui-panel.webp"}
+{"ts": "2026-08-02T16:12:15.000179Z", "order": 9, "item": "ui-button-frame", "event": "rejected", "reason": "프레임-온리 접근 자체를 기각 — 9-slice로 늘리면 광택·두께가 소실돼 게임 버튼 질감이 안 나옴. 면까지 완성된 통짜 버튼으로 재발주 (order#11)", "by": "director"}
+{"ts":"2026-08-02T16:12:15.331Z","order":11,"item":"ui-button-full","event":"ordered","out":"pipeline/staging/assets/ui-button-full.png","ref":"pipeline\\refs\\style-ref.png"}
