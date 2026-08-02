@@ -6,6 +6,8 @@ const TAP_SLOP = 40
 export function tickMash(level: MashLevel, dt: number): PlayResult {
   level.timeRemain -= dt
   if (level.penaltyT > 0) level.penaltyT -= dt
+  if (level.kind === 'tap' && level.flyT > 0) level.flyT -= dt
+  if (level.kind === 'shake' && level.hitT > 0) level.hitT -= dt
   if (level.kind === 'shake' && level.gauge < 1) {
     // 게이지 만충(1.0) 도달 시 래치 — 감쇠가 클리어 판정을 선점하면 클리어 불가 (QA 봇이 잡은 버그)
     level.gauge = Math.max(0, level.gauge - level.decay * (dt / 1000))
@@ -32,6 +34,8 @@ export function applyMashPointer(level: MashLevel, input: PointerInput): void {
       input.y <= t.y + t.h + TAP_SLOP
     ) {
       level.count += 1
+      level.flyFrom = { x: t.x + t.w / 2, y: t.y + t.h / 2 } // 트럭 짐칸으로 날아가는 연출 시작점
+      level.flyT = 380
       if (level.count < level.goal && level.count % level.movesEvery === 0) {
         level.posIdx = (level.posIdx + 1) % level.positions.length
       }
@@ -61,4 +65,7 @@ export function applyMashPointer(level: MashLevel, input: PointerInput): void {
   const side = input.x < 360 ? 'L' : 'R'
   level.gauge = Math.min(1, level.gauge + (side !== level.lastSide ? level.gain : level.gain * 0.35))
   level.lastSide = side
+  level.hitT = 240
+  level.hitSide = side
+  level.hitCount += 1
 }

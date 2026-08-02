@@ -366,3 +366,5 @@
 {"ts":"2026-08-02T10:17:53.585Z","order":6,"item":"ui-boss-angry","event":"promoted","to":"src/assets/img/ui-boss-angry.webp"}
 {"ts":"2026-08-02T10:17:53.779Z","order":6,"item":"ui-life","event":"promoted","to":"src/assets/img/ui-life.webp"}
 {"ts":"2026-08-02T10:17:53.980Z","order":7,"item":"ui-boss-angry","event":"promoted","to":"src/assets/img/ui-boss-angry.webp"}
+{"ts":"2026-08-02T10:30:27.783Z","order":3,"item":"box-truck","event":"rejected","reason":"트럭이 너무 작고 짐칸이 무대 역할을 못 함 — 짐칸을 크게 정면으로 보여주는 구도로 재발주 (디렉터 피드백, order#9)","by":"director"}
+{"ts":"2026-08-02T10:30:36.700Z","order":9,"item":"ui-button-frame","event":"ordered","out":"pipeline/staging/assets/ui-button-frame.png","ref":"pipeline\\refs\\style-ref.png"}

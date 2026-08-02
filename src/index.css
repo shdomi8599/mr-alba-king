@@ -199,6 +199,26 @@ body {
 .guide-bubble .tap { margin-top: 10px; font-size: 16px; font-weight: 500; opacity: .55; }
 .guide-hand { position: absolute; z-index: 41; font-size: 60px; pointer-events: none; animation: bounce 1s ease-in-out infinite; }
 
+/* 테마 인터랙션 이펙트 */
+.scanflash {
+  position: absolute; z-index: 14; pointer-events: none; border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,70,70,0), rgba(255,70,70,.6) 50%, rgba(255,70,70,0));
+  animation: fadeout .32s ease-out forwards;
+}
+.dropstar { position: absolute; font-size: 58px; z-index: 16; pointer-events: none; animation: starpop .32s ease-out forwards; }
+.cupfill { position: absolute; background: linear-gradient(180deg, rgba(150,100,60,.85), rgba(110,70,40,.9)); border-radius: 0 0 16px 16px; z-index: 14; pointer-events: none; }
+.tilt { transform: rotate(-24deg) translateY(-12px); transition: transform .16s ease-out; }
+.dip { animation: dip .36s ease-out; }
+.flip { animation: flip .38s ease-out; }
+.wiggleL { animation: wiggleL .24s ease-out; }
+.wiggleR { animation: wiggleR .24s ease-out; }
+.flyghost { opacity: .95; z-index: 18; pointer-events: none; filter: drop-shadow(0 10px 12px rgba(0,0,0,.4)); }
+.note { position: absolute; font-size: 46px; z-index: 16; pointer-events: none; animation: floatup .5s ease-out forwards; }
+.foampop {
+  position: absolute; width: 100px; height: 100px; border-radius: 50%; z-index: 12; pointer-events: none;
+  border: 6px solid rgba(255,255,255,.85); animation: ringout .4s ease-out forwards;
+}
+
 /* 판정 연출 */
 .burst { position: absolute; left: 50%; top: 46%; z-index: 28; pointer-events: none; }
 .burst i { position: absolute; border-radius: 50%; animation: fly .55s ease-out forwards; }
@@ -211,6 +231,13 @@ body {
 @keyframes fadeout { from { opacity: 1; } to { opacity: 0; } }
 @keyframes shake { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-14px, 6px); } 40% { transform: translate(11px, -8px); } 60% { transform: translate(-8px, 5px); } 80% { transform: translate(5px, -3px); } }
 @keyframes urgent { 0%, 100% { box-shadow: 0 0 0 0 rgba(229,72,77,0); } 50% { box-shadow: 0 0 14px 3px rgba(229,72,77,.7); } }
+@keyframes starpop { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.6) translateY(-46px); opacity: 0; } }
+@keyframes dip { 0% { transform: translateY(0); } 42% { transform: translateY(52px); } 100% { transform: translateY(0); } }
+@keyframes flip { 0% { transform: scaleY(1); } 50% { transform: scaleY(-1); } 100% { transform: scaleY(1); } }
+@keyframes wiggleL { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-17deg); } }
+@keyframes wiggleR { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(17deg); } }
+@keyframes floatup { from { transform: translateY(0) scale(1); opacity: 1; } to { transform: translateY(-100px) scale(1.25); opacity: 0; } }
+@keyframes ringout { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
 @keyframes pulse { 0%, 100% { border-color: rgba(255,255,255,.35); } 50% { border-color: rgba(255,255,255,.75); } }
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
 @keyframes pulse-scale { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }

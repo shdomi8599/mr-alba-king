@@ -104,8 +104,8 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     bg: 'box-bg',
     sprite: 'box-parcel',
     size: { x: 180, y: 150 },
-    area: { x: 60, y: 520, w: 480, h: 460 },
-    deco: [{ id: 'box-truck', rect: { x: 470, y: 450, w: 230, h: 300 } }],
+    area: { x: 80, y: 700, w: 560, h: 380 },
+    deco: [{ id: 'box-truck', rect: { x: 130, y: 290, w: 460, h: 350 } }], // 짐칸을 크게 — 박스가 여기로 날아간다
   },
   wash: {
     template: 'mash',
@@ -203,6 +203,8 @@ function makeDragLevel(theme: ThemeId, cfg: DragCfg, difficulty: number, rng: Rn
     sequence,
     seqIdx: 0,
     penaltyT: 0,
+    dropFxT: 0,
+    dropFxSlot: -1,
   }
 }
 
@@ -236,6 +238,7 @@ function makeTimingLevel(theme: ThemeId, cfg: TimingCfg, difficulty: number, rng
     reps,
     done: 0,
     penaltyT: 0,
+    repFxT: 0,
   }
 }
 
@@ -253,7 +256,7 @@ function makeMashLevel(theme: ThemeId, cfg: MashCfg, difficulty: number, rng: Rn
       timeLimit: Math.round((1600 + goal * 240) * Math.pow(0.92, difficulty)),
       timeRemain: Math.round((1600 + goal * 240) * Math.pow(0.92, difficulty)),
       bgSprite: cfg.bg, deco: cfg.deco, penaltyT: 0,
-      sprite: cfg.sprite, positions, posIdx: 0, goal, count: 0, movesEvery: 3,
+      sprite: cfg.sprite, positions, posIdx: 0, goal, count: 0, movesEvery: 3, flyT: 0, flyFrom: null,
     }
   }
   if (cfg.kind === 'scrub') {
@@ -281,6 +284,7 @@ function makeMashLevel(theme: ThemeId, cfg: MashCfg, difficulty: number, rng: Rn
     timeLimit, timeRemain: timeLimit,
     bgSprite: cfg.bg, deco: cfg.deco, penaltyT: 0,
     gauge: 0, gain: 0.085 - 0.006 * difficulty, decay: 0.16 + 0.05 * difficulty, lastSide: null,
+    hitT: 0, hitSide: null, hitCount: 0,
   }
 }
 

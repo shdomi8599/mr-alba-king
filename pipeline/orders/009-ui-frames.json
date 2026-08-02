@@ -1,0 +1,17 @@
+{
+  "order": 9,
+  "name": "ui-frames",
+  "kind": "image",
+  "goal": "UI 프레임류 발주 — CSS 티 나는 UI를 실아트 프레임으로 교체(디렉터 피드백). 버튼·평가서 패널·주문표·타이머 프레임 + 트럭 짐칸 재발주(짐칸을 크게, 박스가 실리는 무대) + 세차 스펀지. 글자는 절대 굽지 않음(코드 렌더).",
+  "style": "bold clean dark outlines, vibrant high-saturation colors, energetic comic cartoon sticker style, flat cel shading with one simple gloss highlight",
+  "common": "no text, no letters, no numbers, no watermark, 1024x1024 PNG with alpha, transparent background, single centered subject",
+  "items": [
+    { "id": "ui-button-frame", "label": "버튼 프레임(9-slice)", "subject": "a chunky rounded-rectangle game button frame in golden yellow with a darker bottom edge for depth and a soft top gloss, COMPLETELY EMPTY center area for code-rendered text, wide aspect button drawn large in frame" },
+    { "id": "ui-panel", "label": "평가서 패널", "subject": "a clipboard-style evaluation board: warm wood board with a metal clip at the top, a cream EMPTY paper sheet on it, portrait orientation, comic style" },
+    { "id": "ui-order-panel", "label": "주문표 패널", "subject": "a small order ticket memo pad: cream paper with a red header band and a clip, COMPLETELY EMPTY surface, landscape orientation" },
+    { "id": "ui-timer-frame", "label": "타이머 프레임", "subject": "a horizontal capsule-shaped gauge frame, dark casing with metallic edge and small bolts, COMPLETELY EMPTY inner track, very wide aspect drawn large" },
+    { "id": "box-truck", "label": "트럭 짐칸(재발주 — 크게)", "subject": "the open rear cargo bay of a delivery truck seen straight on and LARGE, plain cardboard boxes stacked along both inner walls leaving an inviting empty gap in the middle, the stage where thrown boxes land" },
+    { "id": "wash-sponge", "label": "세차 스펀지", "subject": "a chunky yellow car-wash sponge with soap foam bubbling on its top side" }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

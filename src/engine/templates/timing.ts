@@ -14,6 +14,7 @@ const miss = (level: TimingLevel): void => {
 export function tickTiming(level: TimingLevel, dt: number): PlayResult {
   level.timeRemain -= dt
   if (level.penaltyT > 0) level.penaltyT -= dt
+  if (level.repFxT > 0) level.repFxT -= dt
   const sec = dt / 1000
   if (level.pattern === 'hold') {
     if (level.holding) {
@@ -44,6 +45,7 @@ const judge = (level: TimingLevel): void => {
   const z = currentZone(level)
   if (level.value >= z.start && level.value <= z.end) {
     level.done += 1 // 다음 rep은 다른 구간(zones[done])
+    level.repFxT = 380
   } else {
     miss(level)
   }

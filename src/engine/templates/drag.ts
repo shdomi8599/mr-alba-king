@@ -9,6 +9,7 @@ const PENALTY_FLASH_MS = 380
 export function tickDrag(level: DragLevel, dt: number): PlayResult {
   level.timeRemain -= dt
   if (level.penaltyT > 0) level.penaltyT -= dt
+  if (level.dropFxT > 0) level.dropFxT -= dt
   if (level.items.filter(i => i.wanted).every(i => i.done)) return 'clear'
   if (level.timeRemain <= 0) return 'fail'
   return 'playing'
@@ -55,6 +56,8 @@ export function applyPointer(level: DragLevel, input: PointerInput): void {
   if (held.wanted && !wrongOrder && !wrongMatch) {
     held.done = true
     slot.filled += 1
+    level.dropFxT = 320
+    level.dropFxSlot = level.targets.indexOf(slot)
     if (level.sequence) level.seqIdx += 1
     held.pos = {
       x: slot.rect.x + slot.rect.w / 2,

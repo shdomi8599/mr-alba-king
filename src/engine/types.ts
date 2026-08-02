@@ -40,6 +40,8 @@ export type DragLevel = {
   sequence: boolean // 배치 순서 기믹 (김밥)
   seqIdx: number // 다음에 넣어야 할 orderIds 인덱스
   penaltyT: number
+  dropFxT: number // 드롭 성공 연출 잔여 ms (편의점=스캔 플래시, 그 외=스파클)
+  dropFxSlot: number // 연출이 일어난 슬롯 인덱스
 }
 
 // ── 템플릿 B: 타이밍 게이지 ──
@@ -62,6 +64,7 @@ export type TimingLevel = {
   reps: number
   done: number
   penaltyT: number
+  repFxT: number // rep 성공 연출 잔여 ms (망 담그기/붕어빵 뒤집기/스파클)
 }
 
 // ── 템플릿 C: 연타/스와이프 ──
@@ -84,6 +87,8 @@ export type TapMash = MashBase & {
   goal: number
   count: number
   movesEvery: number
+  flyT: number // 박스가 트럭 짐칸으로 날아가는 연출 잔여 ms
+  flyFrom: Vec | null
 }
 // 세차: 거품을 문질러(스와이프 이동량) 지우기
 export type ScrubMash = MashBase & {
@@ -98,6 +103,9 @@ export type ShakeMash = MashBase & {
   gain: number
   decay: number // 초당 감쇠
   lastSide: 'L' | 'R' | null
+  hitT: number // 탬버린 흔들림 연출 잔여 ms
+  hitSide: 'L' | 'R' | null
+  hitCount: number // 음표 파티클 키
 }
 export type MashLevel = TapMash | ScrubMash | ShakeMash
 

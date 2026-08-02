@@ -115,6 +115,8 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
   if (!sRef.current) sRef.current = createSession(Date.now() & 0xffffffff)
   const wrapRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(0.5)
+  // 이펙트 엣지 감지·거품 팝 상태 (렌더 전용)
+  const fxRef = useRef({ drop: 0, rep: 0, fly: 0, hit: 0, scrubKey: -1, dead: new Set<number>(), pops: [] as { x: number; y: number; t: number }[] })
 
   useEffect(() => {
     const el = wrapRef.current!
@@ -149,6 +151,21 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
       const pen = s.level.penaltyT
       if (pen > 0 && prevPenalty <= 0) playSfx('sfx-penalty')
       prevPenalty = pen
+      // 인터랙션 이펙트 사운드 (성공 액션마다 탭음)
+      const f = fxRef.current
+      const lv2 = s.level
+      if (lv2.template === 'drag') { if (lv2.dropFxT > f.drop) playSfx('sfx-tap'); f.drop = lv2.dropFxT } else f.drop = 0
+      if (lv2.template === 'timing') { if (lv2.repFxT > f.rep) playSfx('sfx-tap'); f.rep = lv2.repFxT } else f.rep = 0
+      if (lv2.template === 'mash' && lv2.kind === 'tap') { if (lv2.flyT > f.fly) playSfx('sfx-tap'); f.fly = lv2.flyT } else f.fly = 0
+      if (lv2.template === 'mash' && lv2.kind === 'shake') { if (lv2.hitCount > f.hit) playSfx('sfx-tap'); f.hit = lv2.hitCount } else f.hit = 0
+      if (lv2.template === 'mash' && lv2.kind === 'scrub') {
+        if (f.scrubKey !== s.levelIndex) { f.scrubKey = s.levelIndex; f.dead = new Set(); f.pops = [] }
+        lv2.blobs.forEach((b, i) => {
+          if (b.hp <= 0 && !f.dead.has(i)) { f.dead.add(i); f.pops.push({ x: b.x, y: b.y, t: 400 }); playSfx('sfx-tap') }
+        })
+      }
+      f.pops.forEach(p => (p.t -= 17))
+      f.pops = f.pops.filter(p => p.t > 0)
       if (difficultyOf(s.levelIndex) >= 2) startBgm('bgm-fast')
       if (s.phase === 'gameover' || s.phase === 'complete') {
         stopBgm()
@@ -278,14 +295,32 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
                 )}
               </div>
             ))}
+            {lv.dropFxT > 0 && lv.dropFxSlot >= 0 && lv.targets[lv.dropFxSlot] && (() => {
+              const t = lv.targets[lv.dropFxSlot].rect
+              return lv.theme === 'cvs'
+                ? <div className="scanflash" style={{ left: t.x - 8, top: t.y - 8, width: t.w + 16, height: t.h + 16 }} />
+                : <div className="dropstar" style={{ left: t.x + t.w / 2 - 28, top: t.y - 30 }}>✨</div>
+            })()}
           </>
         )}
 
         {lv.template === 'timing' && (
           <>
-            {lv.deco.map(d => (
-              <Ph key={d.id} id={d.id} x={d.rect.x} y={d.rect.y} w={d.rect.w} h={d.rect.h} />
-            ))}
+            {lv.deco.map(d => {
+              const cls =
+                d.id === 'cafe-kettle' && lv.holding ? 'tilt'
+                : d.id === 'chicken-net' && lv.repFxT > 0 ? 'dip'
+                : d.id === 'fish-bread' && lv.repFxT > 0 ? 'flip'
+                : ''
+              return <Ph key={d.id} id={d.id} x={d.rect.x} y={d.rect.y} w={d.rect.w} h={d.rect.h} cls={cls} />
+            })}
+            {lv.pattern === 'hold' && (() => {
+              const cup = lv.deco.find(d => d.id === 'cafe-cup')
+              if (!cup) return null
+              const h = cup.rect.h * 0.5 * lv.value
+              return <div className="cupfill" style={{ left: cup.rect.x + cup.rect.w * 0.24, width: cup.rect.w * 0.52, top: cup.rect.y + cup.rect.h * 0.66 - h, height: h }} />
+            })()}
+            {lv.repFxT > 0 && <div className="dropstar" style={{ left: 330, top: GAUGE.y - 90 }}>✨</div>}
             <div className="reps">
               {lv.done} / {lv.reps}
             </div>
@@ -305,9 +340,30 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
 
         {lv.template === 'mash' && (
           <>
-            {lv.deco.map(d => (
-              <Ph key={d.id} id={d.id} x={d.rect.x} y={d.rect.y} w={d.rect.w} h={d.rect.h} />
-            ))}
+            {lv.deco.map(d => {
+              const cls = d.id === 'song-tambourine' && lv.kind === 'shake' && lv.hitT > 0 ? (lv.hitSide === 'L' ? 'wiggleL' : 'wiggleR') : ''
+              return <Ph key={d.id} id={d.id} x={d.rect.x} y={d.rect.y} w={d.rect.w} h={d.rect.h} cls={cls} />
+            })}
+            {lv.kind === 'tap' && lv.flyT > 0 && lv.flyFrom && (() => {
+              // 박스가 포물선으로 트럭 짐칸에 실리는 연출
+              const truck = lv.deco[0].rect
+              const p = 1 - lv.flyT / 380
+              const tx = truck.x + truck.w / 2
+              const ty = truck.y + truck.h * 0.55
+              const x = lv.flyFrom.x + (tx - lv.flyFrom.x) * p
+              const y = lv.flyFrom.y + (ty - lv.flyFrom.y) * p - Math.sin(p * Math.PI) * 130
+              const sc = 1 - 0.55 * p
+              return <Ph id={lv.sprite} x={x - 90 * sc} y={y - 75 * sc} w={180 * sc} h={150 * sc} cls="flyghost" />
+            })()}
+            {lv.kind === 'shake' && lv.hitT > 0 && (
+              <div key={lv.hitCount} className="note" style={{ left: lv.hitSide === 'L' ? 200 : 480, top: 880 }}>
+                🎵
+              </div>
+            )}
+            {lv.kind === 'scrub' &&
+              fxRef.current.pops.map((p, i) => (
+                <div key={i} className="foampop" style={{ left: p.x - 50, top: p.y - 50, opacity: p.t / 400 }} />
+              ))}
             {lv.kind === 'tap' && (
               <>
                 <div className="reps">
