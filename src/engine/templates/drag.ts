@@ -1,11 +1,15 @@
-// 템플릿 A — 드래그&드롭: 아이템을 드롭 존으로 옮기면 완료, 전부 옮기면 클리어
+// 템플릿 A — 드래그&드롭: 주문된 아이템을 슬롯에 전부 넣으면 클리어.
+// 기믹: 페이크 재료를 넣으면 오답 페널티(시간 차감 + 플래시), 슬롯별 수용량(초밥=샤리당 1개).
 import type { DragLevel, PointerInput, PlayResult } from '../types'
 
-const TOUCH_SLOP = 30 // 논리 px — 터치 판정 여유
+const TOUCH_SLOP = 30 // 논리 px
+const WRONG_PENALTY_MS = 500
+const PENALTY_FLASH_MS = 380
 
 export function tickDrag(level: DragLevel, dt: number): PlayResult {
   level.timeRemain -= dt
-  if (level.items.every(i => i.done)) return 'clear'
+  if (level.penaltyT > 0) level.penaltyT -= dt
+  if (level.items.filter(i => i.wanted).every(i => i.done)) return 'clear'
   if (level.timeRemain <= 0) return 'fail'
   return 'playing'
 }
@@ -34,12 +38,29 @@ export function applyPointer(level: DragLevel, input: PointerInput): void {
   }
   // up
   held.held = false
-  const t = level.target
-  if (input.x >= t.x && input.x <= t.x + t.w && input.y >= t.y && input.y <= t.y + t.h) {
-    held.done = true
-    const stacked = level.items.filter(i => i.done).length - 1
-    held.pos = { x: t.x + t.w / 2, y: t.y + t.h / 2 - stacked * 26 } // 타깃 위에 쌓기
-  } else {
+  const slot = level.targets.find(
+    t =>
+      t.filled < t.capacity &&
+      input.x >= t.rect.x &&
+      input.x <= t.rect.x + t.rect.w &&
+      input.y >= t.rect.y &&
+      input.y <= t.rect.y + t.rect.h,
+  )
+  if (!slot) {
     held.pos = { ...held.home }
+    return
+  }
+  if (held.wanted) {
+    held.done = true
+    slot.filled += 1
+    held.pos = {
+      x: slot.rect.x + slot.rect.w / 2,
+      y: slot.rect.y + slot.rect.h / 2 - (slot.filled - 1) * 24,
+    }
+  } else {
+    // 페이크 재료 — 오답 페널티
+    held.pos = { ...held.home }
+    level.timeRemain -= WRONG_PENALTY_MS
+    level.penaltyT = PENALTY_FLASH_MS
   }
 }

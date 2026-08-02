@@ -4,14 +4,22 @@ export type Rect = { x: number; y: number; w: number; h: number }
 
 export type ThemeId = 'sushi' | 'gimbap' | 'cvs'
 
+export type TargetSlot = {
+  rect: Rect
+  sprite: string
+  capacity: number // 이 슬롯이 받을 수 있는 아이템 수 (초밥 샤리=1, 김밥/스캐너=주문 수)
+  filled: number
+}
+
 export type DragItem = {
   id: string // 스프라이트(에셋) id
   key: string // 렌더/추적용 고유 키
-  home: Vec // 시작 위치(중심)
-  pos: Vec // 현재 위치(중심)
+  home: Vec
+  pos: Vec
   size: Vec
   held: boolean
   done: boolean
+  wanted: boolean // false = 주문에 없는 페이크 재료 — 넣으면 페널티
 }
 
 export type DragLevel = {
@@ -20,11 +28,11 @@ export type DragLevel = {
   difficulty: number
   timeLimit: number // ms
   timeRemain: number // ms
-  target: Rect // 드롭 존 (논리 좌표 720×1280)
-  targetSprite: string
+  targets: TargetSlot[]
   bgSprite: string
-  deco: { id: string; rect: Rect }[]
   items: DragItem[]
+  orderIds: string[] // 주문표 표시용 (페이크가 섞일 때만 비어있지 않음)
+  penaltyT: number // 오답 페널티 플래시 잔여 ms
 }
 
 export type PointerInput =

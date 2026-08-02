@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { createSession, pointerSession, tickSession, LIVES, type Session } from '../engine/session'
+import { createSession, pointerSession, tickSession, LIVES, ROUNDS_TOTAL, type Session } from '../engine/session'
 import type { PointerInput, ThemeId } from '../engine/types'
 import { BG, PLACEHOLDER } from '../assets/registry'
 import { T } from './texts'
@@ -48,7 +48,7 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
         tickSession(s, FIXED)
         acc -= FIXED
       }
-      if (s.phase === 'gameover') {
+      if (s.phase === 'gameover' || s.phase === 'complete') {
         onGameOver(s)
         return
       }
@@ -89,6 +89,9 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
             {'❤️'.repeat(s.lives)}
             {'🖤'.repeat(Math.max(0, LIVES - s.lives))}
           </div>
+          <div className="round">
+            {T('sys-round').replace('{n}', String(s.levelIndex + 1)).replace('{m}', String(ROUNDS_TOTAL))}
+          </div>
           <div className="score">{s.score}</div>
         </div>
         <div className="timerbar">
@@ -99,13 +102,22 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
             }}
           />
         </div>
+        {lv.orderIds.length > 0 && (
+          <div className="order">
+            <span>{T('order-label')}</span>
+            {lv.orderIds.map(id => (
+              <i key={id} style={{ background: PLACEHOLDER[id]?.fill ?? '#888', borderColor: PLACEHOLDER[id]?.stroke ?? '#555' }} />
+            ))}
+          </div>
+        )}
         {s.combo >= 2 && <div className="combo">{T('sys-combo').replace('{n}', String(s.combo))}</div>}
 
-        {lv.deco.map(d => (
-          <Ph key={d.id} id={d.id} x={d.rect.x} y={d.rect.y} w={d.rect.w} h={d.rect.h} />
+        {lv.targets.map((t, i) => (
+          <div key={i}>
+            <div className="target" style={{ left: t.rect.x - 10, top: t.rect.y - 10, width: t.rect.w + 20, height: t.rect.h + 20 }} />
+            <Ph id={t.sprite} x={t.rect.x} y={t.rect.y} w={t.rect.w} h={t.rect.h} />
+          </div>
         ))}
-        <div className="target" style={{ left: lv.target.x - 12, top: lv.target.y - 12, width: lv.target.w + 24, height: lv.target.h + 24 }} />
-        <Ph id={lv.targetSprite} x={lv.target.x} y={lv.target.y} w={lv.target.w} h={lv.target.h} />
         {lv.items.map(it => (
           <Ph
             key={it.key}
@@ -117,6 +129,8 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
             cls={it.held ? 'held' : it.done ? 'done' : ''}
           />
         ))}
+
+        {lv.penaltyT > 0 && <div className="penalty" />}
 
         {s.phase === 'instruct' && (
           <>

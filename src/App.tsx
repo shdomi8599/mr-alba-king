@@ -18,7 +18,8 @@ export default function App() {
   if (screen === 'over' && last)
     return (
       <div className="screen">
-        <h1 className="over-title">{T('over-title')}</h1>
+        <h1 className="over-title">{last.phase === 'complete' ? T('complete-title') : T('over-title')}</h1>
+        {last.phase === 'complete' && <p className="tagline">{T('complete-sub')}</p>}
         <div className="score-label">{T('over-score')}</div>
         <div className="score-big">{last.score}</div>
         <div className="over-sub">

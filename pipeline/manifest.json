@@ -24,7 +24,8 @@
         { "id": "gimbap-base", "kind": "image", "desc": "김+밥 펼침면 — 드롭 대상" },
         { "id": "gimbap-ham", "kind": "image", "desc": "재료: 햄" },
         { "id": "gimbap-egg", "kind": "image", "desc": "재료: 계란" },
-        { "id": "gimbap-pickle", "kind": "image", "desc": "재료: 단무지" }
+        { "id": "gimbap-pickle", "kind": "image", "desc": "재료: 단무지" },
+        { "id": "gimbap-crab", "kind": "image", "desc": "재료: 맛살 (페이크 재료 기믹용 4번째)" }
       ]
     },
     {
@@ -34,7 +35,8 @@
         { "id": "cvs-scanner", "kind": "image", "desc": "바코드 스캐너 — 드롭 대상" },
         { "id": "cvs-item-ramen", "kind": "image", "desc": "상품: 컵라면" },
         { "id": "cvs-item-drink", "kind": "image", "desc": "상품: 음료캔" },
-        { "id": "cvs-item-snack", "kind": "image", "desc": "상품: 과자봉지" }
+        { "id": "cvs-item-snack", "kind": "image", "desc": "상품: 과자봉지" },
+        { "id": "cvs-item-milk", "kind": "image", "desc": "상품: 우유 (페이크 상품 기믹용 4번째)" }
       ]
     },
     {
@@ -98,11 +100,14 @@
       ]
     },
     {
-      "name": "UI 공통",
+      "name": "UI·화면 (모든 화면 요소도 발주·검수 대상)",
       "slots": [
-        { "id": "ui-life", "kind": "image", "desc": "목숨 아이콘" },
+        { "id": "title-bg", "kind": "image", "desc": "타이틀 화면 배경 일러스트 (다양한 알바 현장 콜라주 무드)" },
+        { "id": "ui-life", "kind": "image", "desc": "목숨 아이콘 (하트 대체 — 알바 배지/명찰 모티프 검토)" },
         { "id": "ui-timer-frame", "kind": "image", "desc": "타이머 게이지 프레임" },
         { "id": "ui-button-frame", "kind": "image", "desc": "버튼 9-slice 프레임 (글자 없음)" },
+        { "id": "ui-order-panel", "kind": "image", "desc": "주문표 패널 프레임 (페이크 재료 기믹 UI)" },
+        { "id": "ui-panel", "kind": "image", "desc": "게임오버/평가서 패널 프레임" },
         { "id": "ui-boss", "kind": "image", "desc": "사장님 얼굴(평가서·잔소리용) — 표정 2종" }
       ]
     },
