@@ -143,6 +143,15 @@ async function load() { S = await (await fetch('/api/state')).json(); render() }
 async function post(url, data) { await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) }); await load() }
 
 window.approve = (o,i) => post('/api/decision', { order:o, item:i, decision:'approved' })
+window.approveAll = async (o) => {
+  const ord = S.orders.find(x => x.order === o)
+  const targets = ord.items.filter(i => i.exists && i.status !== 'approved')
+  if (!targets.length) return
+  if (!confirm(`order#${o}의 미승인 ${targets.length}건을 모두 승인합니다.`)) return
+  for (const it of targets)
+    await fetch('/api/decision', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ order:o, item:it.id, decision:'approved' }) })
+  await load()
+}
 window.reject = (o,i) => { const r = prompt('반려 사유 (검수 기준의 언어로):'); if (r !== null) post('/api/decision', { order:o, item:i, decision:'rejected', reason:r }) }
 window.approveText = i => post('/api/decision', { order:'texts', item:i, decision:'approved' })
 window.rejectText = i => { const r = prompt('반려 사유 (수정 방향 포함):'); if (r !== null) post('/api/decision', { order:'texts', item:i, decision:'rejected', reason:r }) }
@@ -303,7 +312,9 @@ function renderImages() {
     ${bgBtns()}
     ${imgOrders.length ? imgOrders.map(o => `
       <div class="order-block">
-        <div class="order-head">order#${o.order} · ${o.name}</div>
+        <div class="order-head">order#${o.order} · ${o.name}
+          <button class="btn ok" style="margin-left:12px; font-size:11px" onclick="approveAll(${o.order})">✓ 전체 승인</button>
+        </div>
         <div class="order-goal">${esc(o.goal)}</div>
         <div class="grid">${o.items.map(it => `
           <div class="card ${it.isGolden?'golden':''}">
