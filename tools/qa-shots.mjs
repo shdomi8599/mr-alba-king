@@ -37,5 +37,35 @@ await page.waitForTimeout(850)
 await page.screenshot({ path: path.join(OUT, 'qa-cafe-hold.png') })
 await page.mouse.up()
 
+// 4~9. 나머지 테마 스윕 — 플레이 상태 + 상호작용 재현
+// 논리→뷰포트: scale 0.583, offsetY 77 (420×900 기준)
+const L = (x, y) => [x * 0.583, 77 + y * 0.583]
+const sweep = [
+  { name: 'qa-sushi', round: 3, acts: [] },
+  { name: 'qa-box-tap', round: 4, acts: async () => {
+      // 박스 3연타 → 비행 연출 중 캡처 (박스 위치는 랜덤이라 넓게 여러 곳 탭)
+      for (const [x, y] of [[210, 560], [160, 620], [260, 580], [210, 640]]) { await page.mouse.click(x, y); await page.waitForTimeout(90) }
+    } },
+  { name: 'qa-cvs', round: 5, acts: [] },
+  { name: 'qa-chicken', round: 6, acts: [] },
+  { name: 'qa-wash-scrub', round: 8, acts: async () => {
+      const [sx, sy] = L(200, 640)
+      await page.mouse.move(sx, sy)
+      await page.mouse.down()
+      for (let i = 0; i < 10; i++) { await page.mouse.move(sx + (i % 2 ? 90 : -90), sy + i * 6, { steps: 4 }); await page.waitForTimeout(40) }
+    } },
+  { name: 'qa-fish', round: 9, acts: [] },
+  { name: 'qa-song-shake', round: 10, acts: async () => {
+      for (let i = 0; i < 5; i++) { await page.mouse.click(i % 2 ? 105 : 315, 690); await page.waitForTimeout(110) }
+    } },
+]
+for (const s of sweep) {
+  await page.goto(BASE + `/?shot=game&round=${s.round}`)
+  await page.waitForTimeout(1500)
+  if (typeof s.acts === 'function') await s.acts()
+  await page.waitForTimeout(120)
+  await page.screenshot({ path: path.join(OUT, `${s.name}.png`) })
+}
+
 await browser.close()
 console.log('qa shots → tmp/qa/')

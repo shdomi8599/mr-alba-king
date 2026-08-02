@@ -36,7 +36,9 @@ body {
 .cta:active { transform: translateY(4px); box-shadow: 0 2px 0 #b8871e; }
 /* 실아트 버튼 프레임 (9-slice) */
 .cta.cta-img {
-  background: none; box-shadow: none; border-radius: 0;
+  /* 프레임 에셋은 내부가 투명(발주 스펙 'EMPTY center') — 버튼 얼굴은 코드가 깐다 */
+  background: linear-gradient(180deg, #fff6dd, #ffedbe); background-clip: padding-box;
+  box-shadow: none; border-radius: 22px;
   border: 27px solid transparent; /* border-image가 이 영역을 프레임으로 채움 */
   color: #5b3d0e; padding: 6px 46px 10px; font-size: 24px; font-weight: 900;
 }
@@ -68,6 +70,20 @@ body {
   font-size: 12px; opacity: .62; line-height: 1.8; text-align: center;
 }
 .staff-title { font-weight: 800; letter-spacing: 1px; font-size: 11px; opacity: .8; margin-bottom: 2px; }
+
+/* 실아트 평가서 — 클립보드 위 종이에 다크 텍스트 */
+.evalpanel.framed {
+  background-color: transparent; background-size: 100% 100%; background-repeat: no-repeat;
+  border: none; box-shadow: none; filter: drop-shadow(0 16px 34px rgba(0,0,0,.5));
+  width: min(470px, 92vw); min-height: 640px; justify-content: center;
+  padding: 138px 48px 58px; color: #4a3018;
+}
+.evalpanel.framed .over-title { color: #5b3a14; }
+.evalpanel.framed .tagline { color: #7a5a36; opacity: 1; }
+.evalpanel.framed .eval-lines { color: #4a3018; }
+.evalpanel.framed .score-label { color: #8a6a44; opacity: 1; }
+.evalpanel.framed .score-big { color: #c4791a; }
+.evalpanel.framed .over-sub { color: #7a5a36; opacity: 1; }
 
 /* ── 게임 캔버스 (논리 720×1280, scale로 맞춤) ── */
 .game-wrap { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }

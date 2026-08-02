@@ -51,9 +51,10 @@ export default function App() {
     const report = makeEval(last)
     const bossUrl = spriteUrl(report.grade === 's' || report.grade === 'a' ? 'ui-boss-happy' : 'ui-boss-angry')
     const complete = last.phase === 'complete'
+    const panelUrl = spriteUrl('ui-panel')
     return (
       <div className="screen over-screen">
-        <div className="evalpanel">
+        <div className={`evalpanel ${panelUrl ? 'framed' : ''}`} style={panelUrl ? { backgroundImage: `url(${panelUrl})` } : undefined}>
           <h1 className="over-title">{complete ? T('complete-title') : T('over-title')}</h1>
           {complete && <p className="tagline">{T('complete-sub')}</p>}
           <div className="eval-body">
