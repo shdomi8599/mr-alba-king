@@ -21,5 +21,5 @@ try {
 } catch {}
 
 const credits = { made, rejected, sessions: qa.sessions, levels: qa.levelAttempts, commits }
-writeFileSync(path.join(ROOT, 'src', 'game', 'credits.json'), JSON.stringify(credits, null, 2) + '\n')
+writeFileSync(path.join(ROOT, 'pipeline', 'credits.json'), JSON.stringify(credits, null, 2) + '\n')
 console.log('credits:', JSON.stringify(credits))
