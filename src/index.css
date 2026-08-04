@@ -307,6 +307,12 @@ body {
   border: 6px solid rgba(255,255,255,.85); animation: ringout .4s ease-out forwards;
 }
 
+.dbg {
+  position: absolute; bottom: 14px; left: 16px; z-index: 60;
+  font-family: monospace; font-size: 20px; color: #8ae08f;
+  background: rgba(0,0,0,.6); padding: 4px 10px; border-radius: 8px; pointer-events: none;
+}
+
 /* 판정 연출 */
 .burst { position: absolute; left: 50%; top: 46%; z-index: 28; pointer-events: none; }
 .burst i { position: absolute; border-radius: 50%; animation: fly .55s ease-out forwards; }

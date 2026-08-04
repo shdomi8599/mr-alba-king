@@ -112,6 +112,8 @@ function guideFocus(lv: Level, step: GuideStep): Rect | null {
 
 export default function GameView({ onGameOver }: { onGameOver: (s: Session) => void }) {
   const [, force] = useState(0)
+  // ?debug=1 — 환경 진단 오버레이 (fps·게임시간 속도비)
+  const debugRef = useRef({ on: new URLSearchParams(window.location.search).has('debug'), frames: 0, ticks: 0, t0: performance.now(), fps: 0, speed: 1 })
   const sRef = useRef<Session | null>(null)
   if (!sRef.current) {
     const s = createSession(Date.now() & 0xffffffff)
@@ -144,13 +146,29 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
     let prevPhase = ''
     let prevPenalty = 0
     startBgm('bgm-main')
+    // 탭 복귀 시 시간 점프 방지 — 숨김 동안은 게임 시간도 정지(액션 게임 공정성)
+    const onVis = () => { last = performance.now() }
+    document.addEventListener('visibilitychange', onVis)
     const loop = (now: number) => {
-      acc += Math.min(now - last, 100)
+      // 프레임 간격 250ms까지 따라잡기 — rAF가 잠시 조여져도(절전·임베디드 브라우저) 게임 시간이 실시간을 따라감
+      acc += Math.min(now - last, 250)
       last = now
       const s = sRef.current!
       while (acc >= FIXED) {
         tickSession(s, FIXED)
         acc -= FIXED
+        debugRef.current.ticks++
+      }
+      // 진단 집계 (1초 창)
+      const dbg = debugRef.current
+      if (dbg.on) {
+        dbg.frames++
+        const el = now - dbg.t0
+        if (el >= 1000) {
+          dbg.fps = Math.round((dbg.frames * 1000) / el)
+          dbg.speed = Math.round(((dbg.ticks * FIXED) / el) * 100) / 100 // 1.0 = 실시간
+          dbg.frames = 0; dbg.ticks = 0; dbg.t0 = now
+        }
       }
       // 사운드 트리거 (엣지 감지 — 승격된 오디오 없으면 전부 무음 no-op)
       if (s.phase !== prevPhase) {
@@ -202,6 +220,7 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
     raf = requestAnimationFrame(loop)
     return () => {
       cancelAnimationFrame(raf)
+      document.removeEventListener('visibilitychange', onVis)
       stopBgm()
       stopLoopSfx()
     }
@@ -494,6 +513,11 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
               {s.lastResult === 'clear' ? (s.lastPerfect ? T('sys-perfect') : 'OK!') : T('sys-fail')}
             </div>
           </>
+        )}
+        {debugRef.current.on && (
+          <div className="dbg">
+            fps {debugRef.current.fps} · speed ×{debugRef.current.speed}
+          </div>
         )}
       </div>
     </div>
