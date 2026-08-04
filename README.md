@@ -6,7 +6,7 @@
 ### ▶️ [PLAY NOW — 바로 플레이](https://shdomi8599.github.io/mr-alba-king/)
 
 브라우저에서 클릭 한 번으로 실행됩니다 (설치·로그인 불요, 모바일 지원).
-🎛 [디렉터 스튜디오 스냅샷 보기](https://shdomi8599.github.io/mr-alba-king/studio/) · 🎬 플레이 영상: (업로드 후 기입)
+🎛 [디렉터 스튜디오 스냅샷 보기](https://shdomi8599.github.io/mr-alba-king/studio/) · 🎬 [플레이 영상 (59초)](https://www.youtube.com/watch?v=sKWnhoqdnA4)
 
 ## 🎛 디렉터 스튜디오 — AI를 지휘한 흔적을 직접 보세요
 

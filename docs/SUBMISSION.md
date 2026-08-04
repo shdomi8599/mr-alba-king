@@ -6,7 +6,7 @@
 
 - [x] GitHub Pages 배포 링크 — https://shdomi8599.github.io/mr-alba-king/ (클릭만으로 실행, 유료 라이선스 불요)
 - [x] 소스 전체 공개(public) + 커밋 기록 유지
-- [ ] README 최상단 PLAY NOW + 영상 링크(업로드 후 기입)
+- [x] README 최상단 PLAY NOW + 영상 링크
 - [ ] 제출 전: 링크 동결 → 타 기기·시크릿 창·모바일 Safari/Chrome 검증
 
 ## 2. 플레이 동영상 (YouTube, 30~60초) — 촬영 완료
@@ -35,9 +35,9 @@
 
 - [x] 촬영 원본 확보(재편집 대비) — `tmp/1.mp4`
 - [x] 60초 이내 확인 — 59.73초
-- [ ] 업로드 후 **`youtube.com/watch?v=...` 형태 링크**를 신청서·소개 문서에 기입
-      (60초 미만 세로 영상은 자동으로 Shorts로 분류되지만, `/shorts/` 대신 `watch?v=` URL을 쓰면 일반 플레이어로 열려 심사자가 구간 이동 가능)
-- [ ] 영상·빌드·문서 주장 일치(배너 문구 = 실제 구현, 'AI 생성' 표기 없음)
+- [x] 업로드 완료 — **https://www.youtube.com/watch?v=sKWnhoqdnA4** (Shorts 자동분류되나 `watch?v=` 링크는 일반 플레이어로 열림). README·INTRO-DOC 기입 완료
+- [x] 영상·빌드·문서 주장 일치(배너 문구 = 실제 구현, 'AI 생성' 표기 없음)
+- [ ] 신청서에 동일 URL 기입
 
 ### YouTube 업로드 문안
 
