@@ -12,7 +12,7 @@
         {
           "id": "instr-gimbap",
           "ko": "넣어!",
-          "context": "김밥천국 시작 순간",
+          "context": "김밥집 시작 순간",
           "shot": "screen-guide.png"
         },
         {
@@ -281,7 +281,7 @@
       "entries": [
         {
           "id": "theme-gimbap",
-          "ko": "김밥천국",
+          "ko": "김밥집",
           "context": "테마 표시명"
         },
         {
