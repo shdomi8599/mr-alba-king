@@ -148,14 +148,20 @@
 </div>
 <script>
 let S = null, view = 'dash', bg = 'bg-checker', curDoc = 'STRATEGY.md'
+const BAKED = !!window.__BAKED // 심사용 정적 스냅샷 모드 — 결정 기능 비활성, 상대 경로 데이터
 const $ = s => document.querySelector(s)
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 const PHASES = ['P0 부트스트랩','P1 코어 슬라이스','P2 파이프라인','P3 콘텐츠 확장','P4 아트·오디오','P5 QA·밸런스','P6 차별화','P7 폴리싱','P8 제출']
 const CHIP = { pending:'대기', planned:'기획됨', ordered:'발주됨', generated:'검수 대기', approved:'승인', rejected:'반려', golden:'★ 골든' }
 const STATUS_COLOR = { planned:'#4a443a', ordered:'#5c5334', generated:'#3a4a5c', approved:'#3f6b46', rejected:'#6b3f3f', golden:'#f5b942' }
 
-async function load() { S = await (await fetch('/api/state')).json(); render() }
-async function post(url, data) { await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) }); await load() }
+async function load() { S = await (await fetch(BAKED ? 'state.json' : '/api/state')).json(); render() }
+async function post(url, data) {
+  if (BAKED) { bakedNotice(); return }
+  await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) })
+  await load()
+}
+function bakedNotice() { ask({ text: '심사용 읽기 전용 스냅샷입니다.\n승인·반려 등 결정 기능은 개발 환경의 라이브 스튜디오에서 동작합니다.' }) }
 
 // 자체 모달 — 내장 브라우저의 prompt/confirm 차단 대응
 function ask({ text, input = false }) {
@@ -174,6 +180,7 @@ function ask({ text, input = false }) {
 
 window.approve = (o,i) => post('/api/decision', { order:o, item:i, decision:'approved' })
 window.approveAll = async (o) => {
+  if (BAKED) return bakedNotice()
   const ord = S.orders.find(x => x.order === o)
   const targets = ord.items.filter(i => i.exists && i.status !== 'approved')
   if (!targets.length) return
@@ -456,7 +463,7 @@ function md(src) {
 async function renderDocs() {
   const list = S.docs.map(d => `<button class="btn" style="${d===curDoc?'background:#f5b942;color:#1a1815;border-color:#f5b942;font-weight:700':''}" onclick="setDoc('${d}')">${d.replace('.md','')}</button>`).join('')
   $('#main').innerHTML = `<h1>문서</h1><div class="sub">docs/ 의 설계·전략 문서 열람. 편집은 에디터에서.</div><div class="doclist">${list}</div><div class="md" id="mdbox">불러오는 중...</div>`
-  const src = await (await fetch('/docs/' + curDoc)).text()
+  const src = await (await fetch((BAKED ? 'docs/' : '/docs/') + curDoc)).text()
   const box = document.getElementById('mdbox'); if (box) box.innerHTML = md(src)
 }
 
