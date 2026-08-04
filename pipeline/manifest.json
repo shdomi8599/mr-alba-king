@@ -79,9 +79,9 @@
           "desc": "재료: 계란"
         },
         {
-          "id": "gimbap-pickle",
+          "id": "gimbap-burdock",
           "kind": "image",
-          "desc": "재료: 단무지"
+          "desc": "재료: 우엉조림 (단무지 교체 — 계란과 색상군 분리)"
         },
         {
           "id": "gimbap-crab",

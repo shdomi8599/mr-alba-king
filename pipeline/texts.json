@@ -108,9 +108,9 @@
           "context": "김밥 재료 이름표"
         },
         {
-          "id": "name-gimbap-pickle",
-          "ko": "단무지",
-          "context": "김밥 재료 이름표"
+          "id": "name-gimbap-burdock",
+          "ko": "우엉",
+          "context": "김밥 재료 이름표 (단무지 교체 — 색상군 분리)"
         },
         {
           "id": "name-gimbap-crab",

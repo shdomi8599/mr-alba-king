@@ -48,9 +48,9 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
   gimbap: {
     template: 'drag',
     bg: 'gimbap-bg',
-    pool: ['gimbap-ham', 'gimbap-egg', 'gimbap-pickle', 'gimbap-crab'],
+    pool: ['gimbap-ham', 'gimbap-egg', 'gimbap-burdock', 'gimbap-crab'], // 단무지→우엉: 분홍/노랑/진갈색/빨강 색상군 분리
     gimmick: 'sequence', // 주문 순서대로만
-    itemSize: { x: 132, y: 80 },
+    itemSize: { x: 146, y: 90 },
     makeTargets: wanted => [slot({ x: 160, y: 730, w: 400, h: 180 }, 'gimbap-base', wanted)],
   },
   cvs: {

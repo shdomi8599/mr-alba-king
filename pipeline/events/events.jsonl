@@ -1027,3 +1027,11 @@
 {"ts": "2026-08-04T07:00:25.068144Z", "order": 3, "item": "bakery-bread-cream", "event": "rejected", "reason": "크림빵/소금빵 갈색 톤 유사 혼동 — 크림 노출 형태로 차별화 재발주", "by": "director"}
 {"ts": "2026-08-04T07:00:25.068644Z", "order": 3, "item": "bakery-bread-salt", "event": "rejected", "reason": "소금빵이 타 빵과 유사 — 길쭉 롤+소금 플레이크로 차별화 재발주", "by": "director"}
 {"ts":"2026-08-04T07:00:25.309Z","order":14,"item":"gimbap-egg","event":"ordered","out":"pipeline/staging/assets/gimbap-egg.png","ref":"pipeline\\refs\\style-ref.png"}
+{"ts":"2026-08-04T07:03:42.366Z","order":14,"item":"gimbap-egg","event":"generated","out":"pipeline/staging/assets/gimbap-egg.png"}
+{"ts":"2026-08-04T07:03:42.368Z","order":14,"item":"gimbap-pickle","event":"ordered","out":"pipeline/staging/assets/gimbap-pickle.png","ref":"pipeline\\refs\\style-ref.png"}
+{"ts":"2026-08-04T07:07:25.355Z","order":14,"item":"gimbap-pickle","event":"generated","out":"pipeline/staging/assets/gimbap-pickle.png"}
+{"ts":"2026-08-04T07:07:25.356Z","order":14,"item":"bakery-bread-cream","event":"ordered","out":"pipeline/staging/assets/bakery-bread-cream.png","ref":"pipeline\\refs\\style-ref.png"}
+{"ts":"2026-08-04T07:11:15.648Z","order":14,"item":"bakery-bread-cream","event":"generated","out":"pipeline/staging/assets/bakery-bread-cream.png"}
+{"ts":"2026-08-04T07:11:15.649Z","order":14,"item":"bakery-bread-salt","event":"ordered","out":"pipeline/staging/assets/bakery-bread-salt.png","ref":"pipeline\\refs\\style-ref.png"}
+{"ts": "2026-08-04T07:11:18.543913Z", "order": 14, "item": "gimbap-pickle", "event": "rejected", "reason": "형태 차별화로도 계란과 동일 노랑 색군 혼동 잔존 — 재료 자체를 우엉조림(진갈색)으로 교체 (디렉터 결정, order#15)", "by": "director"}
+{"ts":"2026-08-04T07:11:18.752Z","order":15,"item":"gimbap-burdock","event":"ordered","out":"pipeline/staging/assets/gimbap-burdock.png","ref":"pipeline\\refs\\style-ref.png"}

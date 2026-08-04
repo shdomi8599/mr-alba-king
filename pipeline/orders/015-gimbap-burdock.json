@@ -1,0 +1,16 @@
+{
+  "order": 15,
+  "name": "gimbap-burdock",
+  "kind": "image",
+  "goal": "단무지 → 우엉조림 교체 — 색상군 분리(분홍/노랑/진갈색/빨강)로 판별 혼동 원천 제거.",
+  "style": "bold clean dark outlines, vibrant high-saturation colors, energetic comic cartoon sticker style, flat cel shading with one simple gloss highlight",
+  "common": "single centered object, isolated on a fully transparent background, no text, no watermark, 1024x1024 PNG with alpha, generous ~12% margin, slight 3/4 top-down angle, instantly readable silhouette even at small size",
+  "items": [
+    {
+      "id": "gimbap-burdock",
+      "label": "우엉조림",
+      "subject": "a small bundle of braised burdock root strips (ueong-jorim) for gimbap: glossy DARK BROWN soy-glazed thin strips laid together, shiny caramelized surface"
+    }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

@@ -30,7 +30,7 @@ export const PLACEHOLDER: Record<string, Placeholder> = {
   'gimbap-base': { fill: '#2a2a2a', stroke: '#111111', shape: 'rect' },
   'gimbap-ham': { fill: '#e88a9a', stroke: '#b25e6e', shape: 'rect' },
   'gimbap-egg': { fill: '#f5e07a', stroke: '#c9b452', shape: 'rect' },
-  'gimbap-pickle': { fill: '#f0b429', stroke: '#bd8a1b', shape: 'rect' },
+  'gimbap-burdock': { fill: '#6b4226', stroke: '#452a16', shape: 'rect' },
   'gimbap-crab': { fill: '#e0653a', stroke: '#a84525', shape: 'rect' },
   'cvs-scanner': { fill: '#4a4a55', stroke: '#2b2b33', shape: 'rect' },
   'cvs-item-ramen': { fill: '#e07b39', stroke: '#a85423', shape: 'rect' },
