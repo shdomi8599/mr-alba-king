@@ -272,7 +272,12 @@ body {
   animation: fadeout .32s ease-out forwards;
 }
 .dropstar { position: absolute; font-size: 58px; z-index: 16; pointer-events: none; animation: starpop .32s ease-out forwards; }
-/* 액체는 투명 컵 '뒤' 레이어 — 컵 테이퍼를 따르는 사다리꼴 클립, 반투명 커피 */
+/* 액체는 투명 컵 '뒤' 레이어 — 컵 아트에서 추출한 내부 마스크(cafe-cup-mask)로 픽셀 정확 클리핑 */
+.cupmask2 {
+  position: absolute; pointer-events: none;
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
 .cupclip {
   position: absolute; overflow: hidden; pointer-events: none;
   clip-path: polygon(5% 0, 95% 0, 83% 100%, 17% 100%);

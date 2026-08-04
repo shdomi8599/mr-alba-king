@@ -324,13 +324,22 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
         {lv.template === 'timing' && (
           <>
             {lv.pattern === 'hold' && (() => {
-              // 액체는 컵(투명 유리) '뒤' 레이어 — 안쪽 여백(인셋) + 컵 테이퍼를 따르는 사다리꼴 클립
+              // 액체는 컵(투명 유리) '뒤' 레이어 — 컵 아트에서 추출한 내부 마스크로 픽셀 정확 클리핑
               const cup = lv.deco.find(d => d.id === 'cafe-cup')
               if (!cup) return null
               const r = cup.rect
               const v = Math.min(1, lv.value)
-              return (
-                <div className="cupclip" style={{ left: r.x + r.w * 0.15, top: r.y + r.h * 0.12, width: r.w * 0.7, height: r.h * 0.8 }}>
+              const maskUrl = spriteUrl('cafe-cup-mask')
+              if (v <= 0.01) return null
+              return maskUrl ? (
+                <div
+                  className="cupmask2"
+                  style={{ left: r.x, top: r.y, width: r.w, height: r.h, WebkitMaskImage: `url(${maskUrl})`, maskImage: `url(${maskUrl})` }}
+                >
+                  <div className="cupliquid" style={{ height: `${v * 78}%` }} />
+                </div>
+              ) : (
+                <div className="cupclip" style={{ left: r.x + r.w * 0.28, top: r.y + r.h * 0.2, width: r.w * 0.44, height: r.h * 0.66 }}>
                   <div className="cupliquid" style={{ height: `${v * 80}%` }} />
                 </div>
               )

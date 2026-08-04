@@ -75,8 +75,8 @@ const THEMES: Record<ThemeId, ThemeCfg> = {
     bg: 'cafe-bg',
     pattern: 'hold',
     deco: [
-      { id: 'cafe-kettle', rect: { x: 330, y: 450, w: 220, h: 190 } }, // 컵 바로 위 — 물줄기가 자연 연결
-      { id: 'cafe-cup', rect: { x: 220, y: 680, w: 280, h: 240 } },
+      { id: 'cafe-kettle', rect: { x: 330, y: 445, w: 220, h: 190 } }, // 컵 바로 위 — 물줄기가 자연 연결
+      { id: 'cafe-cup', rect: { x: 252, y: 655, w: 216, h: 261 } }, // 아트 비율(837:1011)과 동일 — contain 여백 없이 마스크와 픽셀 정합
     ],
   },
   chicken: {
