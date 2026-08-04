@@ -21,10 +21,10 @@ try {
   await page.locator('.game-canvas').waitFor({ timeout: 5000 })
   // 3) 첫 레벨(가이드 타임스탑)이 입력에 반응한다 — 탭하면 가이드가 진행됨
   await page.waitForTimeout(1500)
-  const before = await page.locator('.guide-bubble').count()
+  const before = await page.locator('.ak-guide-bubble').count()
   await page.locator('.game-canvas').dispatchEvent('pointerdown', { pointerId: 1, clientX: 210, clientY: 450 })
   await page.waitForTimeout(300)
-  const after = await page.locator('.guide-bubble').textContent().catch(() => null)
+  const after = await page.locator('.ak-guide-bubble').textContent().catch(() => null)
   if (before === 0) errors.push('guide not shown on round 1')
   console.log(`guide before=${before} afterText=${(after || '').slice(0, 20)}`)
 } catch (e) {

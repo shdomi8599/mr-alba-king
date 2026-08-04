@@ -70,7 +70,7 @@ const BURST_COLORS = ['#8ae08f', '#f5b942', '#5a86e6', '#e88a9a']
 function Burst({ gold = false }: { gold?: boolean }) {
   const n = gold ? 22 : 14
   return (
-    <div className="burst">
+    <div className="ak-burst">
       {Array.from({ length: n }, (_, i) => {
         const a = (i / n) * Math.PI * 2 + (i % 2) * 0.35
         const d = 150 + (i % 3) * 75
@@ -367,14 +367,14 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
               if (v <= 0.01) return null
               return maskUrl ? (
                 <div
-                  className="cupmask2"
+                  className="ak-cupmask"
                   style={{ left: r.x, top: r.y, width: r.w, height: r.h, WebkitMaskImage: `url(${maskUrl})`, maskImage: `url(${maskUrl})` }}
                 >
-                  <div className="cupliquid" style={{ height: `${v * 78}%` }} />
+                  <div className="ak-liquid" style={{ height: `${v * 78}%` }} />
                 </div>
               ) : (
                 <div className="cupclip" style={{ left: r.x + r.w * 0.28, top: r.y + r.h * 0.2, width: r.w * 0.44, height: r.h * 0.66 }}>
-                  <div className="cupliquid" style={{ height: `${v * 80}%` }} />
+                  <div className="ak-liquid" style={{ height: `${v * 80}%` }} />
                 </div>
               )
             })()}
@@ -390,7 +390,7 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
               const cup = lv.deco.find(d => d.id === 'cafe-cup')!.rect
               const kettle = lv.deco.find(d => d.id === 'cafe-kettle')!.rect
               const streamTop = kettle.y + kettle.h * 0.72
-              return <div className="pour" style={{ left: cup.x + cup.w * 0.5 - 6, top: streamTop, height: cup.y + cup.h * 0.3 - streamTop }} />
+              return <div className="ak-pour" style={{ left: cup.x + cup.w * 0.5 - 6, top: streamTop, height: cup.y + cup.h * 0.3 - streamTop }} />
             })()}
             {lv.repFxT > 0 && <div className="dropstar" style={{ left: 330, top: GAUGE.y - 90 }}>✨</div>}
             <div className="reps">
@@ -483,15 +483,15 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
           </>
         )}
 
-        {lv.penaltyT > 0 && <div className="penalty" />}
+        {lv.penaltyT > 0 && <div className="ak-penalty" />}
 
         {guideStep && focus && (
           <>
-            <div className="guide-hole" style={{ left: focus.x, top: focus.y, width: focus.w, height: focus.h }} />
-            <div className="guide-hand" style={{ left: focus.x + focus.w / 2 - 30, top: focus.y + focus.h - 16 }}>
+            <div className="ak-guide-hole" style={{ left: focus.x, top: focus.y, width: focus.w, height: focus.h }} />
+            <div className="ak-guide-hand" style={{ left: focus.x + focus.w / 2 - 30, top: focus.y + focus.h - 16 }}>
               👆
             </div>
-            <div className="guide-bubble" style={bubbleAbove ? { top: focus.y - 190 } : { top: focus.y + focus.h + 40 }}>
+            <div className="ak-guide-bubble" style={bubbleAbove ? { top: focus.y - 190 } : { top: focus.y + focus.h + 40 }}>
               {T(`tut-${guideStep}`)}
               <div className="tap">{T('tut-tap')}</div>
             </div>
@@ -508,14 +508,14 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
         {s.phase === 'result' && (
           <>
             {s.lastResult === 'clear' && <Burst gold={s.lastPerfect} />}
-            {s.lastResult === 'clear' && s.lastPerfect && <div className="goldflash" />}
+            {s.lastResult === 'clear' && s.lastPerfect && <div className="ak-goldflash" />}
             <div className={`result ${s.lastResult ?? ''}`}>
               {s.lastResult === 'clear' ? (s.lastPerfect ? T('sys-perfect') : 'OK!') : T('sys-fail')}
             </div>
           </>
         )}
         {debugRef.current.on && (
-          <div className="dbg">
+          <div className="ak-dbg">
             fps {debugRef.current.fps} · speed ×{debugRef.current.speed}
           </div>
         )}
