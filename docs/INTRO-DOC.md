@@ -35,13 +35,14 @@
 
 ## 실행 방법
 
-- **플레이 링크**: (GitHub Pages URL — 공개 전환 후 기입)
+- **플레이 링크**: https://shdomi8599.github.io/mr-alba-king/
 - 브라우저에서 링크 클릭만으로 실행됩니다 — 설치·로그인·결제·API 키 불요, 완전 정적 빌드.
 - **모바일 지원**: 세로 화면 최적화, 탭/드래그 공용 조작. 데스크톱은 마우스로 동일하게.
 - 소스: https://github.com/shdomi8599/mr-alba-king (전체 커밋 이력 공개)
 
 ## 링크
 
-- 플레이: (Pages URL)
+- 플레이: https://shdomi8599.github.io/mr-alba-king/
+- 디렉터 스튜디오(심사용 스냅샷): https://shdomi8599.github.io/mr-alba-king/studio/
 - 플레이 영상(30~60초): (YouTube URL)
 - AI 활용 기술 문서: 제출 PDF 및 레포 `docs/TECH-DOC.md`
