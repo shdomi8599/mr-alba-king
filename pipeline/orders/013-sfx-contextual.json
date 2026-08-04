@@ -1,0 +1,59 @@
+{
+  "order": 13,
+  "name": "sfx-contextual",
+  "kind": "audio",
+  "goal": "상황별 효과음 8종 (디렉터 피드백: 모든 레벨에서 행위에 맞는 소리 부재) — 놓기/따르기(루프)/스캔/박스/문지르기(루프)/탬버린/뒤집기/튀김",
+  "items": [
+    {
+      "id": "sfx-place",
+      "type": "sfx",
+      "dur": 0.5,
+      "prompt": "soft food item placed down on a counter, gentle squishy plop, short, satisfying"
+    },
+    {
+      "id": "sfx-pour",
+      "type": "sfx",
+      "dur": 1.5,
+      "loop": true,
+      "prompt": "liquid coffee pouring into a cup in a steady gentle stream, smooth continuous pour, loopable"
+    },
+    {
+      "id": "sfx-scan",
+      "type": "sfx",
+      "dur": 0.5,
+      "prompt": "barcode scanner beep, single short electronic bip, store checkout"
+    },
+    {
+      "id": "sfx-thud",
+      "type": "sfx",
+      "dur": 0.6,
+      "prompt": "cardboard box landing inside a truck, soft heavy cardboard thump"
+    },
+    {
+      "id": "sfx-scrub",
+      "type": "sfx",
+      "dur": 1.2,
+      "loop": true,
+      "prompt": "soapy wet sponge scrubbing a car surface, rhythmic squeaky rubbing, loopable"
+    },
+    {
+      "id": "sfx-tambourine",
+      "type": "sfx",
+      "dur": 0.6,
+      "prompt": "single tambourine shake hit with bright jingles, energetic"
+    },
+    {
+      "id": "sfx-flip",
+      "type": "sfx",
+      "dur": 0.7,
+      "prompt": "food flipping on a hot griddle with a quick sizzle, snappy"
+    },
+    {
+      "id": "sfx-dip",
+      "type": "sfx",
+      "dur": 0.8,
+      "prompt": "wire frying basket dipping into hot bubbling oil, short sizzle burst"
+    }
+  ],
+  "out": "pipeline/staging/audio/{id}.ogg"
+}

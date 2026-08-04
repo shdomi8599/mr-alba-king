@@ -89,7 +89,7 @@ for (const item of order.items) {
         text: item.prompt,
         duration_seconds: item.dur ?? 0.8,
         output_format: 'mp3_44100_128',
-        loop: false,
+        loop: item.loop ?? false,
       })
       bufToOgg(await fetchBuf(r.audio.url), out)
     } else {

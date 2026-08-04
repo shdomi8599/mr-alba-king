@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { createSession, difficultyOf, pointerSession, tickSession, LIVES, ROUNDS_TOTAL, type Session } from '../engine/session'
 import { makeLevel, THEME_ORDER } from '../engine/levels'
 import { currentZone } from '../engine/templates/timing'
-import { playSfx, startBgm, stopBgm } from './sound'
+import { playSfx, startBgm, startLoopSfx, stopBgm, stopLoopSfx } from './sound'
 import type { GuideStep, Level, PointerInput, Rect, ThemeId } from '../engine/types'
 import { BG, PLACEHOLDER, spriteUrl } from '../assets/registry'
 import { T } from './texts'
@@ -161,19 +161,33 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
       const pen = s.level.penaltyT
       if (pen > 0 && prevPenalty <= 0) playSfx('sfx-penalty')
       prevPenalty = pen
-      // 인터랙션 이펙트 사운드 (성공 액션마다 탭음)
+      // 인터랙션 사운드 — 상황별 매핑 (디렉터 피드백: 행위에 맞는 소리)
       const f = fxRef.current
       const lv2 = s.level
-      if (lv2.template === 'drag') { if (lv2.dropFxT > f.drop) playSfx('sfx-tap'); f.drop = lv2.dropFxT } else f.drop = 0
-      if (lv2.template === 'timing') { if (lv2.repFxT > f.rep) playSfx('sfx-tap'); f.rep = lv2.repFxT } else f.rep = 0
-      if (lv2.template === 'mash' && lv2.kind === 'tap') { if (lv2.flyT > f.fly) playSfx('sfx-tap'); f.fly = lv2.flyT } else f.fly = 0
-      if (lv2.template === 'mash' && lv2.kind === 'shake') { if (lv2.hitCount > f.hit) playSfx('sfx-tap'); f.hit = lv2.hitCount } else f.hit = 0
+      if (lv2.template === 'drag') {
+        if (lv2.dropFxT > f.drop) playSfx(lv2.theme === 'cvs' ? 'sfx-scan' : 'sfx-place')
+        f.drop = lv2.dropFxT
+      } else f.drop = 0
+      if (lv2.template === 'timing') {
+        if (lv2.repFxT > f.rep) playSfx(lv2.theme === 'chicken' ? 'sfx-dip' : lv2.theme === 'fish' ? 'sfx-flip' : 'sfx-place')
+        f.rep = lv2.repFxT
+        // 물 따르기 루프 — 홀드 중에만
+        if (lv2.pattern === 'hold' && s.phase === 'play' && lv2.holding) startLoopSfx('sfx-pour')
+        else if (lv2.pattern === 'hold') stopLoopSfx()
+      } else f.rep = 0
+      if (lv2.template === 'mash' && lv2.kind === 'tap') { if (lv2.flyT > f.fly) playSfx('sfx-thud'); f.fly = lv2.flyT } else f.fly = 0
+      if (lv2.template === 'mash' && lv2.kind === 'shake') { if (lv2.hitCount > f.hit) playSfx('sfx-tambourine'); f.hit = lv2.hitCount } else f.hit = 0
       if (lv2.template === 'mash' && lv2.kind === 'scrub') {
         if (f.scrubKey !== s.levelIndex) { f.scrubKey = s.levelIndex; f.dead = new Set(); f.pops = [] }
+        // 문지르기 루프 — 터치 중에만
+        if (s.phase === 'play' && lv2.lastP) startLoopSfx('sfx-scrub')
+        else stopLoopSfx()
         lv2.blobs.forEach((b, i) => {
-          if (b.hp <= 0 && !f.dead.has(i)) { f.dead.add(i); f.pops.push({ x: b.x, y: b.y, t: 400 }); playSfx('sfx-tap') }
+          if (b.hp <= 0 && !f.dead.has(i)) { f.dead.add(i); f.pops.push({ x: b.x, y: b.y, t: 400 }); playSfx('sfx-place') }
         })
       }
+      if (lv2.template !== 'timing' && !(lv2.template === 'mash' && lv2.kind === 'scrub') && s.phase !== 'play') stopLoopSfx()
+      if (s.phase === 'result') stopLoopSfx() // 판정 순간 루프 정지
       f.pops.forEach(p => (p.t -= 17))
       f.pops = f.pops.filter(p => p.t > 0)
       if (difficultyOf(s.levelIndex) >= 2) startBgm('bgm-fast')
@@ -189,6 +203,7 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
     return () => {
       cancelAnimationFrame(raf)
       stopBgm()
+      stopLoopSfx()
     }
   }, [onGameOver])
 

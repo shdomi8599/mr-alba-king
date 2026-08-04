@@ -1,0 +1,31 @@
+{
+  "order": 14,
+  "name": "ingredient-distinct",
+  "kind": "image",
+  "goal": "판별성 재발주 (디렉터 피드백: 계란/단무지·빵끼리 혼동) — 형태·색을 서로 확실히 다르게. 0.5초 판독성 최우선.",
+  "style": "bold clean dark outlines, vibrant high-saturation colors, energetic comic cartoon sticker style, flat cel shading with one simple gloss highlight",
+  "common": "single centered object, isolated on a fully transparent background, no text, no watermark, 1024x1024 PNG with alpha, generous ~12% margin, slight 3/4 top-down angle, instantly readable silhouette even at small size",
+  "items": [
+    {
+      "id": "gimbap-egg",
+      "label": "계란말이 지단",
+      "subject": "a strip of rolled egg omelette for gimbap: PALE soft yellow with a visible rolled spiral swirl on the cut end and thin browned edge lines — clearly a rolled egg, not a plain stick"
+    },
+    {
+      "id": "gimbap-pickle",
+      "label": "단무지 반달",
+      "subject": "a half-moon cross-section stick of pickled radish danmuji: VIVID neon-bright yellow, glossy translucent, flat cut face showing the half-circle shape — clearly different from egg"
+    },
+    {
+      "id": "bakery-bread-cream",
+      "label": "크림빵",
+      "subject": "a golden cream bun split open with a THICK wave of white whipped cream bulging out of the middle — the cream must be the most prominent feature"
+    },
+    {
+      "id": "bakery-bread-salt",
+      "label": "소금빵",
+      "subject": "an ELONGATED pale beige rolled salt butter bread with croissant-like ridge lines and coarse white salt flakes sprinkled on top — long shape, much lighter color than other breads"
+    }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

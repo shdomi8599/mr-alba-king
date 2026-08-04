@@ -42,3 +42,31 @@ export function stopBgm(): void {
   bgm = null
   bgmId = null
 }
+
+// 지속 동작용 루프 SFX (물 따르기·문지르기) — 동시에 하나만
+let loopSfx: HTMLAudioElement | null = null
+let loopSfxId: string | null = null
+
+export function startLoopSfx(id: string): void {
+  if (loopSfxId === id) return
+  stopLoopSfx()
+  const u = urlOf(id)
+  if (!u) return
+  const a = new Audio(u)
+  a.loop = true
+  a.volume = 0.75
+  loopSfx = a
+  loopSfxId = id
+  void a.play().catch(() => {
+    if (loopSfx === a) {
+      loopSfx = null
+      loopSfxId = null
+    }
+  })
+}
+
+export function stopLoopSfx(): void {
+  loopSfx?.pause()
+  loopSfx = null
+  loopSfxId = null
+}

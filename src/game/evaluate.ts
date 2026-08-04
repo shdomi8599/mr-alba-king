@@ -35,5 +35,5 @@ export function makeEval(s: Session): EvalReport {
   if (perfects >= 3) lines.push(T('eval-perfect').replace('{n}', String(perfects)))
   else if (s.bestCombo >= 8) lines.push(T('eval-combo').replace('{n}', String(s.bestCombo)))
 
-  return { grade, lines }
+  return { grade, lines: lines.slice(0, 3) } // 멘트 과다 방지 — 총평 + 최대 2개 (레이아웃 안정)
 }

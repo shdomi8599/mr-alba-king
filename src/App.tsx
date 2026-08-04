@@ -69,13 +69,11 @@ export default function App() {
         <div className={`evalpanel ${panelUrl ? 'framed' : ''}`} style={panelUrl ? { backgroundImage: `url(${panelUrl})` } : undefined}>
           <h1 className="over-title">{complete ? T('complete-title') : T('over-title')}</h1>
           {complete && <p className="tagline">{T('complete-sub')}</p>}
-          <div className="eval-body">
-            {bossUrl ? <img className="boss" src={bossUrl} alt="" /> : <div className="boss boss-fallback">👨‍🍳</div>}
-            <div className="eval-lines">
-              {report.lines.map((l, i) => (
-                <p key={i}>“{l}”</p>
-              ))}
-            </div>
+          {bossUrl ? <img className="boss" src={bossUrl} alt="" /> : <div className="boss boss-fallback">👨‍🍳</div>}
+          <div className="eval-lines">
+            {report.lines.map((l, i) => (
+              <p key={i}>“{l}”</p>
+            ))}
           </div>
           <div className="score-row">
             <div>
