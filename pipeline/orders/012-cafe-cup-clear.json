@@ -1,0 +1,16 @@
+{
+  "order": 12,
+  "name": "cafe-cup-clear",
+  "kind": "image",
+  "goal": "카페 컵 재발주 — 불투명 종이컵 반려. 투명 클리어 컵(아이스 컵)으로: 내부가 비쳐 보여야 액체 레이어가 '안에 담긴' 그림이 됨.",
+  "style": "bold clean dark outlines, energetic comic cartoon sticker style, flat cel shading",
+  "common": "no text, no watermark, transparent background PNG with alpha, single centered subject, slight 3/4 top-down view",
+  "items": [
+    {
+      "id": "cafe-cup",
+      "label": "투명 클리어 컵",
+      "subject": "an EMPTY transparent clear plastic iced-coffee cup: the interior must be see-through (mostly transparent), drawn only with thin outlines, subtle white rim strokes and a couple of diagonal glass shine highlights, slightly tapered shape, no lid, no straw, no liquid"
+    }
+  ],
+  "out": "pipeline/staging/assets/{id}.png"
+}

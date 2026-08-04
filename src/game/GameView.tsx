@@ -323,6 +323,18 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
 
         {lv.template === 'timing' && (
           <>
+            {lv.pattern === 'hold' && (() => {
+              // 액체는 컵(투명 유리) '뒤' 레이어 — 안쪽 여백(인셋) + 컵 테이퍼를 따르는 사다리꼴 클립
+              const cup = lv.deco.find(d => d.id === 'cafe-cup')
+              if (!cup) return null
+              const r = cup.rect
+              const v = Math.min(1, lv.value)
+              return (
+                <div className="cupclip" style={{ left: r.x + r.w * 0.15, top: r.y + r.h * 0.12, width: r.w * 0.7, height: r.h * 0.8 }}>
+                  <div className="cupliquid" style={{ height: `${v * 80}%` }} />
+                </div>
+              )
+            })()}
             {lv.deco.map(d => {
               const cls =
                 d.id === 'cafe-kettle' && lv.holding ? 'tilt'
@@ -331,35 +343,11 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
                 : ''
               return <Ph key={d.id} id={d.id} x={d.rect.x} y={d.rect.y} w={d.rect.w} h={d.rect.h} cls={cls} />
             })}
-            {lv.pattern === 'hold' && (() => {
-              const cup = lv.deco.find(d => d.id === 'cafe-cup')
-              if (!cup) return null
-              const r = cup.rect
+            {lv.pattern === 'hold' && lv.holding && (() => {
+              const cup = lv.deco.find(d => d.id === 'cafe-cup')!.rect
               const kettle = lv.deco.find(d => d.id === 'cafe-kettle')!.rect
-              const cupUrl = spriteUrl('cafe-cup')
               const streamTop = kettle.y + kettle.h * 0.72
-              const v = Math.min(1, lv.value)
-              return (
-                <>
-                  {lv.holding && (
-                    <div className="pour" style={{ left: r.x + r.w * 0.5 - 6, top: streamTop, height: r.y + r.h * 0.34 - streamTop }} />
-                  )}
-                  {cupUrl ? (
-                    // 컵 아트 실루엣을 마스크로 — 액체가 컵 '안에서' 바닥부터 차오른다
-                    <div
-                      className="cupmask"
-                      style={{
-                        left: r.x, top: r.y, width: r.w, height: r.h,
-                        WebkitMaskImage: `url(${cupUrl})`, maskImage: `url(${cupUrl})`,
-                      }}
-                    >
-                      <div className="cupliquid" style={{ height: `${v * 54}%` }} />
-                    </div>
-                  ) : (
-                    <div className="cupfill" style={{ left: r.x + r.w * 0.34, width: r.w * 0.32, top: r.y + r.h * 0.72 - r.h * 0.3 * v, height: r.h * 0.3 * v }} />
-                  )}
-                </>
-              )
+              return <div className="pour" style={{ left: cup.x + cup.w * 0.5 - 6, top: streamTop, height: cup.y + cup.h * 0.3 - streamTop }} />
             })()}
             {lv.repFxT > 0 && <div className="dropstar" style={{ left: 330, top: GAUGE.y - 90 }}>✨</div>}
             <div className="reps">

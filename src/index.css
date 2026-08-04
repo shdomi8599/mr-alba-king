@@ -272,19 +272,17 @@ body {
   animation: fadeout .32s ease-out forwards;
 }
 .dropstar { position: absolute; font-size: 58px; z-index: 16; pointer-events: none; animation: starpop .32s ease-out forwards; }
-.cupfill { position: absolute; background: linear-gradient(180deg, rgba(150,100,60,.88), rgba(96,60,34,.92)); border-radius: 6px 6px 40% 40%; z-index: 14; pointer-events: none; }
-/* 컵 실루엣 마스크 — 액체가 컵 안에서 바닥부터 차오름 */
-.cupmask {
-  position: absolute; z-index: 14; pointer-events: none;
-  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+/* 액체는 투명 컵 '뒤' 레이어 — 컵 테이퍼를 따르는 사다리꼴 클립, 반투명 커피 */
+.cupclip {
+  position: absolute; overflow: hidden; pointer-events: none;
+  clip-path: polygon(5% 0, 95% 0, 83% 100%, 17% 100%);
 }
 .cupliquid {
-  /* 컵 '안쪽'에 담긴 액체 — 벽(좌우 11%)은 남기고, 반투명이라 컵 음영이 비침, 상단은 수면 곡선 */
-  position: absolute; left: 11%; right: 11%; bottom: 6%;
-  background: linear-gradient(180deg, rgba(181,122,74,.85), rgba(122,74,40,.88) 60%, rgba(95,58,30,.9));
-  border-top: 5px solid rgba(216,160,107,.95);
-  border-radius: 46% 46% 0 0 / 16%;
+  position: absolute; left: 0; right: 0; bottom: 3%;
+  /* 진한 커피 — 원목 배경과 톤이 겹치지 않게 어둡고 채도 있게, 유리 너머 느낌은 컵 하이라이트가 담당 */
+  background: linear-gradient(180deg, rgba(122,66,28,.94), rgba(78,42,18,.96) 55%, rgba(52,28,12,.97));
+  border-top: 6px solid rgba(222,158,96,.95);
+  border-radius: 40% 40% 0 0 / 12%;
   transition: height .06s linear;
 }
 .pour {
