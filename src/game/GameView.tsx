@@ -5,6 +5,7 @@ import { currentZone } from '../engine/templates/timing'
 import { playSfx, startBgm, startLoopSfx, stopBgm, stopLoopSfx } from './sound'
 import type { GuideStep, Level, PointerInput, Rect, ThemeId } from '../engine/types'
 import { BG, PLACEHOLDER, spriteUrl } from '../assets/registry'
+import { prefetchTheme } from '../assets/preload'
 import { T } from './texts'
 
 const LW = 720
@@ -145,6 +146,7 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
     let acc = 0
     let prevPhase = ''
     let prevPenalty = 0
+    let prevLevel = -1
     startBgm('bgm-main')
     // 탭 복귀 시 시간 점프 방지 — 숨김 동안은 게임 시간도 정지(액션 게임 공정성)
     const onVis = () => { last = performance.now() }
@@ -169,6 +171,12 @@ export default function GameView({ onGameOver }: { onGameOver: (s: Session) => v
           dbg.speed = Math.round(((dbg.ticks * FIXED) / el) * 100) / 100 // 1.0 = 실시간
           dbg.frames = 0; dbg.ticks = 0; dbg.t0 = now
         }
+      }
+      // 다음 라운드 테마 선반입 — 백그라운드 큐가 이미 플레이 순서대로 돌지만,
+      // ?round=N 점프처럼 순서를 벗어난 진입에서도 다음 배경이 준비되도록 명시 승격한다.
+      if (s.levelIndex !== prevLevel) {
+        prevLevel = s.levelIndex
+        prefetchTheme(THEME_ORDER[(s.levelIndex + 1) % THEME_ORDER.length])
       }
       // 사운드 트리거 (엣지 감지 — 승격된 오디오 없으면 전부 무음 no-op)
       if (s.phase !== prevPhase) {

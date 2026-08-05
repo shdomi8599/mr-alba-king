@@ -62,7 +62,11 @@ for (const o of orders) {
     const isBg = it.id.endsWith('-bg')
     // 배경: 캔버스 높이(1280)에 맞춰 리사이즈 / 스프라이트: 최대 512px — 알파 유지 webp
     const vf = isBg ? 'scale=-2:1280' : "scale='min(512,iw)':-2"
-    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', src, '-vf', vf, '-c:v', 'libwebp', '-quality', '84', dest])
+    // 배경은 q70 — 플랫 셰이딩 카툰이라 q84와 1:1 픽셀에서 구분되지 않으면서 용량은 37% 줄어든다.
+    // 배경이 전체 이미지 페이로드의 대부분이라 저속 회선 체감에 직결(ADR-013).
+    // 스프라이트는 q84 유지 — 알파 경계 아티팩트가 눈에 띄고, 장당 용량이 작아 이득이 없다.
+    const quality = isBg ? '70' : '84'
+    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', src, '-vf', vf, '-c:v', 'libwebp', '-quality', quality, dest])
     rmSync(path.join(DEST, `${it.id}.png`), { force: true }) // 구버전 png 정리
     appendFileSync(EVENTS, JSON.stringify({ ts: new Date().toISOString(), order: o.order, item: it.id, event: 'promoted', to: `src/assets/img/${it.id}.webp` }) + '\n')
     n++

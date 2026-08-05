@@ -8,13 +8,48 @@
     <meta name="color-scheme" content="dark" />
     <link rel="icon" type="image/png" href="./favicon.png" />
     <title>알바킹 — Mr. Alba King</title>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
-    />
+    <!-- 폰트는 자체 호스팅 서브셋(tools/gen-font-subset.py, index.css의 @font-face).
+         CDN 통짜 Pretendard는 2MB로 게임 이미지 전체보다 커서 저속 회선에서 배경 이미지의
+         대역폭을 잠식했다. 게임이 실제 쓰는 591자만 남겨 101KB로 줄이고 외부 왕복도 제거(ADR-013). -->
+
+    <!-- 부팅 스플래시를 HTML에 인라인한다. React 컴포넌트로 두면 로딩 화면이 JS 번들을 기다리게 되어
+         저속 회선에서 수 초간 암전이 된다. 이건 HTML+인라인CSS만으로 즉시 그려진다.
+         React가 마운트되면 #root 내용이 교체되며 실제 진행률 UI로 넘어간다. -->
+    <style>
+      #boot {
+        position: fixed; inset: 0; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 14px;
+        background: radial-gradient(ellipse 120% 90% at 50% 40%, #1c1811, #0d0c0a 76%);
+        font-family: system-ui, -apple-system, 'Malgun Gothic', sans-serif; color: #fff8ec;
+      }
+      #boot .n {
+        font-size: 64px; font-weight: 900; letter-spacing: 2px; color: #ffd24a; line-height: 1;
+        text-shadow: -4px -4px 0 #3a2508, 4px -4px 0 #3a2508, -4px 4px 0 #3a2508, 4px 4px 0 #3a2508,
+          0 10px 0 rgba(20, 12, 3, 0.55), 0 18px 26px rgba(0, 0, 0, 0.45);
+      }
+      #boot .t { font-size: 15px; font-weight: 600; letter-spacing: 2px; opacity: 0.9; }
+      #boot .b {
+        width: min(320px, 68vw); height: 14px; margin-top: 4px; overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.28); border-radius: 999px; background: rgba(0, 0, 0, 0.45);
+      }
+      #boot .b i {
+        display: block; height: 100%; width: 38%; border-radius: 999px;
+        background: linear-gradient(180deg, #ffd97a, #f5b942 45%, #dd9a25);
+        /* 좌우 끝에서도 막대가 항상 보이도록 이동 범위를 컨테이너 안으로 제한(빈 바로 보이면 고장처럼 읽힌다) */
+        animation: bootslide 1.15s ease-in-out infinite alternate;
+      }
+      @keyframes bootslide { from { transform: translateX(0); } to { transform: translateX(163%); } }
+    </style>
   </head>
   <body>
+    <!-- #root 밖에 둔다: React가 마운트하며 #root를 비워도 스플래시가 살아 있어야
+         '스플래시 → 빈 화면 → 타이틀' 같은 깜빡임이 생기지 않는다.
+         타이틀이 실제로 그려진 뒤 App이 이 노드를 제거한다. -->
+    <div id="boot">
+      <div class="n">알바킹</div>
+      <div class="t">오늘도 알바는 계속된다</div>
+      <div class="b"><i></i></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

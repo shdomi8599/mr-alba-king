@@ -6,6 +6,11 @@ const IMG = import.meta.glob('./img/*.{png,webp}', { eager: true, query: '?url',
 /** 승격된 실아트 URL — 없으면 null(대역 렌더) */
 export const spriteUrl = (id: string): string | null => IMG[`./img/${id}.webp`] ?? IMG[`./img/${id}.png`] ?? null
 
+/** 전체 스프라이트 id → URL. 프리로더가 테마별로 묶어 선반입하는 데 쓴다(preload.ts). */
+export const ALL_SPRITES: Record<string, string> = Object.fromEntries(
+  Object.entries(IMG).map(([path, url]) => [path.replace(/^\.\/img\//, '').replace(/\.(png|webp)$/, ''), url]),
+)
+
 export const BG: Record<string, string> = {
   'sushi-bg': '#31556b', // 일식집 — 짙은 청록
   'gimbap-bg': '#8a5a30', // 분식집 — 따뜻한 우드

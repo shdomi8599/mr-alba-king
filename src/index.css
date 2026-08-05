@@ -1,3 +1,13 @@
+/* 자체 호스팅 서브셋 — 게임이 쓰는 591자만(101KB). 재생성: python tools/gen-font-subset.py
+   swap: 폰트가 늦어도 시스템 폰트로 즉시 읽히게(빈 화면 방지) */
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/pretendard-subset.woff2') format('woff2-variations');
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body, #root { height: 100%; }
 body {
@@ -51,6 +61,9 @@ body {
   filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35));
 }
 .cta.cta-full:active { transform: translateY(4px) scale(0.97); }
+/* 1라운드 에셋 확보 전 — 눌러도 팝인만 보게 되므로 잠근다(문구로 진행률을 알린다) */
+.cta.cta-wait { filter: grayscale(.55) brightness(.82) drop-shadow(0 8px 12px rgba(0,0,0,.35)); cursor: progress; font-size: 21px; letter-spacing: 1px; }
+.cta.cta-wait:active { transform: none; }
 /* 타이틀 — 풀블리드 배경 + 비네트, 딤 박스 없음 */
 .title-screen { background-size: cover; background-position: center; position: relative; }
 .title-screen::after, .over-screen::after {
@@ -61,6 +74,8 @@ body {
 }
 .title-center { display: flex; flex-direction: column; align-items: center; gap: 14px; position: relative; z-index: 1; }
 .title-logo { width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 10px 12px rgba(0,0,0,.5)); animation: bounce 2.2s ease-in-out infinite; }
+
+/* 부팅 스플래시는 index.html에 인라인되어 있다(#boot) — JS·외부 CSS를 기다리지 않고 즉시 페인트하기 위함 */
 
 /* 게임오버 — 근무 평가서 */
 .over-screen { gap: 20px; background-size: cover; background-position: center; position: relative; }

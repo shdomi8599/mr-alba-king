@@ -99,6 +99,6 @@ half with soft, low-contrast detail; no text, no people, no hands
 | SFX | ElevenLabs Sound Effects v2 (fal 경유) | 로열티프리 |
 | BGM | Stable Audio 2.5 (fal 경유) | Community License — 산출물 소유·상업 이용 가능. Suno/Udio는 라이선스 미정리로 기각(수상작 우선협상권 고려) |
 | QA·캡처 | 자체 봇(`tools/qa-bot.ts`) · Playwright | 스모크 테스트 CI 포함 |
-| 폰트 | Pretendard (OFL) | 텍스트는 이미지에 굽지 않고 전부 코드 렌더 |
+| 폰트 | Pretendard (OFL) | 텍스트는 이미지에 굽지 않고 전부 코드 렌더. 실사용 591자만 서브셋해 자체 호스팅(2,009KB→101KB, 외부 CDN 의존 0 — ADR-013) |
 
 외부 구매·다운로드 에셋: **0건.** 모든 시청각 자산은 위 도구로 생성 후 디렉터 검수를 통과한 것입니다.
